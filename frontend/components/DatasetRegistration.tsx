@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAccount, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { parseEther } from 'viem';
 import { Link, DollarSign, Upload } from 'lucide-react';
@@ -16,37 +16,72 @@ export default function DatasetRegistration() {
     description: ''
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [txStatus, setTxStatus] = useState<'idle' | 'preparing' | 'waiting' | 'confirming' | 'success' | 'error'>('idle');
 
-  const { writeContract, data: hash } = useWriteContract();
+  const { writeContract, data: hash, error: writeError } = useWriteContract();
   
-  const { isLoading: isConfirming, isSuccess: isConfirmed } = 
-    useWaitForTransactionReceipt({
-      hash,
-    });
+  const { 
+    isLoading: isConfirming, 
+    isSuccess: isConfirmed, 
+    error: receiptError 
+  } = useWaitForTransactionReceipt({
+    hash,
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Reset previous errors
+    setError(null);
+    setTxStatus('preparing');
+    
     if (!address) {
-      alert('Please connect your wallet first');
+      setError('Please connect your wallet first');
+      setTxStatus('error');
       return;
     }
 
     if (!formData.uri || !formData.price) {
-      alert('Please fill in all required fields');
+      setError('Please fill in all required fields');
+      setTxStatus('error');
       return;
     }
 
     if (!formData.uri.startsWith('ipfs://')) {
-      alert('URI must start with ipfs://');
+      setError('URI must start with ipfs://');
+      setTxStatus('error');
       return;
     }
 
     try {
       setIsLoading(true);
+      setTxStatus('waiting');
       
       const priceInWei = parseEther(formData.price);
       
+      // Store dataset in database first
+      const response = await fetch('/api/datasets', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ownerId: address,
+          title: formData.description || 'Dataset',
+          description: formData.description,
+          category: formData.category,
+          ipfsHash: formData.uri,
+          price: formData.price,
+          tags: [formData.category],
+        }),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to store dataset metadata');
+      }
+      
+      // Now register on blockchain
       writeContract({
         address: addresses.DatasetRegistry as `0x${string}`,
         abi: datasetRegistryAbi,
@@ -54,9 +89,10 @@ export default function DatasetRegistration() {
         args: [formData.uri, priceInWei],
       });
       
-    } catch (error) {
+    } catch (error: any) {
       console.error('Registration failed:', error);
-      alert('Registration failed. Please try again.');
+      setError(error.message || 'Registration failed. Please try again.');
+      setTxStatus('error');
     } finally {
       setIsLoading(false);
     }
@@ -67,15 +103,33 @@ export default function DatasetRegistration() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  // Reset form on successful confirmation
-  if (isConfirmed) {
-    setFormData({
-      uri: '',
-      price: '',
-      category: 'Machine Learning',
-      description: ''
-    });
-  }
+  // Track transaction status changes
+  useEffect(() => {
+    if (writeError) {
+      setError(writeError.message || 'Transaction failed');
+      setTxStatus('error');
+    } else if (receiptError) {
+      setError(receiptError.message || 'Transaction confirmation failed');
+      setTxStatus('error');
+    } else if (hash && !isConfirming && !isConfirmed) {
+      setTxStatus('confirming');
+    } else if (isConfirming) {
+      setTxStatus('confirming');
+    } else if (isConfirmed) {
+      setTxStatus('success');
+      // Reset form on successful confirmation
+      setTimeout(() => {
+        setFormData({
+          uri: '',
+          price: '',
+          category: 'Machine Learning',
+          description: ''
+        });
+        setTxStatus('idle');
+        setError(null);
+      }, 3000);
+    }
+  }, [writeError, receiptError, hash, isConfirming, isConfirmed]);
 
   return (
     <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-6">
@@ -146,21 +200,56 @@ export default function DatasetRegistration() {
         </div>
       </div>
       
-      <div className="md:col-span-2">
+      <div className="md:col-span-2 space-y-4">
+        {/* Transaction Status Display */}
+        {error && (
+          <div className="p-4 bg-destructive/10 border border-destructive/20 rounded-lg text-destructive text-sm">
+            <strong>Error:</strong> {error}
+          </div>
+        )}
+        
+        {hash && (
+          <div className="p-4 bg-muted/50 border border-border rounded-lg text-sm">
+            <div className="flex items-center justify-between">
+              <span>Transaction Hash:</span>
+              <code className="text-xs bg-muted px-2 py-1 rounded">
+                {hash.slice(0, 10)}...{hash.slice(-8)}
+              </code>
+            </div>
+            <div className="mt-2 flex items-center space-x-2">
+              <div className={`w-2 h-2 rounded-full ${
+                txStatus === 'confirming' ? 'bg-yellow-500 animate-pulse' :
+                txStatus === 'success' ? 'bg-green-500' :
+                txStatus === 'error' ? 'bg-red-500' : 'bg-gray-500'
+              }`}></div>
+              <span className="capitalize text-muted-foreground">
+                {txStatus === 'confirming' ? 'Confirming on blockchain...' :
+                 txStatus === 'success' ? 'Transaction confirmed!' :
+                 txStatus === 'error' ? 'Transaction failed' :
+                 'Processing...'}
+              </span>
+            </div>
+          </div>
+        )}
+        
         <button 
           type="submit"
-          disabled={!address || isLoading || isConfirming}
+          disabled={!address || isLoading || isConfirming || txStatus === 'success'}
           className="w-full px-8 py-4 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-all transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center space-x-2"
         >
-          {isLoading || isConfirming ? (
+          {(isLoading || isConfirming) ? (
             <div className="animate-spin w-5 h-5 border-2 border-primary-foreground border-t-transparent rounded-full" />
+          ) : txStatus === 'success' ? (
+            <div className="w-5 h-5 text-green-400">✓</div>
           ) : (
             <Upload className="w-5 h-5" />
           )}
           <span>
-            {isLoading ? 'Preparing...' : 
-             isConfirming ? 'Confirming...' : 
-             isConfirmed ? 'Dataset Published!' : 
+            {txStatus === 'preparing' ? 'Preparing...' :
+             txStatus === 'waiting' ? 'Waiting for wallet...' :
+             txStatus === 'confirming' ? 'Confirming...' :
+             txStatus === 'success' ? 'Dataset Published!' :
+             txStatus === 'error' ? 'Try Again' :
              'Publish Dataset'}
           </span>
         </button>

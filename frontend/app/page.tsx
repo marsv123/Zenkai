@@ -3,28 +3,53 @@
 import { useState, useEffect } from 'react';
 import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { parseEther, formatEther } from 'viem';
+import { useQuery } from '@tanstack/react-query';
 import { Brain, Wallet, Upload, Store, User, Plus, ShoppingCart, Eye, Wand2, Star } from 'lucide-react';
 import WalletConnect from '@/components/WalletConnect';
 import DatasetRegistration from '@/components/DatasetRegistration';
 import DatasetCard from '@/components/DatasetCard';
+// Dataset type definition for frontend
+interface Dataset {
+  id: string;
+  contractId?: number;
+  ownerId: string;
+  title: string;
+  description: string;
+  category: string;
+  tags?: string[];
+  ipfsHash: string;
+  metadataUrl?: string;
+  price: string;
+  isActive: boolean;
+  downloads: number;
+  rating?: string;
+  reviewCount: number;
+  aiSummary?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+interface Transaction {
+  id: string;
+  txHash: string;
+  buyerId: string;
+  sellerId: string;
+  datasetId: string;
+  amount: string;
+  status: string;
+  blockNumber?: number;
+  gasUsed?: string;
+  gasPrice?: string;
+  createdAt: Date;
+  confirmedAt?: Date;
+}
 
 // Import contract addresses and ABIs
 import addresses from '@/constants/addresses.json';
 import datasetRegistryAbi from '@/constants/abi/DatasetRegistry.json';
 
-interface Dataset {
-  id: number;
-  owner: string;
-  uri: string;
-  price: bigint;
-  score: number;
-  active: boolean;
-  totalSales: number;
-}
-
 export default function Home() {
   const { address } = useAccount();
-  const [datasets, setDatasets] = useState<Dataset[]>([]);
   const [stats, setStats] = useState({
     datasetCount: 0,
     totalVolume: 0,
@@ -32,53 +57,42 @@ export default function Home() {
     avgScore: 0
   });
 
-  // Read dataset count from contract
-  const { data: datasetCount } = useReadContract({
-    address: addresses.DatasetRegistry as `0x${string}`,
-    abi: datasetRegistryAbi,
-    functionName: 'getDatasetCount',
+  // Fetch datasets from database API
+  const { data: datasets = [], isLoading: isLoadingDatasets } = useQuery({
+    queryKey: ['/api/datasets'],
+    refetchInterval: 30000, // Refresh every 30 seconds
   });
 
-  // Load datasets when count changes
-  useEffect(() => {
-    if (datasetCount && typeof datasetCount === 'bigint') {
-      loadDatasets(Number(datasetCount));
-    }
-  }, [datasetCount]);
+  // Fetch user's owned datasets if connected
+  const { data: userDatasets = [] } = useQuery({
+    queryKey: ['/api/datasets/owner/wallet', address],
+    enabled: !!address,
+  });
 
-  const loadDatasets = async (count: number) => {
-    const loadedDatasets: Dataset[] = [];
-    
-    for (let i = 1; i <= count; i++) {
-      try {
-        // This would normally use useReadContract in a loop, but for simplicity
-        // we'll create empty dataset objects. In production, you'd batch these calls.
-        const dataset: Dataset = {
-          id: i,
-          owner: '0x0000000000000000000000000000000000000000',
-          uri: '',
-          price: 0n,
-          score: 0,
-          active: true,
-          totalSales: 0
-        };
-        
-        loadedDatasets.push(dataset);
-      } catch (error) {
-        console.error(`Failed to load dataset ${i}:`, error);
-      }
+  // Fetch user's transactions if connected
+  const { data: userTransactions = [] } = useQuery({
+    queryKey: ['/api/transactions/user/wallet', address],
+    enabled: !!address,
+  });
+
+  // Update stats when datasets change
+  useEffect(() => {
+    if (datasets.length > 0) {
+      const totalVolume = userTransactions.reduce((sum, tx) => 
+        sum + parseFloat(tx.amount || '0'), 0
+      );
+      const avgRating = datasets.reduce((sum, ds) => 
+        sum + parseFloat(ds.rating || '0'), 0
+      ) / datasets.length;
+
+      setStats({
+        datasetCount: datasets.length,
+        totalVolume: Math.round(totalVolume),
+        contributorCount: new Set(datasets.map(ds => ds.ownerId)).size,
+        avgScore: Math.round(avgRating * 10) / 10
+      });
     }
-    
-    setDatasets(loadedDatasets);
-    
-    // Update stats
-    setStats({
-      datasetCount: count,
-      totalVolume: 1247, // This would be calculated from actual data
-      contributorCount: 89, // This would come from ContributorNFT contract
-      avgScore: 4.7 // This would be calculated from dataset scores
-    });
-  };
+  }, [datasets, userTransactions]);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -179,47 +193,49 @@ export default function Home() {
             </div>
           </div>
           
-          {/* Mock Dataset Cards for Visual Display */}
+          {/* Real Dataset Cards from Database */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Mock Data for UI Display - Replace with real data */}
-            <DatasetCard
-              id={1}
-              title="ImageNet Classification Dataset"
-              description="High-quality labeled image dataset for computer vision training with over 1M samples."
-              category="Machine Learning"
-              price="25.5"
-              score={4.8}
-              owner="0x742d...5678"
-              onBuy={() => console.log('Buy clicked')}
-              onViewMetadata={() => console.log('View metadata clicked')}
-              onAiSummarize={() => console.log('AI summarize clicked')}
-            />
-            
-            <DatasetCard
-              id={2}
-              title="Sentiment Analysis Corpus"
-              description="Large-scale sentiment analysis dataset with 500K labeled tweets and reviews."
-              category="NLP"
-              price="18.0"
-              score={4.6}
-              owner="0x891a...9012"
-              onBuy={() => console.log('Buy clicked')}
-              onViewMetadata={() => console.log('View metadata clicked')}
-              onAiSummarize={() => console.log('AI summarize clicked')}
-            />
-            
-            <DatasetCard
-              id={3}
-              title="Crypto Market Data"
-              description="Real-time and historical cryptocurrency market data across 200+ assets."
-              category="Financial"
-              price="45.0"
-              score={4.9}
-              owner="0x1234...abcd"
-              onBuy={() => console.log('Buy clicked')}
-              onViewMetadata={() => console.log('View metadata clicked')}
-              onAiSummarize={() => console.log('AI summarize clicked')}
-            />
+            {isLoadingDatasets ? (
+              // Loading skeleton
+              Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="bg-card border border-border rounded-lg p-6 animate-pulse">
+                  <div className="h-4 bg-muted rounded mb-3"></div>
+                  <div className="h-3 bg-muted rounded mb-2"></div>
+                  <div className="h-3 bg-muted rounded mb-4"></div>
+                  <div className="h-8 bg-muted rounded"></div>
+                </div>
+              ))
+            ) : datasets.length > 0 ? (
+              // Real datasets from database
+              datasets.slice(0, 6).map((dataset) => (
+                <DatasetCard
+                  key={dataset.id}
+                  id={parseInt(dataset.contractId?.toString() || '0')}
+                  title={dataset.title}
+                  description={dataset.description}
+                  category={dataset.category}
+                  price={dataset.price}
+                  score={parseFloat(dataset.rating || '0')}
+                  owner={dataset.ownerId.slice(0, 6) + '...' + dataset.ownerId.slice(-4)}
+                  onBuy={() => console.log('Buy dataset:', dataset.id)}
+                  onViewMetadata={() => console.log('View metadata:', dataset.ipfsHash)}
+                  onAiSummarize={async () => {
+                    if (dataset.aiSummary) {
+                      alert(`AI Summary: ${dataset.aiSummary}`);
+                    } else {
+                      console.log('Generate AI summary for:', dataset.ipfsHash);
+                    }
+                  }}
+                />
+              ))
+            ) : (
+              // Empty state
+              <div className="col-span-full text-center py-12 text-muted-foreground">
+                <Store className="mx-auto mb-4 text-4xl opacity-50" />
+                <h4 className="text-lg font-medium mb-2">No datasets available</h4>
+                <p>Be the first to publish a dataset to the marketplace!</p>
+              </div>
+            )}
           </div>
           
           {/* Load More */}
@@ -243,13 +259,29 @@ export default function Home() {
               <div className="bg-card border border-border rounded-lg p-6">
                 <h4 className="font-semibold mb-4 flex items-center">
                   <Upload className="text-primary mr-2" />
-                  Your Published Datasets
+                  Your Published Datasets ({userDatasets.length})
                 </h4>
                 
                 <div className="space-y-3">
-                  <div className="text-center py-8 text-muted-foreground">
-                    No published datasets yet
-                  </div>
+                  {userDatasets.length > 0 ? (
+                    <>
+                      {userDatasets.slice(0, 3).map((dataset) => (
+                        <div key={dataset.id} className="p-3 bg-muted/50 rounded-lg">
+                          <div className="font-medium text-sm">{dataset.title}</div>
+                          <div className="text-xs text-muted-foreground">{dataset.price} IMT</div>
+                        </div>
+                      ))}
+                      {userDatasets.length > 3 && (
+                        <div className="text-xs text-muted-foreground text-center">
+                          +{userDatasets.length - 3} more datasets
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <div className="text-center py-8 text-muted-foreground">
+                      No published datasets yet
+                    </div>
+                  )}
                   
                   <button className="w-full py-2 text-sm text-primary hover:bg-primary/10 rounded-lg transition-colors">
                     View All Published
@@ -261,13 +293,29 @@ export default function Home() {
               <div className="bg-card border border-border rounded-lg p-6">
                 <h4 className="font-semibold mb-4 flex items-center">
                   <ShoppingCart className="text-secondary mr-2" />
-                  Your Purchased Datasets
+                  Your Purchased Datasets ({userTransactions.filter(tx => tx.buyerId === address).length})
                 </h4>
                 
                 <div className="space-y-3">
-                  <div className="text-center py-8 text-muted-foreground">
-                    No purchased datasets yet
-                  </div>
+                  {userTransactions.filter(tx => tx.buyerId === address).length > 0 ? (
+                    <>
+                      {userTransactions.filter(tx => tx.buyerId === address).slice(0, 3).map((transaction) => (
+                        <div key={transaction.id} className="p-3 bg-muted/50 rounded-lg">
+                          <div className="font-medium text-sm">Transaction {transaction.txHash?.slice(0, 8)}...</div>
+                          <div className="text-xs text-muted-foreground">{transaction.amount} IMT</div>
+                        </div>
+                      ))}
+                      {userTransactions.filter(tx => tx.buyerId === address).length > 3 && (
+                        <div className="text-xs text-muted-foreground text-center">
+                          +{userTransactions.filter(tx => tx.buyerId === address).length - 3} more purchases
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <div className="text-center py-8 text-muted-foreground">
+                      No purchased datasets yet
+                    </div>
+                  )}
                   
                   <button className="w-full py-2 text-sm text-secondary hover:bg-secondary/10 rounded-lg transition-colors">
                     View All Purchases

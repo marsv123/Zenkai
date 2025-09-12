@@ -2,6 +2,9 @@ const { ethers } = require("ethers");
 const fs = require("fs");
 const path = require("path");
 
+// Load environment variables
+require('dotenv').config();
+
 // Contract ABIs and bytecode (manually extracted)
 const contracts = {
   IMT: {
