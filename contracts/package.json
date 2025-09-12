@@ -1,0 +1,22 @@
+{
+  "name": "zatori-contracts",
+  "version": "1.0.0",
+  "description": "Smart contracts for Zatori intelligence marketplace",
+  "scripts": {
+    "build": "hardhat compile",
+    "deploy": "hardhat run scripts/deploy.ts --network z0g",
+    "export-abi": "node scripts/exportAbis.mjs",
+    "postdeploy": "npm run export-abi"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "hardhat": "^2.19.4",
+    "typescript": "^5.3.3",
+    "ts-node": "^10.9.2"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.1",
+    "dotenv": "^16.3.1",
+    "ethers": "^6.9.2"
+  }
+}

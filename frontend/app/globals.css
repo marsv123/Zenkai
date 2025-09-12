@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(222, 84%, 5%);
+  --foreground: hsl(213, 31%, 91%);
+  --card: hsl(217, 33%, 17%);
+  --card-foreground: hsl(213, 31%, 91%);
+  --popover: hsl(217, 33%, 17%);
+  --popover-foreground: hsl(213, 31%, 91%);
+  --primary: hsl(217, 91%, 60%);
+  --primary-foreground: hsl(222, 84%, 5%);
+  --secondary: hsl(158, 64%, 52%);
+  --secondary-foreground: hsl(222, 84%, 5%);
+  --muted: hsl(215, 28%, 17%);
+  --muted-foreground: hsl(213, 27%, 84%);
+  --accent: hsl(262, 83%, 58%);
+  --accent-foreground: hsl(213, 31%, 91%);
+  --destructive: hsl(0, 63%, 31%);
+  --destructive-foreground: hsl(213, 31%, 91%);
+  --border: hsl(215, 28%, 17%);
+  --input: hsl(215, 28%, 17%);
+  --ring: hsl(217, 91%, 60%);
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+}
+
+@layer components {
+  .gradient-border {
+    background: linear-gradient(135deg, hsl(217, 91%, 60%), hsl(262, 83%, 58%));
+    padding: 2px;
+    border-radius: calc(var(--radius) + 2px);
+  }
+  
+  .gradient-border-content {
+    background: var(--background);
+    border-radius: var(--radius);
+  }
+  
+  .glow-effect {
+    box-shadow: 0 0 20px hsla(217, 91%, 60%, 0.3);
+  }
+  
+  .dataset-card:hover {
+    transform: translateY(-2px);
+    transition: all 0.2s ease;
+  }
+}
