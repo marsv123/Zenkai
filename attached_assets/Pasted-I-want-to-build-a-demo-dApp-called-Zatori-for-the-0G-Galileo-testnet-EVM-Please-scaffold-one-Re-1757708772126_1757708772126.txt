@@ -1,0 +1,116 @@
+I want to build a demo dApp called “Zatori” for the 0G Galileo testnet (EVM). Please scaffold one Replit project with TWO subprojects: `/contracts` (Hardhat + TypeScript) and `/frontend` (Next.js + TypeScript). Wire them so contract deploys automatically export ABIs and addresses into the frontend. Use **Replit Secrets** (not .env files) for sensitive keys.
+
+Target network:
+- Name: 0G Galileo testnet
+- RPC: https://evmrpc-testnet.0g.ai
+- ChainId: 16601
+- Currency: OG
+- Explorer: https://chainscan-galileo.0g.ai
+
+=====================
+A) ROOT SETUP
+=====================
+1) Top-level README.md:
+   - Explain what Zatori is (short description: decentralized intelligence marketplace on 0G where datasets can be registered, rented, and consumed by AI).
+   - Explain project structure (/contracts, /frontend).
+   - Show how to add Replit Secrets:
+     * PRIVATE_KEY → MetaMask private key (testnet only, from a fresh account).
+     * RPC_0G → https://evmrpc-testnet.0g.ai
+     * OPENAI_API_KEY → optional, for AI summarization.
+   - Show how to deploy contracts: `cd contracts && npm run deploy`
+   - Show how to run frontend: `cd frontend && npm run dev`
+   - Mention Vercel deploy instructions.
+
+2) Add top-level .gitignore (ignore node_modules, .next, artifacts, cache, out).
+
+=====================
+B) /contracts (Hardhat)
+=====================
+1) Initialize Hardhat + TypeScript project in `/contracts`.
+   - Dependencies: hardhat, @nomicfoundation/hardhat-toolbox, typescript, ts-node, dotenv, ethers, @openzeppelin/contracts
+   - Scripts:
+     - "build": "hardhat compile"
+     - "deploy": "hardhat run scripts/deploy.ts --network z0g"
+     - "export-abi": "node scripts/exportAbis.mjs"
+     - "postdeploy": "npm run export-abi"
+
+2) Create hardhat.config.ts:
+   - Solidity ^0.8.20, evmVersion "cancun"
+   - Network "z0g" configured with:
+     url: process.env.RPC_0G
+     accounts: [process.env.PRIVATE_KEY]
+
+3) Add contracts in `/contracts/contracts`:
+   - IMT.sol: ERC20 + Ownable, initial mint to deployer, mint function.
+   - ContributorNFT.sol: ERC721 + Ownable, one NFT per contributor via mapping + mintIfNone.
+   - DatasetRegistry.sol: manages datasets { owner, uri, price, score, active }; register(), buy() with 4% fee to treasury; emits Registered and AccessGranted.
+
+4) Add `/contracts/scripts/deploy.ts`:
+   - Loads PRIVATE_KEY + RPC_0G from process.env (Replit Secrets).
+   - Deploys IMT, ContributorNFT, DatasetRegistry (treasury = deployer).
+   - Prints addresses to console.
+   - Writes `/frontend/constants/addresses.json` with { IMT, ContributorNFT, DatasetRegistry, chainId: 16601 }.
+
+5) Add `/contracts/scripts/exportAbis.mjs`:
+   - Reads contract ABIs from artifacts.
+   - Writes to `/frontend/constants/abi/IMT.json`, `/frontend/constants/abi/ContributorNFT.json`, `/frontend/constants/abi/DatasetRegistry.json`.
+
+=====================
+C) /frontend (Next.js + TypeScript)
+=====================
+1) Initialize Next.js (app directory + support for /pages/api).
+   - Dependencies: next, react, react-dom, typescript; wagmi, viem, @rainbow-me/rainbowkit
+   - Scripts:
+     - "dev": "next dev"
+     - "build": "next build"
+     - "start": "next start"
+
+2) Add `/frontend/lib/og.ts` with 0G Galileo chain object:
+   - id: 16601
+   - name: "0G Galileo Testnet"
+   - rpc: https://evmrpc-testnet.0g.ai
+   - explorer: https://chainscan-galileo.0g.ai
+   - currency: OG
+
+3) Add RainbowKit + wagmi setup in `/frontend/app/layout.tsx`.
+
+4) Add `/frontend/constants/addresses.json` (placeholder).
+5) Add `/frontend/constants/abi/` (placeholders).
+
+6) Create `/frontend/app/page.tsx`:
+   - Title: "Zatori — Intelligence Marketplace (0G)"
+   - Section: Register Dataset → input (URI ipfs://CID), price (IMT), Publish button → calls DatasetRegistry.register().
+   - Section: Datasets list → load count(), iterate get(id), display { uri, price, score }.
+   - Each dataset has:
+     * Buy button (calls IMT.approve + DatasetRegistry.buy).
+     * View metadata link (ipfs:// → https://ipfs.io/ipfs/).
+     * AI Summarize button → calls `/api/summarize`.
+
+   - ABIs + addresses loaded dynamically from constants folder.
+
+7) Add `/frontend/pages/api/summarize.ts`:
+   - POST with { uri }.
+   - Fetch metadata JSON from ipfs:// via ipfs.io gateway.
+   - If OPENAI_API_KEY exists (Replit Secret), call OpenAI Chat Completions (gpt-4o-mini) → summarize in 1–2 sentences.
+   - Else: fallback summary = first 200 chars of metadata.
+   - Return { summary }.
+
+8) Add `/frontend/README.md` with:
+   - How to run locally.
+   - How to add OPENAI_API_KEY as Replit Secret.
+   - How ABIs/addresses are generated from contracts.
+
+=====================
+D) QUALITY & ACCEPTANCE
+=====================
+- After scaffolding, show the file tree for /contracts and /frontend.
+- Verify npm scripts: in /contracts run `npm run build` and `npm run deploy`.
+- Deploy should update /frontend/constants with addresses + abi JSONs.
+- Frontend should run with `npm run dev`, connect wallet on 0G, allow registering a dataset, buying it, and AI summarizing metadata.
+
+=====================
+E) SECURITY NOTE
+=====================
+- Use Replit Secrets to store PRIVATE_KEY, RPC_0G, and OPENAI_API_KEY.
+- Never commit secrets into Git.
+- Always use a fresh testnet wallet (not your main wallet).
