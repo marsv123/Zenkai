@@ -330,7 +330,6 @@ export default function Home() {
         </div>
         
         {/* Cyberpunk-Zen Ambient Background Effects */}
-        <div className="absolute inset-0 bg-gradient-radial from-accent/5 via-transparent to-transparent" />
         <div className="absolute top-1/3 right-1/4 w-28 h-28 bg-accent/8 rounded-full blur-3xl animate-pulse" style={{animationDelay: '0.5s'}} />
         <div className="absolute bottom-1/3 left-1/4 w-20 h-20 bg-primary/8 rounded-full blur-2xl animate-pulse" style={{animationDelay: '1.5s'}} />
       </section>
