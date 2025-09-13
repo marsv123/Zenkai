@@ -44,12 +44,7 @@ export default function Navigation() {
               </div>
             </Link>
 
-            {/* Center: intelligence at scale */}
-            <div className="hidden lg:block">
-              <div className="text-zen text-accent/80">
-                intelligence at scale
-              </div>
-            </div>
+            
 
             {/* Right: Wallet Connection */}
             <div className="flex items-center space-x-4">
