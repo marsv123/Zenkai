@@ -91,7 +91,6 @@ export default function Navigation() {
                               aria-label="Connect Wallet"
                             >
                               <Wallet className="w-5 h-5" />
-                              <span className="hidden sm:inline">Connect Wallet</span>
                             </button>
                           );
                         }
