@@ -33,7 +33,10 @@ export default function Navigation() {
         <div className="container mx-auto px-4 lg:px-6">
           <div className="flex items-center justify-between h-16">
             
-            {/* Left: zenkai only */}
+            {/* Left: Empty space */}
+            <div></div>
+
+            {/* Center: zenkai */}
             <Link href="/" 
               className="cursor-pointer group" 
               data-testid="nav-zenkai"
@@ -43,8 +46,6 @@ export default function Navigation() {
                 zenkai
               </div>
             </Link>
-
-            
 
             {/* Right: Wallet Connection */}
             <div className="flex items-center space-x-4">
