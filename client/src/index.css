@@ -1,72 +1,84 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  /* Cyberpunk-Zen Theme - Dark Mode First */
-  --background: hsl(235 24% 11%); /* Deep indigo #1B1F3B */
-  --background-alt: hsl(0 0% 7%); /* Charcoal #121212 */
-  --foreground: hsl(210 40% 98%);
-  --card: hsl(235 20% 8%);
-  --card-foreground: hsl(210 40% 95%);
-  --popover: hsl(235 24% 11%);
-  --popover-foreground: hsl(210 40% 98%);
+  /* zatorai Professional Theme - Production DeFi/AI Standards */
+  --background: hsl(235 28% 8%); /* Deeper indigo for premium feel */
+  --background-alt: hsl(0 0% 4%); /* True deep charcoal */
+  --background-elevated: hsl(235 24% 12%); /* Elevated surfaces */
+  --foreground: hsl(0 0% 98%);
   
-  /* Neon Orange to Red Gradient Primary */
-  --primary: hsl(16 100% 60%); /* Neon orange */
-  --primary-foreground: hsl(0 0% 0%);
-  --primary-glow: hsl(16 100% 60% / 0.5);
+  --card: hsl(235 25% 10%);
+  --card-elevated: hsl(235 22% 14%);
+  --card-foreground: hsl(0 0% 95%);
+  --popover: hsl(235 28% 8%);
+  --popover-foreground: hsl(0 0% 98%);
   
-  /* Secondary - Neon red */
-  --secondary: hsl(0 84% 60%);
-  --secondary-foreground: hsl(0 0% 0%);
-  --secondary-glow: hsl(0 84% 60% / 0.5);
+  /* Samurai-inspired Orange Gradient System */
+  --primary: hsl(22 100% 58%); /* Samurai orange */
+  --primary-dark: hsl(18 100% 52%);
+  --primary-light: hsl(26 100% 64%);
+  --primary-foreground: hsl(0 0% 2%);
+  --primary-glow: hsl(22 100% 58% / 0.6);
+  --primary-glow-strong: hsl(22 100% 58% / 0.8);
   
-  /* Gold accents for hover */
-  --accent: hsl(51 100% 50%); /* Gold #FFD700 */
-  --accent-foreground: hsl(0 0% 0%);
-  --accent-glow: hsl(51 100% 50% / 0.4);
+  /* Zen Fire Red */
+  --secondary: hsl(10 100% 55%);
+  --secondary-dark: hsl(6 100% 50%);
+  --secondary-foreground: hsl(0 0% 2%);
+  --secondary-glow: hsl(10 100% 55% / 0.5);
   
-  --muted: hsl(235 20% 15%);
-  --muted-foreground: hsl(215 20% 65%);
+  /* Wisdom Gold */
+  --accent: hsl(48 100% 62%); /* Refined gold */
+  --accent-dark: hsl(44 100% 55%);
+  --accent-foreground: hsl(0 0% 2%);
+  --accent-glow: hsl(48 100% 62% / 0.4);
+  
+  /* Neutrals */
+  --muted: hsl(235 22% 16%);
+  --muted-foreground: hsl(215 20% 68%);
+  --muted-darker: hsl(235 25% 12%);
+  
+  /* Status Colors */
+  --success: hsl(142 76% 36%);
+  --success-foreground: hsl(0 0% 98%);
+  --warning: hsl(48 96% 53%);
+  --warning-foreground: hsl(0 0% 2%);
   --destructive: hsl(0 84% 60%);
   --destructive-foreground: hsl(0 0% 98%);
-  --border: hsl(235 20% 18%);
-  --input: hsl(235 20% 12%);
-  --ring: hsl(16 100% 60%);
   
-  /* Typography */
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: 'JetBrains Mono', Consolas, monospace;
+  /* Interactive */
+  --border: hsl(235 22% 20%);
+  --border-elevated: hsl(235 25% 24%);
+  --input: hsl(235 25% 10%);
+  --ring: hsl(22 100% 58%);
   
+  /* Typography Scale */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: 'Orbitron', 'Space Grotesk', monospace;
+  --font-accent: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  
+  /* Spacing & Sizing */
   --radius: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+  --shadow-elevation: 0 4px 32px hsl(0 0% 0% / 0.32);
+  --shadow-glow: 0 0 32px hsl(22 100% 58% / 0.2);
+  
+  /* Animation Timings */
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 350ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .dark {
-  /* Dark mode is the primary theme */
-  --background: hsl(235 24% 11%);
-  --background-alt: hsl(0 0% 7%);
-  --foreground: hsl(210 40% 98%);
-  --card: hsl(235 20% 8%);
-  --card-foreground: hsl(210 40% 95%);
-  --popover: hsl(235 24% 11%);
-  --popover-foreground: hsl(210 40% 98%);
-  --primary: hsl(16 100% 60%);
-  --primary-foreground: hsl(0 0% 0%);
-  --secondary: hsl(0 84% 60%);
-  --secondary-foreground: hsl(0 0% 0%);
-  --accent: hsl(51 100% 50%);
-  --accent-foreground: hsl(0 0% 0%);
-  --muted: hsl(235 20% 15%);
-  --muted-foreground: hsl(215 20% 65%);
-  --destructive: hsl(0 84% 60%);
-  --destructive-foreground: hsl(0 0% 98%);
-  --border: hsl(235 20% 18%);
-  --input: hsl(235 20% 12%);
-  --ring: hsl(16 100% 60%);
+  /* Dark mode inherits from :root - zatorai is dark-first */
 }
 
 @layer base {
@@ -75,103 +87,330 @@
   }
 
   html {
-    @apply dark; /* Force dark mode as default */
+    @apply dark; /* zatorai is dark-first */
+    scroll-behavior: smooth;
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground;
+    @apply font-sans antialiased text-foreground;
     font-family: var(--font-sans);
-    background: linear-gradient(135deg, var(--background) 0%, var(--background-alt) 100%);
+    background: radial-gradient(ellipse at top, var(--background-elevated) 0%, var(--background) 45%, var(--background-alt) 100%);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   .font-display {
     font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .font-accent {
+    font-family: var(--font-accent);
+  }
+
+  /* Scrollbar Styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--muted);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-dark);
   }
 }
 
 @layer components {
-  /* Cyberpunk Neon Glow Effects */
-  .neon-glow-primary {
-    box-shadow: 0 0 20px var(--primary-glow);
+  /* === PROFESSIONAL COMPONENT SYSTEM === */
+
+  /* Enhanced Glow System */
+  .glow-primary {
+    box-shadow: 0 0 24px var(--primary-glow), 0 2px 12px hsl(0 0% 0% / 0.2);
     border: 1px solid var(--primary);
+    transition: all var(--duration-normal) var(--ease-out);
   }
 
-  .neon-glow-primary:hover {
-    box-shadow: 0 0 30px var(--primary-glow), 0 0 40px var(--primary-glow);
-  }
-
-  .neon-glow-accent {
-    box-shadow: 0 0 15px var(--accent-glow);
-    border: 1px solid var(--accent);
-  }
-
-  .neon-glow-accent:hover {
-    box-shadow: 0 0 25px var(--accent-glow), 0 0 35px var(--accent-glow);
-  }
-
-  .neon-text-primary {
-    color: var(--primary);
-    text-shadow: 0 0 10px var(--primary-glow);
-  }
-
-  .neon-text-accent {
-    color: var(--accent);
-    text-shadow: 0 0 10px var(--accent-glow);
-  }
-
-  /* Card hover effects */
-  .cyber-card {
-    @apply bg-card border border-border rounded-lg backdrop-blur-sm;
-    background: linear-gradient(145deg, var(--card) 0%, var(--muted) 100%);
-    transition: all 0.3s ease;
-  }
-
-  .cyber-card:hover {
-    @apply neon-glow-primary;
+  .glow-primary:hover {
+    box-shadow: 0 0 32px var(--primary-glow-strong), 0 4px 24px hsl(0 0% 0% / 0.3);
     transform: translateY(-2px);
   }
 
-  /* Button variants */
-  .btn-primary {
-    @apply bg-primary text-primary-foreground rounded-lg px-6 py-3 font-medium;
+  .glow-accent {
+    box-shadow: 0 0 20px var(--accent-glow), 0 2px 12px hsl(0 0% 0% / 0.15);
+    border: 1px solid var(--accent);
+    transition: all var(--duration-normal) var(--ease-out);
+  }
+
+  .glow-accent:hover {
+    box-shadow: 0 0 28px var(--accent-glow), 0 4px 20px hsl(0 0% 0% / 0.25);
+    transform: translateY(-2px);
+  }
+
+  /* Typography Effects */
+  .text-glow-primary {
+    color: var(--primary);
+    text-shadow: 0 0 16px var(--primary-glow);
+  }
+
+  .text-glow-accent {
+    color: var(--accent);
+    text-shadow: 0 0 12px var(--accent-glow);
+  }
+
+  .text-gradient-primary {
     background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-    transition: all 0.3s ease;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Professional Card System */
+  .card-elevated {
+    @apply rounded-xl border;
+    background: linear-gradient(145deg, var(--card-elevated) 0%, var(--card) 100%);
+    border-color: var(--border-elevated);
+    box-shadow: var(--shadow-elevation);
+    transition: all var(--duration-normal) var(--ease-out);
+  }
+
+  .card-elevated:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: var(--shadow-elevation), var(--shadow-glow);
+    border-color: var(--primary);
+  }
+
+  .card-interactive {
+    @apply card-elevated cursor-pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-interactive::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, var(--primary-glow), transparent);
+    transition: left var(--duration-slow) var(--ease-out);
+  }
+
+  .card-interactive:hover::before {
+    left: 100%;
+  }
+
+  /* Professional Button System */
+  .btn {
+    @apply font-medium rounded-lg transition-all;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--duration-normal) var(--ease-out);
+  }
+
+  .btn-primary {
+    @apply btn px-8 py-4 text-primary-foreground font-display;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    box-shadow: 0 4px 16px var(--primary-glow);
   }
 
   .btn-primary:hover {
-    @apply neon-glow-primary;
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px var(--primary-glow-strong);
+    background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+  }
+
+  .btn-primary:active {
+    transform: translateY(0);
   }
 
   .btn-secondary {
-    @apply border border-accent text-accent rounded-lg px-6 py-3 font-medium;
+    @apply btn px-8 py-4 border-2 font-display;
+    border-color: var(--accent);
+    color: var(--accent);
     background: transparent;
-    transition: all 0.3s ease;
+    backdrop-filter: blur(8px);
   }
 
   .btn-secondary:hover {
-    @apply neon-glow-accent bg-accent text-accent-foreground;
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    background: var(--accent);
+    color: var(--accent-foreground);
+    box-shadow: 0 8px 24px var(--accent-glow);
   }
 
-  /* Stats cards */
-  .stat-card {
-    @apply cyber-card text-center p-6;
+  .btn-ghost {
+    @apply btn px-6 py-3;
+    background: transparent;
+    color: var(--muted-foreground);
   }
 
-  .stat-card:hover {
-    @apply neon-glow-accent;
-    transform: translateY(-4px);
+  .btn-ghost:hover {
+    background: var(--muted);
+    color: var(--foreground);
   }
 
-  /* Samurai logo glow */
+  /* Samurai Logo Integration */
+  .samurai-logo {
+    position: relative;
+    display: inline-block;
+  }
+
   .samurai-glow {
-    filter: drop-shadow(0 0 30px var(--primary-glow)) drop-shadow(0 0 60px var(--primary-glow));
+    filter: drop-shadow(0 0 20px var(--primary-glow)) 
+            drop-shadow(0 0 40px var(--primary-glow));
+    transition: filter var(--duration-normal) var(--ease-out);
   }
 
-  /* Navigation styling */
+  .samurai-glow:hover {
+    filter: drop-shadow(0 0 32px var(--primary-glow-strong)) 
+            drop-shadow(0 0 64px var(--primary-glow-strong));
+  }
+
+  .samurai-pulse {
+    animation: samurai-pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes samurai-pulse {
+    0%, 100% { 
+      filter: drop-shadow(0 0 20px var(--primary-glow));
+    }
+    50% { 
+      filter: drop-shadow(0 0 40px var(--primary-glow-strong));
+    }
+  }
+
+  /* Navigation System */
   .nav-glass {
-    @apply backdrop-blur-md border-b border-border;
-    background: linear-gradient(135deg, hsl(235 24% 11% / 0.8) 0%, hsl(235 20% 8% / 0.8) 100%);
+    @apply backdrop-blur-xl border-b;
+    background: linear-gradient(135deg, 
+      hsl(235 28% 8% / 0.85) 0%, 
+      hsl(235 25% 10% / 0.85) 100%);
+    border-color: var(--border-elevated);
+    box-shadow: 0 8px 32px hsl(0 0% 0% / 0.2);
+  }
+
+  .nav-link {
+    @apply relative px-4 py-2 font-accent font-medium transition-all;
+    transition: all var(--duration-fast) var(--ease-out);
+  }
+
+  .nav-link:hover {
+    color: var(--accent);
+  }
+
+  .nav-link.active {
+    color: var(--primary);
+  }
+
+  .nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    border-radius: 1px;
+  }
+
+  /* Stats & Metrics */
+  .stat-card {
+    @apply card-interactive text-center p-8;
+    background: linear-gradient(145deg, var(--card-elevated) 0%, var(--muted-darker) 100%);
+  }
+
+  .stat-value {
+    @apply font-display text-4xl font-bold mb-2;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .stat-label {
+    @apply text-sm uppercase tracking-wider font-accent;
+    color: var(--muted-foreground);
+  }
+
+  /* Loading States */
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--muted);
+    border-top: 3px solid var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .loading-samurai {
+    animation: samurai-meditate 2s ease-in-out infinite;
+  }
+
+  @keyframes samurai-meditate {
+    0%, 100% { 
+      transform: scale(1);
+      filter: drop-shadow(0 0 20px var(--primary-glow));
+    }
+    50% { 
+      transform: scale(1.05);
+      filter: drop-shadow(0 0 40px var(--primary-glow-strong));
+    }
+  }
+
+  /* Responsive Enhancements */
+  @media (max-width: 768px) {
+    .btn-primary, .btn-secondary {
+      @apply px-6 py-3 text-sm;
+    }
+    
+    .stat-value {
+      @apply text-3xl;
+    }
+    
+    .card-elevated {
+      @apply mx-4;
+    }
+  }
+
+  /* High-end Polish */
+  .glass-panel {
+    background: linear-gradient(145deg, 
+      var(--background-elevated) / 0.6, 
+      var(--card) / 0.4);
+    backdrop-filter: blur(24px);
+    border: 1px solid var(--border-elevated);
+    box-shadow: var(--shadow-elevation);
+  }
+
+  .text-shimmer {
+    background: linear-gradient(135deg, 
+      var(--foreground) 0%, 
+      var(--primary) 50%, 
+      var(--foreground) 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0%, 100% { background-position: -200% 0; }
+    50% { background-position: 200% 0; }
   }
 }
