@@ -86,12 +86,24 @@ function FeaturedDatasetCard({ dataset }: { dataset: Dataset }) {
 
 export default function Home() {
   const { address, isConnected } = useAccount();
+  const [isLoading, setIsLoading] = useState(true);
+  const [showText, setShowText] = useState(false);
   const [stats, setStats] = useState({
     datasetCount: 0,
     totalVolume: 0,
     contributorCount: 0,
     avgScore: 0
   });
+
+  // Landing page loading animation effect
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+      setShowText(true);
+    }, 1200); // 1.2 second delay for dramatic effect
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   // Fetch datasets from database API for stats only
   const { data: datasets = [], isLoading: isLoadingDatasets } = useQuery({
@@ -140,8 +152,10 @@ export default function Home() {
           </div>
           
           {/* Enhanced Typography with Cyberpunk Styling */}
-          <div className="space-y-8 mb-16">
-            <p className="text-zen gradient-text-zen font-accent tracking-wider">
+          <div className="space-y-6 mb-12">
+            <p className={`text-xl md:text-2xl lg:text-3xl gradient-text-zen font-accent tracking-wider ${
+              showText ? 'animate-text-glow-reveal' : 'opacity-0'
+            }`}>
               intelligence economy at scale
             </p>
             <div className="glass-cyber p-8 rounded-2xl max-w-4xl mx-auto">
