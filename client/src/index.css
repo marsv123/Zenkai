@@ -1,14 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&family=Exo+2:wght@300;400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  /* zenkai Professional Theme - Production DeFi/AI Standards */
-  --background: hsl(235 28% 8%); /* Deeper indigo for premium feel */
-  --background-alt: hsl(0 0% 4%); /* True deep charcoal */
-  --background-elevated: hsl(235 24% 12%); /* Elevated surfaces */
+  /* zenkai Cyberpunk-Zen Theme - Professional Web3 dApp */
+  --background: hsl(235 35% 6%); /* Deep indigo base */
+  --background-alt: hsl(240 30% 4%); /* Charcoal depths */
+  --background-elevated: hsl(235 32% 9%); /* Elevated indigo surfaces */
+  --background-glass: hsl(235 35% 6% / 0.85); /* Glass morphism */
   --foreground: hsl(0 0% 98%);
   
   --card: hsl(235 25% 10%);
@@ -17,25 +18,33 @@
   --popover: hsl(235 28% 8%);
   --popover-foreground: hsl(0 0% 98%);
   
-  /* Samurai-inspired Orange Gradient System */
-  --primary: hsl(22 100% 58%); /* Samurai orange */
-  --primary-dark: hsl(18 100% 52%);
-  --primary-light: hsl(26 100% 64%);
+  /* Cyberpunk Orange→Red Gradient System */
+  --primary: hsl(16 100% 55%); /* Neon orange */
+  --primary-start: hsl(22 100% 60%); /* Orange start */
+  --primary-end: hsl(6 100% 52%); /* Red end */
+  --primary-dark: hsl(6 100% 48%);
+  --primary-light: hsl(22 100% 65%);
   --primary-foreground: hsl(0 0% 2%);
-  --primary-glow: hsl(22 100% 58% / 0.6);
-  --primary-glow-strong: hsl(22 100% 58% / 0.8);
+  --primary-glow: hsl(16 100% 55% / 0.4);
+  --primary-glow-strong: hsl(16 100% 55% / 0.7);
+  --primary-glow-intense: hsl(16 100% 55% / 0.9);
   
   /* Zen Fire Red */
-  --secondary: hsl(10 100% 55%);
-  --secondary-dark: hsl(6 100% 50%);
+  --secondary: hsl(8 100% 58%);
+  --secondary-dark: hsl(4 100% 52%);
+  --secondary-light: hsl(12 100% 64%);
   --secondary-foreground: hsl(0 0% 2%);
-  --secondary-glow: hsl(10 100% 55% / 0.5);
+  --secondary-glow: hsl(8 100% 58% / 0.4);
+  --secondary-glow-strong: hsl(8 100% 58% / 0.7);
   
-  /* Wisdom Gold */
-  --accent: hsl(48 100% 62%); /* Refined gold */
-  --accent-dark: hsl(44 100% 55%);
+  /* Wisdom Gold - Subtle Highlights */
+  --accent: hsl(45 100% 65%); /* Refined gold */
+  --accent-dark: hsl(42 100% 58%);
+  --accent-light: hsl(48 100% 72%);
   --accent-foreground: hsl(0 0% 2%);
-  --accent-glow: hsl(48 100% 62% / 0.4);
+  --accent-glow: hsl(45 100% 65% / 0.3);
+  --accent-glow-strong: hsl(45 100% 65% / 0.6);
+  --accent-subtle: hsl(45 100% 65% / 0.15);
   
   /* Neutrals - WCAG AA Compliant Contrast */
   --muted: hsl(235 22% 16%);
@@ -56,11 +65,12 @@
   --input: hsl(235 25% 10%);
   --ring: hsl(22 100% 58%);
   
-  /* Typography Scale */
+  /* Cyberpunk Typography Hierarchy */
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-display: 'Orbitron', 'Space Grotesk', monospace;
-  --font-accent: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  --font-display: 'Orbitron', 'Exo 2', 'Space Grotesk', monospace; /* Futuristic headers */
+  --font-accent: 'Rajdhani', 'Space Grotesk', sans-serif; /* Clean tech feel */
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; /* Readable body */
+  --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace; /* Code elements */
   
   /* Spacing & Sizing */
   --radius: 0.75rem;
@@ -69,10 +79,14 @@
   --shadow-elevation: 0 4px 32px hsl(0 0% 0% / 0.32);
   --shadow-glow: 0 0 32px hsl(22 100% 58% / 0.2);
   
-  /* Animation Timings */
+  /* Animation Timings & Easing */
   --duration-fast: 150ms;
-  --duration-normal: 250ms;
-  --duration-slow: 350ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+  --duration-extra-slow: 800ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
 }

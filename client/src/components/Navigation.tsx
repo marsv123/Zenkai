@@ -49,8 +49,8 @@ export default function Navigation() {
 
   return (
     <>
-      <nav className={`fixed top-0 left-0 right-0 z-50 nav-glass transition-all duration-300 ${
-        scrolled ? 'py-2' : 'py-4'
+      <nav className={`fixed top-0 left-0 right-0 z-50 glass-cyber transition-all duration-500 ease-out ${
+        scrolled ? 'py-3' : 'py-6'
       }`}>
         <div className="container mx-auto px-4 lg:px-6">
           <div className="flex items-center justify-between h-16">
@@ -61,12 +61,12 @@ export default function Navigation() {
               data-testid="nav-logo"
               aria-label="zenkai homepage - intelligence economy at scale"
             >
-              <SamuraiLogo className="samurai-glow group-hover:scale-110 transition-transform duration-300" />
+              <SamuraiLogo className="cyber-pulse hover-cyber transition-all duration-500" />
               <div>
-                <div className="font-display font-bold text-xl lg:text-2xl text-foreground">
+                <div className="text-cyber-lg gradient-text-cyber">
                   zenkai
                 </div>
-                <div className="text-xs font-light text-muted-foreground">
+                <div className="text-zen text-accent/80">
                   intelligence economy at scale
                 </div>
               </div>
@@ -84,17 +84,17 @@ export default function Navigation() {
                   <Link 
                     key={item.path} 
                     href={item.path}
-                    className={`nav-link flex items-center space-x-2 px-6 py-3 rounded-lg transition-all duration-300 ${
+                    className={`nav-link flex items-center space-x-2 px-6 py-3 rounded-xl glass-panel hover-cyber transition-all duration-500 ${
                       isActive 
-                        ? 'text-primary glow-primary' 
-                        : 'text-muted-foreground hover:text-primary hover:bg-primary/5'
+                        ? 'gradient-text-cyber cyber-pulse border-primary/30' 
+                        : 'text-muted-foreground hover:text-primary hover:bg-primary/10'
                     }`}
                     data-testid={`nav-${item.label}`}
                     aria-current={isActive ? 'page' : undefined}
                     aria-label={`Navigate to ${item.label} page`}
                   >
                     <Icon className="w-4 h-4" aria-hidden="true" />
-                    <span className="font-accent font-medium capitalize">{item.label}</span>
+                    <span className="text-zen font-medium capitalize tracking-wide">{item.label}</span>
                   </Link>
                 );
               })}
@@ -140,7 +140,7 @@ export default function Navigation() {
                               <button
                                 onClick={openConnectModal}
                                 type="button"
-                                className="btn-primary flex items-center space-x-2"
+                                className="gradient-primary hover-cyber px-6 py-3 rounded-xl font-medium text-primary-foreground transition-all duration-500 flex items-center space-x-2"
                                 data-testid="nav-connect-wallet"
                               >
                                 <span>connect wallet</span>
@@ -153,7 +153,7 @@ export default function Navigation() {
                               <button
                                 onClick={openChainModal}
                                 type="button"
-                                className="btn-secondary flex items-center space-x-2"
+                                className="glass-panel border-destructive/50 text-destructive hover-cyber px-4 py-2 rounded-lg transition-all duration-500 flex items-center space-x-2"
                               >
                                 <span className="w-2 h-2 bg-destructive rounded-full"></span>
                                 <span>wrong network</span>
@@ -166,7 +166,7 @@ export default function Navigation() {
                               <button
                                 onClick={openAccountModal}
                                 type="button"
-                                className="btn-ghost flex items-center space-x-3"
+                                className="glass-panel hover-cyber px-4 py-2 rounded-lg transition-all duration-500 flex items-center space-x-3"
                                 data-testid="nav-account-button"
                               >
                                 <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
