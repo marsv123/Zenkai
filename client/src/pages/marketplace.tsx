@@ -72,7 +72,7 @@ function DatasetListItem({ dataset }: { dataset: Dataset }) {
             </Badge>
             {dataset.aiSummary && (
               <Badge className="bg-accent/10 text-accent border-accent/20 font-accent">
-                <Zap className="w-3 h-3 mr-1" />
+                <Zap className="w-3 h-3 mr-1" aria-hidden="true" />
                 AI Enhanced
               </Badge>
             )}
@@ -99,7 +99,7 @@ function DatasetListItem({ dataset }: { dataset: Dataset }) {
         {/* Stats Section */}
         <div className="flex items-center space-x-8 text-center">
           <div className="flex items-center space-x-1">
-            <Star className="w-4 h-4 text-accent fill-current" />
+            <Star className="w-4 h-4 text-accent fill-current" aria-hidden="true" />
             <span className="text-sm font-medium text-foreground">
               {parseFloat(dataset.rating || '0').toFixed(1)}
             </span>
@@ -109,14 +109,14 @@ function DatasetListItem({ dataset }: { dataset: Dataset }) {
           </div>
           
           <div className="flex items-center space-x-1">
-            <TrendingUp className="w-4 h-4 text-secondary" />
+            <TrendingUp className="w-4 h-4 text-secondary" aria-hidden="true" />
             <span className="text-sm font-medium text-foreground">
               {dataset.downloads.toLocaleString()}
             </span>
           </div>
           
           <div className="flex items-center space-x-1">
-            <Shield className="w-4 h-4 text-primary" />
+            <Shield className="w-4 h-4 text-primary" aria-hidden="true" />
             <span className="text-xs font-medium text-foreground">
               {dataset.isActive ? 'Live' : 'Inactive'}
             </span>
@@ -316,7 +316,7 @@ function SearchAndFilters({
         {/* Search Bar */}
         <div className="flex-1">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" aria-hidden="true" />
             <Input
               placeholder="Search datasets, models, or research data..."
               value={filters.search}
@@ -352,7 +352,7 @@ function SearchAndFilters({
             onValueChange={(value: SearchFilters['sortBy']) => onFiltersChange({ ...filters, sortBy: value })}
           >
             <SelectTrigger className="w-full sm:w-48 h-12 bg-background/50 border-border/50">
-              <SortAsc className="w-4 h-4 mr-2" />
+              <SortAsc className="w-4 h-4 mr-2" aria-hidden="true" />
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -403,7 +403,7 @@ function SearchAndFilters({
             <div className="space-y-3">
               <label className="text-sm font-medium text-foreground flex items-center space-x-2">
                 <span>Price Range (IMT)</span>
-                <Filter className="w-4 h-4 text-muted-foreground" />
+                <Filter className="w-4 h-4 text-muted-foreground" aria-hidden="true" />
               </label>
               <div className="flex items-center space-x-3">
                 <div className="flex-1">
@@ -442,7 +442,7 @@ function SearchAndFilters({
             <div className="space-y-3">
               <label className="text-sm font-medium text-foreground flex items-center space-x-2">
                 <span>Minimum Rating</span>
-                <Star className="w-4 h-4 text-accent" />
+                <Star className="w-4 h-4 text-accent" aria-hidden="true" />
               </label>
               <div className="flex items-center space-x-2">
                 {[1, 2, 3, 4, 5].map((rating) => (
@@ -656,12 +656,15 @@ export default function Marketplace() {
           {/* CTA Section */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
             {address ? (
-              <Link href="/upload">
-                <button className="btn-primary group" data-testid="button-upload-dataset">
-                  <Upload className="w-5 h-5 mr-3" />
-                  publish dataset
-                  <Zap className="w-4 h-4 ml-3 group-hover:scale-110 transition-transform" />
-                </button>
+              <Link 
+                href="/upload"
+                className="btn-primary group" 
+                data-testid="button-upload-dataset"
+                aria-label="Publish a new dataset"
+              >
+                <Upload className="w-5 h-5 mr-3" aria-hidden="true" />
+                publish dataset
+                <Zap className="w-4 h-4 ml-3 group-hover:scale-110 transition-transform" aria-hidden="true" />
               </Link>
             ) : (
               <div className="inline-flex items-center space-x-2 px-6 py-3 rounded-full glass-panel">
@@ -674,15 +677,15 @@ export default function Marketplace() {
           {/* Stats Pills */}
           <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
             <div className="flex items-center space-x-2 px-4 py-2 rounded-full bg-primary/10 text-primary">
-              <Database className="w-4 h-4" />
+              <Database className="w-4 h-4" aria-hidden="true" />
               <span className="font-medium">{datasets.length} Live Datasets</span>
             </div>
             <div className="flex items-center space-x-2 px-4 py-2 rounded-full bg-accent/10 text-accent">
-              <Shield className="w-4 h-4" />
+              <Shield className="w-4 h-4" aria-hidden="true" />
               <span className="font-medium">IPFS + Blockchain Verified</span>
             </div>
             <div className="flex items-center space-x-2 px-4 py-2 rounded-full bg-secondary/10 text-secondary">
-              <Award className="w-4 h-4" />
+              <Award className="w-4 h-4" aria-hidden="true" />
               <span className="font-medium">Community Curated</span>
             </div>
           </div>
@@ -705,7 +708,7 @@ export default function Marketplace() {
                 <div className="relative mb-8">
                   <div className="absolute inset-0 bg-destructive/10 rounded-full blur-2xl"></div>
                   <div className="w-20 h-20 bg-destructive/20 rounded-full flex items-center justify-center mx-auto relative z-10">
-                    <Database className="w-10 h-10 text-destructive" />
+                    <Database className="w-10 h-10 text-destructive" aria-hidden="true" />
                   </div>
                 </div>
                 
@@ -777,9 +780,9 @@ export default function Marketplace() {
                   <div className="absolute inset-0 bg-muted/20 rounded-full blur-2xl"></div>
                   <div className="w-20 h-20 bg-muted/50 rounded-full flex items-center justify-center mx-auto relative z-10">
                     {searchFilters.search ? (
-                      <Search className="w-10 h-10 text-muted-foreground" />
+                      <Search className="w-10 h-10 text-muted-foreground" aria-hidden="true" />
                     ) : (
-                      <Database className="w-10 h-10 text-muted-foreground" />
+                      <Database className="w-10 h-10 text-muted-foreground" aria-hidden="true" />
                     )}
                   </div>
                 </div>
@@ -806,11 +809,14 @@ export default function Marketplace() {
                       Clear Filters
                     </button>
                   ) : address ? (
-                    <Link href="/upload">
-                      <button className="btn-primary" data-testid="button-upload-first">
-                        <Upload className="w-5 h-5 mr-2" />
-                        Upload First Dataset
-                      </button>
+                    <Link 
+                      href="/upload"
+                      className="btn-primary" 
+                      data-testid="button-upload-first"
+                      aria-label="Upload the first dataset to get started"
+                    >
+                      <Upload className="w-5 h-5 mr-2" aria-hidden="true" />
+                      Upload First Dataset
                     </Link>
                   ) : (
                     <div className="text-sm text-muted-foreground">
@@ -829,7 +835,7 @@ export default function Marketplace() {
                   <div className="relative mb-8">
                     <div className="absolute inset-0 bg-destructive/10 rounded-full blur-2xl"></div>
                     <div className="w-20 h-20 bg-destructive/20 rounded-full flex items-center justify-center mx-auto relative z-10">
-                      <Database className="w-10 h-10 text-destructive" />
+                      <Database className="w-10 h-10 text-destructive" aria-hidden="true" />
                     </div>
                   </div>
                   
@@ -890,9 +896,9 @@ export default function Marketplace() {
                     <div className="absolute inset-0 bg-muted/20 rounded-full blur-2xl"></div>
                     <div className="w-20 h-20 bg-muted/50 rounded-full flex items-center justify-center mx-auto relative z-10">
                       {searchFilters.search ? (
-                        <Search className="w-10 h-10 text-muted-foreground" />
+                        <Search className="w-10 h-10 text-muted-foreground" aria-hidden="true" />
                       ) : (
-                        <Database className="w-10 h-10 text-muted-foreground" />
+                        <Database className="w-10 h-10 text-muted-foreground" aria-hidden="true" />
                       )}
                     </div>
                   </div>
@@ -919,11 +925,14 @@ export default function Marketplace() {
                         Clear Filters
                       </button>
                     ) : address ? (
-                      <Link href="/upload">
-                        <button className="btn-primary" data-testid="button-upload-first-grid">
-                          <Upload className="w-5 h-5 mr-2" />
-                          Upload First Dataset
-                        </button>
+                      <Link 
+                        href="/upload"
+                        className="btn-primary" 
+                        data-testid="button-upload-first-grid"
+                        aria-label="Upload the first dataset to get started"
+                      >
+                        <Upload className="w-5 h-5 mr-2" aria-hidden="true" />
+                        Upload First Dataset
                       </Link>
                     ) : (
                       <div className="text-sm text-muted-foreground">

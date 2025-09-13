@@ -56,16 +56,18 @@ export default function Navigation() {
           <div className="flex items-center justify-between h-16">
             
             {/* Left: Enhanced Logo + Brand */}
-            <Link href="/">
-              <div className="flex items-center space-x-4 cursor-pointer group" data-testid="nav-logo">
-                <SamuraiLogo className="group-hover:scale-110 transition-transform duration-300" />
-                <div>
-                  <div className="font-display font-bold text-2xl lg:text-3xl text-glow-primary">
-                    zatorai
-                  </div>
-                  <div className="text-xs lg:text-sm font-accent text-muted-foreground group-hover:text-accent transition-colors duration-300">
-                    the economy of intelligence
-                  </div>
+            <Link href="/" 
+              className="flex items-center space-x-4 cursor-pointer group" 
+              data-testid="nav-logo"
+              aria-label="zatorai homepage - the economy of intelligence"
+            >
+              <SamuraiLogo className="group-hover:scale-110 transition-transform duration-300" />
+              <div>
+                <div className="font-display font-bold text-2xl lg:text-3xl text-glow-primary">
+                  zatorai
+                </div>
+                <div className="text-xs lg:text-sm font-accent text-muted-foreground group-hover:text-accent transition-colors duration-300">
+                  the economy of intelligence
                 </div>
               </div>
             </Link>
@@ -79,18 +81,20 @@ export default function Navigation() {
                 const Icon = item.icon;
                 
                 return (
-                  <Link key={item.path} href={item.path}>
-                    <button
-                      className={`nav-link flex items-center space-x-2 px-6 py-3 rounded-lg transition-all duration-300 ${
-                        isActive 
-                          ? 'text-primary bg-primary/10 glow-primary' 
-                          : 'text-muted-foreground hover:text-primary hover:bg-primary/5'
-                      }`}
-                      data-testid={`nav-${item.label}`}
-                    >
-                      <Icon className="w-4 h-4" />
-                      <span className="font-accent font-medium capitalize">{item.label}</span>
-                    </button>
+                  <Link 
+                    key={item.path} 
+                    href={item.path}
+                    className={`nav-link flex items-center space-x-2 px-6 py-3 rounded-lg transition-all duration-300 ${
+                      isActive 
+                        ? 'text-primary bg-primary/10 glow-primary' 
+                        : 'text-muted-foreground hover:text-primary hover:bg-primary/5'
+                    }`}
+                    data-testid={`nav-${item.label}`}
+                    aria-current={isActive ? 'page' : undefined}
+                    aria-label={`Navigate to ${item.label} page`}
+                  >
+                    <Icon className="w-4 h-4" aria-hidden="true" />
+                    <span className="font-accent font-medium capitalize">{item.label}</span>
                   </Link>
                 );
               })}
@@ -176,7 +180,7 @@ export default function Navigation() {
                                     </div>
                                   )}
                                 </div>
-                                <ChevronDown className="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors" />
+                                <ChevronDown className="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors" aria-hidden="true" />
                               </button>
                             </div>
                           );
@@ -192,24 +196,33 @@ export default function Navigation() {
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="lg:hidden p-3 rounded-lg border border-border hover:border-primary/40 text-muted-foreground hover:text-primary transition-all duration-300"
                 data-testid="nav-mobile-menu-button"
-                aria-label="Toggle mobile menu"
+                aria-label={mobileMenuOpen ? 'Close mobile menu' : 'Open mobile menu'}
+                aria-expanded={mobileMenuOpen}
+                aria-controls="mobile-navigation-menu"
               >
                 {mobileMenuOpen ? (
-                  <X className="w-5 h-5" />
+                  <X className="w-5 h-5" aria-hidden="true" />
                 ) : (
-                  <Menu className="w-5 h-5" />
+                  <Menu className="w-5 h-5" aria-hidden="true" />
                 )}
+                <span className="sr-only">
+                  {mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+                </span>
               </button>
             </div>
           </div>
         </div>
 
         {/* Enhanced Mobile Navigation */}
-        <div className={`lg:hidden transition-all duration-300 ease-out ${
-          mobileMenuOpen 
-            ? 'max-h-screen opacity-100 border-t border-border' 
-            : 'max-h-0 opacity-0 overflow-hidden'
-        }`}>
+        <div 
+          id="mobile-navigation-menu"
+          className={`lg:hidden transition-all duration-300 ease-out ${
+            mobileMenuOpen 
+              ? 'max-h-screen opacity-100 border-t border-border' 
+              : 'max-h-0 opacity-0 overflow-hidden'
+          }`}
+          aria-hidden={!mobileMenuOpen}
+        >
           <div className="container mx-auto px-4 py-6">
             
             {/* Mobile Navigation Links */}
@@ -221,19 +234,21 @@ export default function Navigation() {
                 const Icon = item.icon;
                 
                 return (
-                  <Link key={item.path} href={item.path}>
-                    <button
-                      onClick={() => setMobileMenuOpen(false)}
-                      className={`w-full flex items-center space-x-3 px-4 py-4 text-left rounded-xl transition-all duration-300 ${
-                        isActive 
-                          ? 'text-primary bg-primary/10 glow-primary' 
-                          : 'text-muted-foreground hover:text-primary hover:bg-primary/5'
-                      }`}
-                      data-testid={`nav-mobile-${item.label}`}
-                    >
-                      <Icon className="w-5 h-5" />
-                      <span className="font-accent font-medium capitalize text-lg">{item.label}</span>
-                    </button>
+                  <Link 
+                    key={item.path} 
+                    href={item.path}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`w-full flex items-center space-x-3 px-4 py-4 text-left rounded-xl transition-all duration-300 ${
+                      isActive 
+                        ? 'text-primary bg-primary/10 glow-primary' 
+                        : 'text-muted-foreground hover:text-primary hover:bg-primary/5'
+                    }`}
+                    data-testid={`nav-mobile-${item.label}`}
+                    aria-current={isActive ? 'page' : undefined}
+                    aria-label={`Navigate to ${item.label} page`}
+                  >
+                    <Icon className="w-5 h-5" aria-hidden="true" />
+                    <span className="font-accent font-medium capitalize text-lg">{item.label}</span>
                   </Link>
                 );
               })}

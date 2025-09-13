@@ -37,9 +37,9 @@
   --accent-foreground: hsl(0 0% 2%);
   --accent-glow: hsl(48 100% 62% / 0.4);
   
-  /* Neutrals */
+  /* Neutrals - WCAG AA Compliant Contrast */
   --muted: hsl(235 22% 16%);
-  --muted-foreground: hsl(215 20% 68%);
+  --muted-foreground: hsl(215 18% 82%); /* Increased lightness for better contrast */
   --muted-darker: hsl(235 25% 12%);
   
   /* Status Colors */
