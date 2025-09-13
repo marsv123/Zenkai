@@ -86,8 +86,7 @@ function FeaturedDatasetCard({ dataset }: { dataset: Dataset }) {
 
 export default function Home() {
   const { address, isConnected } = useAccount();
-  const [isLoading, setIsLoading] = useState(true);
-  const [showText, setShowText] = useState(false);
+  const [visibleWords, setVisibleWords] = useState(0);
   const [stats, setStats] = useState({
     datasetCount: 0,
     totalVolume: 0,
@@ -95,12 +94,17 @@ export default function Home() {
     avgScore: 0
   });
 
-  // Landing page loading animation effect
+  const words = ['intelligence', 'economy', 'at', 'scale'];
+
+  // Word-by-word loading animation effect
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsLoading(false);
-      setShowText(true);
-    }, 1200); // 1.2 second delay for dramatic effect
+      words.forEach((_, index) => {
+        setTimeout(() => {
+          setVisibleWords(index + 1);
+        }, index * 400); // 400ms delay between each word
+      });
+    }, 800); // Initial delay before starting
     
     return () => clearTimeout(timer);
   }, []);
@@ -153,10 +157,21 @@ export default function Home() {
           
           {/* Enhanced Typography with Cyberpunk Styling */}
           <div className="space-y-6 mb-12">
-            <p className={`text-xl md:text-2xl lg:text-3xl gradient-text-zen font-accent tracking-wider ${
-              showText ? 'animate-text-glow-reveal' : 'opacity-0'
-            }`}>
-              intelligence economy at scale
+            <p className="text-lg md:text-xl lg:text-2xl gradient-text-zen font-accent tracking-wider">
+              {words.map((word, index) => (
+                <span
+                  key={index}
+                  className={`inline-block transition-all duration-500 transform ${
+                    index < visibleWords
+                      ? 'opacity-100 translate-y-0 animate-text-glow-reveal'
+                      : 'opacity-0 translate-y-2'
+                  }`}
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  {word}
+                  {index < words.length - 1 && ' '}
+                </span>
+              ))}
             </p>
             <div className="glass-cyber p-8 rounded-2xl max-w-4xl mx-auto">
               <p className="text-lg md:text-xl text-foreground/90 leading-relaxed">
