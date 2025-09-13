@@ -11,6 +11,7 @@ import Home from "@/pages/home";
 import Marketplace from "@/pages/marketplace";
 import Upload from "@/pages/upload";
 import Dashboard from "@/pages/dashboard";
+import HowItWorks from "@/pages/how-it-works";
 import NotFound from "@/pages/not-found";
 import '@rainbow-me/rainbowkit/styles.css';
 
@@ -23,6 +24,7 @@ function Router() {
         <Route path="/marketplace" component={Marketplace} />
         <Route path="/upload" component={Upload} />
         <Route path="/dashboard" component={Dashboard} />
+        <Route path="/how-it-works" component={HowItWorks} />
         {/* Fallback to 404 */}
         <Route component={NotFound} />
       </Switch>
