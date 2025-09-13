@@ -32,7 +32,7 @@ interface Dataset {
 // Enhanced Featured Dataset Card Component
 function FeaturedDatasetCard({ dataset }: { dataset: Dataset }) {
   return (
-    <div className="rounded-lg border border-border bg-background p-6 hover:bg-muted/50 transition-colors h-full" data-testid={`dataset-card-${dataset.id}`}>
+    <div className="card-elevated glow-primary p-6 h-full" data-testid={`dataset-card-${dataset.id}`}>
       <div className="flex items-start justify-between mb-4">
         <div className="flex-1">
           <h4 className="text-lg font-medium text-foreground mb-3 line-clamp-2">
@@ -43,7 +43,7 @@ function FeaturedDatasetCard({ dataset }: { dataset: Dataset }) {
           </Badge>
         </div>
         <div className="ml-4">
-          <div className="px-3 py-1 bg-primary text-primary-foreground text-sm font-medium rounded-lg">
+          <div className="px-3 py-1 text-accent glow-accent text-sm font-medium rounded-lg">
             {dataset.price} IMT
           </div>
         </div>
@@ -67,14 +67,14 @@ function FeaturedDatasetCard({ dataset }: { dataset: Dataset }) {
       
       <div className="flex gap-3">
         <button 
-          className="flex-1 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium"
+          className="flex-1 btn-primary text-sm"
           data-testid={`button-buy-${dataset.id}`}
         >
           <ShoppingCart className="w-4 h-4 mr-2 inline" />
           acquire
         </button>
         <button 
-          className="px-4 py-2 border border-border text-foreground hover:bg-muted transition-colors rounded-lg"
+          className="btn-ghost"
           data-testid={`button-view-${dataset.id}`}
         >
           <Eye className="w-4 h-4" />
@@ -130,17 +130,17 @@ export default function Home() {
             <img
               src={zenkaiLogoUrl}
               alt="zenkai - meditating samurai with glowing eyes"
-              className="w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48"
+              className="w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 samurai-glow samurai-pulse"
               loading="eager"
             />
           </div>
           
           {/* Clean Typography Hierarchy */}
           <div className="space-y-6 mb-12">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-foreground">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-gradient-primary">
               zenkai
             </h1>
-            <p className="text-lg md:text-xl text-muted-foreground font-light">
+            <p className="text-lg md:text-xl text-glow-accent font-light">
               intelligence economy at scale
             </p>
             <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
@@ -152,7 +152,7 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
             <Link 
               href="/marketplace"
-              className="px-8 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-base font-medium"
+              className="btn-primary text-base"
               data-testid="button-explore-marketplace"
             >
               Explore Marketplace
@@ -347,7 +347,7 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 
               href="/marketplace"
-              className="px-8 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-base font-medium"
+              className="btn-primary text-base"
               data-testid="button-get-started-marketplace"
             >
               Explore Marketplace
