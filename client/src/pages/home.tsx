@@ -29,55 +29,55 @@ interface Dataset {
   updatedAt: Date;
 }
 
-// Enhanced Featured Dataset Card Component
+// Premium Cyberpunk Dataset Card Component
 function FeaturedDatasetCard({ dataset }: { dataset: Dataset }) {
   return (
-    <div className="card-elevated glow-primary p-6 h-full" data-testid={`dataset-card-${dataset.id}`}>
-      <div className="flex items-start justify-between mb-4">
+    <div className="glass-cyber hover-cyber p-8 h-full rounded-2xl border border-primary/20 group transition-all duration-700" data-testid={`dataset-card-${dataset.id}`}>
+      <div className="flex items-start justify-between mb-6">
         <div className="flex-1">
-          <h4 className="text-lg font-medium text-foreground mb-3 line-clamp-2">
+          <h4 className="text-xl font-medium gradient-text-cyber mb-4 line-clamp-2 group-hover:scale-105 transition-transform duration-500">
             {dataset.title}
           </h4>
-          <Badge className="bg-primary/10 text-primary border-primary/20 font-accent">
+          <Badge className="glass-panel border-primary/30 gradient-text-zen px-3 py-1 rounded-lg font-accent text-sm">
             {dataset.category}
           </Badge>
         </div>
-        <div className="ml-4">
-          <div className="px-3 py-1 text-accent glow-accent text-sm font-medium rounded-lg">
+        <div className="ml-6">
+          <div className="gradient-primary px-4 py-2 text-primary-foreground text-lg font-bold rounded-xl cyber-pulse">
             {dataset.price} IMT
           </div>
         </div>
       </div>
       
-      <p className="text-sm text-muted-foreground mb-6 line-clamp-3 leading-relaxed">
+      <p className="text-base text-foreground/80 mb-8 line-clamp-3 leading-relaxed">
         {dataset.description}
       </p>
       
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center space-x-2">
-          <Star className="w-4 h-4 text-accent fill-current" />
-          <span className="text-sm font-medium text-foreground">{parseFloat(dataset.rating || '0').toFixed(1)}</span>
-          <span className="text-xs text-muted-foreground">({dataset.reviewCount})</span>
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center space-x-3 glass-panel px-4 py-2 rounded-lg">
+          <Star className="w-5 h-5 text-accent fill-current group-hover:scale-110 transition-transform" />
+          <span className="text-lg font-semibold gradient-text-cyber">{parseFloat(dataset.rating || '0').toFixed(1)}</span>
+          <span className="text-sm text-muted-foreground">({dataset.reviewCount})</span>
         </div>
-        <div className="text-xs text-muted-foreground flex items-center space-x-1">
-          <TrendingUp className="w-3 h-3" />
-          <span>{dataset.downloads} downloads</span>
+        <div className="text-sm text-accent flex items-center space-x-2 glass-panel px-3 py-2 rounded-lg">
+          <TrendingUp className="w-4 h-4 group-hover:scale-110 transition-transform" />
+          <span className="font-medium">{dataset.downloads} downloads</span>
         </div>
       </div>
       
-      <div className="flex gap-3">
+      <div className="flex gap-4">
         <button 
-          className="flex-1 btn-primary text-sm"
+          className="flex-1 gradient-primary hover-cyber px-6 py-3 rounded-xl font-medium text-primary-foreground transition-all duration-500 flex items-center justify-center space-x-2 group"
           data-testid={`button-buy-${dataset.id}`}
         >
-          <ShoppingCart className="w-4 h-4 mr-2 inline" />
-          acquire
+          <ShoppingCart className="w-5 h-5 group-hover:scale-110 transition-transform" />
+          <span className="text-zen tracking-wide">acquire</span>
         </button>
         <button 
-          className="btn-ghost"
+          className="glass-panel hover-cyber px-4 py-3 rounded-xl transition-all duration-500 group"
           data-testid={`button-view-${dataset.id}`}
         >
-          <Eye className="w-4 h-4" />
+          <Eye className="w-5 h-5 text-accent group-hover:scale-110 transition-transform" />
         </button>
       </div>
     </div>
@@ -224,8 +224,8 @@ export default function Home() {
       </section>
 
       {/* === SIMPLE STATS SECTION === */}
-      <section className="py-16 px-4 border-t border-border">
-        <div className="container mx-auto max-w-4xl">
+      <section className="relative overflow-hidden py-16 px-4 border-t border-border">
+        <div className="container mx-auto max-w-4xl relative z-10">
           <div className="text-center mb-12">
             <h3 className="text-2xl font-light text-foreground mb-4">
               Platform Overview
@@ -277,27 +277,33 @@ export default function Home() {
             </div>
           </div>
         </div>
+        
+        {/* Cyberpunk-Zen Ambient Background Effects */}
+        <div className="absolute inset-0 bg-gradient-radial from-accent/5 via-transparent to-transparent" />
+        <div className="absolute top-1/3 right-1/4 w-28 h-28 bg-accent/8 rounded-full blur-3xl animate-pulse" style={{animationDelay: '0.5s'}} />
+        <div className="absolute bottom-1/3 left-1/4 w-20 h-20 bg-primary/8 rounded-full blur-2xl animate-pulse" style={{animationDelay: '1.5s'}} />
       </section>
 
       {/* Featured Datasets */}
       {featuredDatasets.length > 0 && (
         <section className="py-16 px-4 border-t border-border">
           <div className="container mx-auto max-w-6xl">
-            <div className="flex flex-col md:flex-row items-center justify-between mb-12">
+            <div className="flex flex-col md:flex-row items-center justify-between mb-16">
               <div>
-                <h3 className="text-2xl font-light text-foreground mb-2">
+                <h3 className="text-cyber-lg gradient-text-cyber mb-3">
                   Featured Datasets
                 </h3>
-                <p className="text-muted-foreground">
+                <p className="text-zen text-accent/80">
                   Curated intelligence for AI innovation
                 </p>
               </div>
               <Link 
                 href="/marketplace"
-                className="px-6 py-2 border border-border text-foreground rounded-lg hover:bg-muted transition-colors text-sm font-medium mt-4 md:mt-0"
+                className="glass-cyber hover-cyber px-8 py-3 rounded-xl font-medium text-foreground transition-all duration-500 text-base mt-6 md:mt-0 flex items-center space-x-2 group"
                 data-testid="button-view-all-datasets"
               >
-                View All Datasets
+                <span>View All Datasets</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
             
@@ -310,96 +316,109 @@ export default function Home() {
         </section>
       )}
 
-      {/* === HOW IT WORKS === */}
-      <section className="py-16 px-4 border-t border-border">
-        <div className="container mx-auto max-w-4xl">
-          <div className="text-center mb-12">
-            <h3 className="text-2xl font-light text-foreground mb-4">
+      {/* === CYBERPUNK HOW IT WORKS === */}
+      <section className="py-20 px-4 border-t border-primary/20 relative overflow-hidden">
+        <div className="container mx-auto max-w-6xl relative z-10">
+          <div className="text-center mb-16">
+            <h3 className="text-cyber-lg gradient-text-cyber mb-6">
               How It Works
             </h3>
-            <p className="text-muted-foreground">
+            <p className="text-zen text-accent/80 max-w-2xl mx-auto">
               Simple steps to join the decentralized intelligence economy
             </p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
             {/* Step 1: Share */}
-            <div className="text-center">
-              <div className="w-12 h-12 bg-orange-500/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Upload className="w-6 h-6 text-orange-500" />
+            <div className="text-center glass-cyber hover-cyber p-8 rounded-2xl transition-all duration-500 group">
+              <div className="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+                <Upload className="w-8 h-8 text-primary-foreground" />
               </div>
-              <h4 className="text-lg font-medium text-foreground mb-3">
+              <h4 className="text-xl font-semibold gradient-text-cyber mb-4">
                 Upload Datasets
               </h4>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <p className="text-base text-foreground/80 leading-relaxed">
                 Share your data on IPFS, set pricing, and earn from every download.
               </p>
             </div>
 
             {/* Step 2: Discover */}
-            <div className="text-center">
-              <div className="w-12 h-12 bg-orange-500/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Store className="w-6 h-6 text-orange-500" />
+            <div className="text-center glass-cyber hover-cyber p-8 rounded-2xl transition-all duration-500 group">
+              <div className="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+                <Store className="w-8 h-8 text-primary-foreground" />
               </div>
-              <h4 className="text-lg font-medium text-foreground mb-3">
+              <h4 className="text-xl font-semibold gradient-text-cyber mb-4">
                 Discover Intelligence
               </h4>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <p className="text-base text-foreground/80 leading-relaxed">
                 Browse curated datasets and purchase using IMT tokens.
               </p>
             </div>
 
             {/* Step 3: Build */}
-            <div className="text-center">
-              <div className="w-12 h-12 bg-orange-500/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Wand2 className="w-6 h-6 text-orange-500" />
+            <div className="text-center glass-cyber hover-cyber p-8 rounded-2xl transition-all duration-500 group">
+              <div className="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+                <Wand2 className="w-8 h-8 text-primary-foreground" />
               </div>
-              <h4 className="text-lg font-medium text-foreground mb-3">
+              <h4 className="text-xl font-semibold gradient-text-cyber mb-4">
                 Build the Future
               </h4>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <p className="text-base text-foreground/80 leading-relaxed">
                 Create AI applications powered by decentralized intelligence.
               </p>
             </div>
           </div>
         </div>
+        {/* Ambient background effects */}
+        <div className="absolute top-1/4 left-0 w-48 h-48 bg-accent/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 right-0 w-56 h-56 bg-primary/5 rounded-full blur-3xl" />
       </section>
 
-      {/* === SIMPLE FOOTER CTA === */}
-      <section className="py-16 px-4 text-center border-t border-border">
-        <div className="container mx-auto max-w-3xl">
-          <h3 className="text-2xl font-light text-foreground mb-4">
-            Ready to Join the Intelligence Economy?
-          </h3>
-          <p className="text-muted-foreground mb-8">
-            Start trading datasets on the decentralized marketplace
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link 
-              href="/marketplace"
-              className="btn-primary text-base"
-              data-testid="button-get-started-marketplace"
-            >
-              Explore Marketplace
-            </Link>
-            {address ? (
+      {/* === CYBERPUNK FOOTER CTA === */}
+      <section className="py-20 px-4 text-center border-t border-primary/20 relative overflow-hidden">
+        <div className="container mx-auto max-w-4xl relative z-10">
+          <div className="glass-cyber p-12 rounded-3xl">
+            <h3 className="text-cyber-lg gradient-text-cyber mb-6">
+              Ready to Join the Intelligence Economy?
+            </h3>
+            <p className="text-zen text-accent/80 mb-12 max-w-2xl mx-auto">
+              Start trading datasets on the decentralized marketplace
+            </p>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Link 
-                href="/upload"
-                className="px-8 py-3 border border-border text-foreground rounded-lg hover:bg-muted transition-colors text-base font-medium"
-                data-testid="button-get-started-upload"
+                href="/marketplace"
+                className="gradient-primary hover-cyber px-10 py-4 rounded-xl font-medium text-primary-foreground transition-all duration-500 text-lg flex items-center justify-center space-x-3 group"
+                data-testid="button-get-started-marketplace"
               >
-                Upload Your First Dataset
+                <Store className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                <span>Explore Marketplace</span>
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
-            ) : (
-              <button 
-                className="px-8 py-3 border border-border text-muted-foreground rounded-lg cursor-not-allowed text-base font-medium"
-                disabled
-              >
-                Connect Wallet to Upload
-              </button>
-            )}
+              {address ? (
+                <Link 
+                  href="/upload"
+                  className="glass-panel hover-cyber px-10 py-4 rounded-xl font-medium text-foreground transition-all duration-500 text-lg flex items-center justify-center space-x-3 group border border-primary/30"
+                  data-testid="button-get-started-upload"
+                >
+                  <Upload className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                  <span>Upload Your First Dataset</span>
+                </Link>
+              ) : (
+                <button 
+                  className="glass-panel px-10 py-4 rounded-xl text-muted-foreground cursor-not-allowed text-lg flex items-center justify-center space-x-3"
+                  disabled
+                >
+                  <Wallet className="w-5 h-5" />
+                  <span>Connect Wallet to Upload</span>
+                </button>
+              )}
+            </div>
           </div>
         </div>
+        {/* Ambient background effects */}
+        <div className="absolute inset-0 bg-gradient-radial from-primary/10 via-transparent to-transparent" />
+        <div className="absolute top-0 left-1/4 w-72 h-72 bg-accent/5 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}} />
       </section>
     </div>
   );
