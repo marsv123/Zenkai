@@ -241,65 +241,7 @@ export default function Home() {
         <div className="absolute bottom-1/4 right-1/4 w-24 h-24 bg-accent/10 rounded-full blur-2xl animate-pulse" style={{animationDelay: '1s'}} />
       </section>
 
-      {/* === SIMPLE STATS SECTION === */}
-      <section className="relative overflow-hidden py-16 px-4 border-t border-border">
-        <div className="container mx-auto max-w-4xl relative z-10">
-          <div className="text-center mb-12">
-            <h3 className="text-2xl font-light text-foreground mb-4">
-              Platform Overview
-            </h3>
-            <p className="text-muted-foreground">
-              Live data from the zenkai intelligence network
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="text-center" data-testid="stat-datasets">
-              <Database className="w-8 h-8 text-orange-500 mx-auto mb-3" />
-              <div className="text-2xl font-light text-foreground mb-1">
-                {isLoadingDatasets ? "..." : stats.datasetCount}
-              </div>
-              <div className="text-sm text-muted-foreground">
-                datasets
-              </div>
-            </div>
-
-            <div className="text-center" data-testid="stat-downloads">
-              <TrendingUp className="w-8 h-8 text-orange-500 mx-auto mb-3" />
-              <div className="text-2xl font-light text-foreground mb-1">
-                {isLoadingDatasets ? "..." : stats.totalVolume.toLocaleString()}
-              </div>
-              <div className="text-sm text-muted-foreground">
-                downloads
-              </div>
-            </div>
-
-            <div className="text-center" data-testid="stat-contributors">
-              <User className="w-8 h-8 text-orange-500 mx-auto mb-3" />
-              <div className="text-2xl font-light text-foreground mb-1">
-                {isLoadingDatasets ? "..." : stats.contributorCount}
-              </div>
-              <div className="text-sm text-muted-foreground">
-                contributors
-              </div>
-            </div>
-
-            <div className="text-center" data-testid="stat-rating">
-              <Star className="w-8 h-8 text-orange-500 mx-auto mb-3" />
-              <div className="text-2xl font-light text-foreground mb-1">
-                {isLoadingDatasets ? "..." : stats.avgScore.toFixed(1)}
-              </div>
-              <div className="text-sm text-muted-foreground">
-                avg rating
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        {/* Cyberpunk-Zen Ambient Background Effects */}
-        <div className="absolute top-1/3 right-1/4 w-28 h-28 bg-accent/8 rounded-full blur-3xl animate-pulse" style={{animationDelay: '0.5s'}} />
-        <div className="absolute bottom-1/3 left-1/4 w-20 h-20 bg-primary/8 rounded-full blur-2xl animate-pulse" style={{animationDelay: '1.5s'}} />
-      </section>
+      
 
       {/* Featured Datasets */}
       {featuredDatasets.length > 0 && (
