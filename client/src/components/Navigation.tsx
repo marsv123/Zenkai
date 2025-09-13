@@ -3,7 +3,7 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Link, useLocation } from 'wouter';
 import { Upload, User, Home, Store, Menu, X, ChevronDown } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import samuraiLogoUrl from '@assets/samurai-logo.png';
+import zenkaiLogoUrl from '@assets/zenkai-logo.png';
 
 export default function Navigation() {
   const [location] = useLocation();
@@ -38,8 +38,8 @@ export default function Navigation() {
     return (
       <div className={`samurai-logo ${className}`}>
         <img
-          src={samuraiLogoUrl}
-          alt="zatorai - cyberpunk meditating samurai"
+          src={zenkaiLogoUrl}
+          alt="zenkai - meditating samurai with glowing eyes"
           className={`${dimensions[size]} samurai-glow transition-all duration-300`}
           loading="lazy"
         />
@@ -59,15 +59,15 @@ export default function Navigation() {
             <Link href="/" 
               className="flex items-center space-x-4 cursor-pointer group" 
               data-testid="nav-logo"
-              aria-label="zatorai homepage - the economy of intelligence"
+              aria-label="zenkai homepage - intelligence economy at scale"
             >
               <SamuraiLogo className="group-hover:scale-110 transition-transform duration-300" />
               <div>
-                <div className="font-display font-bold text-2xl lg:text-3xl text-glow-primary">
-                  zatorai
+                <div className="font-display font-bold text-xl lg:text-2xl text-foreground">
+                  zenkai
                 </div>
-                <div className="text-xs lg:text-sm font-accent text-muted-foreground group-hover:text-accent transition-colors duration-300">
-                  the economy of intelligence
+                <div className="text-xs font-light text-muted-foreground">
+                  intelligence economy at scale
                 </div>
               </div>
             </Link>

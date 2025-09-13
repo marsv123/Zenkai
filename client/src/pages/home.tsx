@@ -6,7 +6,7 @@ import { Wallet, Upload, Store, User, ShoppingCart, Eye, Wand2, Star, TrendingUp
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import samuraiLogoUrl from '@assets/samurai-logo.png';
+import zenkaiLogoUrl from '@assets/zenkai-logo.png';
 
 // Dataset type definition for frontend
 interface Dataset {
@@ -228,7 +228,7 @@ export default function Home() {
                 {/* Main Logo */}
                 <div className="relative samurai-logo group">
                   <img
-                    src={samuraiLogoUrl}
+                    src={zenkaiLogoUrl}
                     alt="zatorai - cyberpunk meditating samurai, guardian of digital intelligence"
                     className="w-80 h-80 md:w-96 md:h-96 lg:w-[500px] lg:h-[500px] xl:w-[600px] xl:h-[600px] samurai-glow group-hover:scale-105 transition-all duration-700 ease-out"
                     loading="eager"
