@@ -240,15 +240,6 @@ export default function Home() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
             <div className="glass-panel p-6 rounded-xl hover-cyber transition-all duration-500">
               <div className="flex items-center justify-center space-x-3">
-                <Database className="w-6 h-6 text-primary" />
-                <div className="text-center">
-                  <div className="text-2xl font-bold gradient-text-cyber">{stats.datasetCount}</div>
-                  <div className="text-sm text-muted-foreground tracking-wide">datasets</div>
-                </div>
-              </div>
-            </div>
-            <div className="glass-panel p-6 rounded-xl hover-cyber transition-all duration-500">
-              <div className="flex items-center justify-center space-x-3">
                 <User className="w-6 h-6 text-accent" />
                 <div className="text-center">
                   <div className="text-2xl font-bold gradient-text-cyber">{stats.contributorCount}</div>
