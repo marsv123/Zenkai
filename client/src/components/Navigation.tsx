@@ -41,6 +41,7 @@ export default function Navigation() {
                 account,
                 chain,
                 openConnectModal,
+                openAccountModal,
                 authenticationStatus,
                 mounted,
               }) => {
@@ -54,14 +55,10 @@ export default function Navigation() {
 
                 return (
                   <button
-                    onClick={connected ? undefined : openConnectModal}
-                    className={`cursor-pointer group text-cyber-lg font-display transition-all duration-500 ${
-                      connected 
-                        ? 'text-[hsl(6_100%_48%)]' 
-                        : 'gradient-text-cyber animate-pulse-glow'
-                    }`}
+                    onClick={connected ? openAccountModal : openConnectModal}
+                    className="cursor-pointer group text-cyber-lg font-display transition-all duration-500 text-white hover:text-[hsl(22_100%_60%)] active:text-[hsl(16_100%_55%)]"
                     data-testid="nav-zenkai"
-                    aria-label={connected ? 'Wallet Connected' : 'Connect Wallet'}
+                    aria-label={connected ? 'Manage Wallet' : 'Connect Wallet'}
                   >
                     zenkai
                   </button>
