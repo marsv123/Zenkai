@@ -1,0 +1,73 @@
+Please redesign the zatorai frontend to look like a professional DeFi/AI dApp with a cyberpunk-Zen aesthetic.
+
+Branding:
+
+Product name: zatorai — the economy of intelligence.
+
+Use the latest meditating samurai logo (the full-body hero version with glowing eyes, hands visible, neon sun background) as the central brand element.
+
+Replace any placeholder icons with this new logo where appropriate.
+
+Style & Theme:
+
+Dark mode first. Background: deep indigo (#1B1F3B) or charcoal (#121212).
+
+Accents: neon orange → red gradient (matching the sun in the logo).
+
+Highlights: subtle gold (#FFD700) for hover effects or details.
+
+Typography: modern and clean (Inter, Space Grotesk, or DM Sans).
+
+Overall vibe: calm, sleek, futuristic, cyberpunk-Zen.
+
+Layout Improvements:
+
+Navbar:
+
+Left: samurai logo + “zatorai.”
+
+Center: navigation links (“home,” “marketplace”).
+
+Right: Wallet connect button (styled in neon orange).
+
+Hero Section:
+
+Large header: “zatorai — the economy of intelligence.”
+
+Subheader tagline: “where data meets ai, a new economy emerges.”
+
+Samurai logo centered with soft glowing aura.
+
+CTA buttons: “explore marketplace” (primary neon orange) and “connect wallet” (secondary outline).
+
+Platform Stats:
+
+Show in card components (rounded, subtle shadows, glowing hover effect).
+
+Use accent icons (dataset, downloads, contributors, rating).
+
+Dataset Marketplace Section:
+
+Display datasets in responsive grid cards with URI, price in IMT, score, and action buttons.
+
+Cards animate slightly on hover.
+
+Register Dataset Form:
+
+Styled card with labeled inputs and a glowing “publish” button.
+
+Use orange accents for inputs/focus states.
+
+Footer:
+
+Minimal, dark, small text: “zatorai — the economy of intelligence, built on 0G.”
+
+Extra polish:
+
+Add subtle cyberpunk neon glow to buttons and hover states.
+
+Ensure full mobile responsiveness with Tailwind breakpoints.
+
+Keep all existing functionality intact (wallet connect, dataset register/buy, summarize).
+
+Goal: The site should look and feel like a production-grade DeFi/AI application (inspired by Uniswap, Aave, Ocean Protocol), but with a unique cyberpunk-Zen identity powered by the meditating samurai logo
