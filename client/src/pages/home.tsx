@@ -141,9 +141,6 @@ export default function Home() {
           
           {/* Enhanced Typography with Cyberpunk Styling */}
           <div className="space-y-8 mb-16">
-            <h1 className="text-cyber-xl gradient-text-cyber font-display">
-              zenkai
-            </h1>
             <p className="text-zen gradient-text-zen font-accent tracking-wider">
               intelligence economy at scale
             </p>
