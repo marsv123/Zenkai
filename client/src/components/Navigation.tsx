@@ -2,13 +2,14 @@ import { useAccount } from 'wagmi';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Link, useLocation } from 'wouter';
 import { Upload, User, Home, Store } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import zenkaiLogoUrl from '@assets/Logo1_1757790479722.png';
 
 export default function Navigation() {
   const [location] = useLocation();
   const { address } = useAccount();
   const [logoDropdownOpen, setLogoDropdownOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [scrolled, setScrolled] = useState(false);
 
   // Handle scroll effect for enhanced navigation
@@ -22,21 +23,18 @@ export default function Navigation() {
 
   // Handle dropdown close on outside click
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (logoDropdownOpen && event.target instanceof Element) {
-        const dropdown = event.target.closest('[data-dropdown]');
-        if (!dropdown) {
-          setLogoDropdownOpen(false);
-        }
+    const handleClickOutside = (event: PointerEvent) => {
+      if (logoDropdownOpen && containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setLogoDropdownOpen(false);
       }
     };
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
+    document.addEventListener('pointerdown', handleClickOutside);
+    return () => document.removeEventListener('pointerdown', handleClickOutside);
   }, [logoDropdownOpen]);
 
   const dropdownItems = [
     { path: '/', label: 'Home', icon: Home },
-    { path: '/marketplace', label: 'Platform Overview', icon: Store },
+    { path: '/marketplace', label: 'Marketplace', icon: Store },
     { path: '/how-it-works', label: 'How it Works', icon: User },
   ];
 
@@ -90,9 +88,12 @@ export default function Navigation() {
             <div className="flex items-center space-x-4">
               
               {/* Logo Dropdown - Desktop and Mobile */}
-              <div className="relative" data-dropdown>
+              <div className="relative" data-dropdown ref={containerRef}>
                 <button
-                  onClick={() => setLogoDropdownOpen(!logoDropdownOpen)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setLogoDropdownOpen((v) => !v);
+                  }}
                   className="hover-cyber transition-all duration-500"
                   data-testid="nav-logo-dropdown"
                   aria-label="Open navigation menu"
@@ -103,7 +104,12 @@ export default function Navigation() {
                 
                 {/* Dropdown Menu */}
                 {logoDropdownOpen && (
-                  <div className="absolute right-0 top-full mt-2 w-64 glass-cyber rounded-xl border border-primary/20 py-4 z-50">
+                  <div 
+                    className="absolute right-0 top-full mt-2 w-64 glass-cyber rounded-xl border border-primary/20 py-4 z-50"
+                    role="menu"
+                    aria-label="Navigation menu"
+                    data-testid="nav-dropdown-menu"
+                  >
                     {/* Connect Wallet Section */}
                     <div className="px-4 pb-4 border-b border-primary/20">
                       <ConnectButton.Custom>
@@ -214,7 +220,8 @@ export default function Navigation() {
                                 ? 'gradient-text-cyber border border-primary/30' 
                                 : 'text-muted-foreground hover:text-primary hover:bg-primary/10'
                             }`}
-                            data-testid={`dropdown-${item.label.toLowerCase().replace(/ /g, '-')}`}
+                            data-testid={`nav-${item.label.toLowerCase().replace(/ /g, '-')}`}
+                            role="menuitem"
                             aria-current={isActive ? 'page' : undefined}
                           >
                             <Icon className="w-5 h-5" aria-hidden="true" />

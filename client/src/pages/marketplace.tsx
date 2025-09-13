@@ -524,6 +524,122 @@ function SearchAndFilters({
   );
 }
 
+// Platform Overview Hero Component
+function PlatformOverviewHero({ onExploreClick }: { onExploreClick: () => void }) {
+  return (
+    <div className="relative overflow-hidden">
+      {/* Background Effects */}
+      <div className="absolute inset-0 bg-gradient-to-br from-background via-background/95 to-primary/5"></div>
+      <div className="absolute inset-0 bg-cyber-grid opacity-10"></div>
+      
+      <div className="relative container mx-auto px-4 lg:px-6 py-16 lg:py-24">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          
+          {/* Main Content */}
+          <div className="space-y-8">
+            <div className="space-y-6">
+              <div className="space-y-4">
+                <h1 className="text-4xl lg:text-6xl font-display font-bold gradient-text-cyber leading-tight">
+                  Intelligence
+                  <br />
+                  <span className="text-accent">Marketplace</span>
+                </h1>
+                <p className="text-xl lg:text-2xl text-muted-foreground font-light leading-relaxed">
+                  Discover, acquire, and trade AI datasets on the most advanced decentralized platform
+                </p>
+              </div>
+              
+              <div className="flex flex-wrap gap-4">
+                <div className="flex items-center space-x-2 text-sm">
+                  <Shield className="w-5 h-5 text-primary" />
+                  <span className="text-foreground font-medium">Blockchain Secured</span>
+                </div>
+                <div className="flex items-center space-x-2 text-sm">
+                  <Zap className="w-5 h-5 text-accent" />
+                  <span className="text-foreground font-medium">AI Enhanced</span>
+                </div>
+                <div className="flex items-center space-x-2 text-sm">
+                  <Database className="w-5 h-5 text-secondary" />
+                  <span className="text-foreground font-medium">0G Network</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="flex flex-col sm:flex-row gap-4">
+              <button 
+                className="btn-primary text-lg px-8 py-4 group" 
+                data-testid="button-explore-datasets"
+                onClick={onExploreClick}
+              >
+                <Search className="w-5 h-5 mr-3" />
+                Explore Datasets
+                <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" />
+              </button>
+              <Link href="/how-it-works">
+                <button className="btn-ghost text-lg px-8 py-4 border border-accent/30 hover:border-accent" data-testid="button-learn-more">
+                  <Eye className="w-5 h-5 mr-3" />
+                  Learn More
+                </button>
+              </Link>
+            </div>
+          </div>
+          
+          {/* Platform Stats */}
+          <div className="space-y-8">
+            <div className="glass-panel p-8 space-y-6">
+              <h3 className="text-2xl font-display font-semibold text-foreground mb-6">
+                Platform Metrics
+              </h3>
+              
+              <div className="grid grid-cols-2 gap-6">
+                <div className="text-center">
+                  <div className="text-3xl font-bold gradient-text-cyber mb-2">1,247</div>
+                  <div className="text-sm text-muted-foreground">Datasets Available</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold gradient-text-cyber mb-2">23.4K</div>
+                  <div className="text-sm text-muted-foreground">Total Downloads</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold gradient-text-cyber mb-2">567</div>
+                  <div className="text-sm text-muted-foreground">Active Providers</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold gradient-text-cyber mb-2">$2.3M</div>
+                  <div className="text-sm text-muted-foreground">Volume Traded</div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="space-y-4">
+              <h4 className="text-lg font-semibold text-foreground">Key Features</h4>
+              <div className="space-y-3">
+                <div className="flex items-center space-x-3">
+                  <Shield className="w-5 h-5 text-primary flex-shrink-0" />
+                  <span className="text-muted-foreground">Blockchain-verified dataset authenticity</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <Zap className="w-5 h-5 text-accent flex-shrink-0" />
+                  <span className="text-muted-foreground">AI-powered dataset summarization</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <Award className="w-5 h-5 text-secondary flex-shrink-0" />
+                  <span className="text-muted-foreground">Quality ratings and reviews</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <TrendingUp className="w-5 h-5 text-primary flex-shrink-0" />
+                  <span className="text-muted-foreground">Real-time market pricing</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Marketplace() {
   const { address } = useAccount();
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
@@ -563,6 +679,39 @@ export default function Marketplace() {
     isFetching
   } = useQuery<Dataset[]>({
     queryKey: ['/api/datasets', debouncedFilters],
+    queryFn: async () => {
+      // Convert filters to URL search parameters
+      const params = new URLSearchParams();
+      
+      if (debouncedFilters.search) {
+        params.append('search', debouncedFilters.search);
+      }
+      if (debouncedFilters.category && debouncedFilters.category !== 'All Categories') {
+        params.append('category', debouncedFilters.category);
+      }
+      if (debouncedFilters.minPrice) {
+        params.append('minPrice', debouncedFilters.minPrice);
+      }
+      if (debouncedFilters.maxPrice) {
+        params.append('maxPrice', debouncedFilters.maxPrice);
+      }
+      if (debouncedFilters.sortBy && debouncedFilters.sortBy !== 'latest') {
+        params.append('sortBy', debouncedFilters.sortBy);
+      }
+      if (debouncedFilters.minRating > 0) {
+        params.append('minRating', debouncedFilters.minRating.toString());
+      }
+      
+      const url = `/api/datasets${params.toString() ? `?${params.toString()}` : ''}`;
+      const response = await fetch(url, { credentials: "include" });
+      
+      if (!response.ok) {
+        const text = (await response.text()) || response.statusText;
+        throw new Error(`${response.status}: ${text}`);
+      }
+      
+      return await response.json();
+    },
     refetchInterval: 30000,
     retry: 3,
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
@@ -626,72 +775,32 @@ export default function Marketplace() {
         break;
       default: // latest
         filtered.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        break;
     }
     
     return filtered;
   }, [datasets, searchFilters]);
 
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 lg:px-6 py-8 lg:py-12">
-        
-        {/* === MARKETPLACE HEADER === */}
-        <div className="text-center mb-12 lg:mb-16">
-          <div className="flex items-center justify-center space-x-4 mb-6">
-            <img
-              src={samuraiLogoUrl}
-              alt="zatorai marketplace"
-              className="w-16 h-16 samurai-glow"
-            />
-            <div>
-              <h1 className="font-display text-4xl lg:text-5xl font-bold text-gradient-primary">
-                intelligence marketplace
-              </h1>
-              <p className="text-lg lg:text-xl text-muted-foreground mt-2">
-                Discover, acquire, and trade premium datasets on Web3
-              </p>
-            </div>
-          </div>
-          
-          {/* CTA Section */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
-            {address ? (
-              <Link 
-                href="/upload"
-                className="btn-primary group" 
-                data-testid="button-upload-dataset"
-                aria-label="Publish a new dataset"
-              >
-                <Upload className="w-5 h-5 mr-3" aria-hidden="true" />
-                publish dataset
-                <Zap className="w-4 h-4 ml-3 group-hover:scale-110 transition-transform" aria-hidden="true" />
-              </Link>
-            ) : (
-              <div className="inline-flex items-center space-x-2 px-6 py-3 rounded-full glass-panel">
-                <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
-                <span className="text-sm font-accent text-muted-foreground">Connect wallet to publish</span>
-              </div>
-            )}
-          </div>
-          
-          {/* Stats Pills */}
-          <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
-            <div className="flex items-center space-x-2 px-4 py-2 rounded-full bg-primary/10 text-primary">
-              <Database className="w-4 h-4" aria-hidden="true" />
-              <span className="font-medium">{datasets.length} Live Datasets</span>
-            </div>
-            <div className="flex items-center space-x-2 px-4 py-2 rounded-full bg-accent/10 text-accent">
-              <Shield className="w-4 h-4" aria-hidden="true" />
-              <span className="font-medium">IPFS + Blockchain Verified</span>
-            </div>
-            <div className="flex items-center space-x-2 px-4 py-2 rounded-full bg-secondary/10 text-secondary">
-              <Award className="w-4 h-4" aria-hidden="true" />
-              <span className="font-medium">Community Curated</span>
-            </div>
-          </div>
-        </div>
+  // Handle scroll to datasets section
+  const scrollToDatasets = useCallback(() => {
+    const element = document.getElementById('datasets-section');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, []);
 
-        {/* === SEARCH AND FILTERS === */}
+  return (
+    <div className="min-h-screen bg-background pt-20">
+      
+      {/* Platform Overview Hero Section */}
+      <PlatformOverviewHero onExploreClick={scrollToDatasets} />
+      
+      <div className="container mx-auto px-4 lg:px-6 pb-12">
+        
+        {/* Datasets Section */}
+        <div id="datasets-section" className="py-8">
+
+          {/* === SEARCH AND FILTERS === */}
         <SearchAndFilters
           filters={searchFilters}
           onFiltersChange={setSearchFilters}
@@ -957,6 +1066,8 @@ export default function Marketplace() {
             </div>
           </div>
         )}
+        
+        </div> {/* Close datasets-section */}
       </div>
     </div>
   );
