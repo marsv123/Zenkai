@@ -113,7 +113,7 @@ export default function Home() {
           // Hide cursor after first text is complete
           setShowCursor(false);
           
-          // Start second text after a brief pause
+          // Start second text after 2 seconds
           setTimeout(() => {
             setShowCursor2(true);
             let charIndex2 = 0;
@@ -123,26 +123,19 @@ export default function Home() {
                 charIndex2++;
               } else {
                 clearInterval(typeInterval2);
-                // Hide second cursor after typing is complete
-                setTimeout(() => setShowCursor2(false), 1000);
+                // Hide second cursor immediately when complete
+                setShowCursor2(false);
               }
-            }, 60); // Slightly faster for the longer text
-          }, 800); // Pause between texts
+            }, 40); // Faster for the longer text
+          }, 2000); // 2 second pause between texts
         }
       }, 80); // 80ms between each character (machine-like speed)
       
       return () => clearInterval(typeInterval);
     }, 800); // Initial delay before starting
     
-    // Cursor blinking effect
-    const cursorInterval = setInterval(() => {
-      setShowCursor(prev => !prev);
-      setShowCursor2(prev => !prev);
-    }, 500);
-    
     return () => {
       clearTimeout(startDelay);
-      clearInterval(cursorInterval);
     };
   }, []);
 
