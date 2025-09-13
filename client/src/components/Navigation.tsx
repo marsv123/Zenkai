@@ -82,17 +82,7 @@ export default function Navigation() {
                     >
                       {(() => {
                         if (!connected) {
-                          return (
-                            <button
-                              onClick={openConnectModal}
-                              type="button"
-                              className="flex items-center space-x-2 gradient-primary hover-cyber px-4 py-2 rounded-xl font-medium text-primary-foreground transition-all duration-500"
-                              data-testid="nav-connect-wallet"
-                              aria-label="Connect Wallet"
-                            >
-                              <Wallet className="w-5 h-5" />
-                            </button>
-                          );
+                          return null;
                         }
 
                         if (chain.unsupported) {
