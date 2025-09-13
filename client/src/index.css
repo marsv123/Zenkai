@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 :root {
-  /* zatorai Professional Theme - Production DeFi/AI Standards */
+  /* zenkai Professional Theme - Production DeFi/AI Standards */
   --background: hsl(235 28% 8%); /* Deeper indigo for premium feel */
   --background-alt: hsl(0 0% 4%); /* True deep charcoal */
   --background-elevated: hsl(235 24% 12%); /* Elevated surfaces */
@@ -78,7 +78,7 @@
 }
 
 .dark {
-  /* Dark mode inherits from :root - zatorai is dark-first */
+  /* Dark mode inherits from :root - zenkai is dark-first */
 }
 
 @layer base {
@@ -87,14 +87,14 @@
   }
 
   html {
-    @apply dark; /* zatorai is dark-first */
+    @apply dark; /* zenkai is dark-first */
     scroll-behavior: smooth;
   }
 
   body {
     @apply font-sans antialiased text-foreground;
     font-family: var(--font-sans);
-    background: radial-gradient(ellipse at top, var(--background-elevated) 0%, var(--background) 45%, var(--background-alt) 100%);
+    background: var(--background);
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

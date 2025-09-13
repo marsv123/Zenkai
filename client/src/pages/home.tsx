@@ -99,11 +99,11 @@ export default function Home() {
   const { data: datasets = [], isLoading: isLoadingDatasets } = useQuery({
     queryKey: ['/api/datasets'],
     refetchInterval: 30000,
-  });
+  }) as { data: Dataset[], isLoading: boolean };
 
   // Update stats when datasets change
   useEffect(() => {
-    if (datasets.length > 0) {
+    if (datasets && datasets.length > 0) {
       const activeDatasets = datasets.filter((d: Dataset) => d.isActive);
       const totalDownloads = activeDatasets.reduce((sum: number, d: Dataset) => sum + d.downloads, 0);
       const avgRating = activeDatasets.length > 0 
@@ -119,143 +119,78 @@ export default function Home() {
     }
   }, [datasets]);
 
-  const featuredDatasets = datasets.slice(0, 6);
+  const featuredDatasets = (datasets || []).slice(0, 6);
 
   return (
     <div className="min-h-screen bg-background">
-      {/* === WORLD-CLASS HERO SECTION === */}
-      <section className="relative min-h-screen flex items-center justify-center px-4 lg:px-6 overflow-hidden">
-        {/* Advanced Background System */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-background via-background-elevated to-background"></div>
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--primary)_0%,_transparent_50%)] opacity-[0.03]"></div>
-        </div>
-        
-        {/* Floating Elements - Enhanced */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-20 left-10 w-64 h-64 rounded-full bg-gradient-to-r from-primary/20 to-secondary/20 blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-20 right-10 w-80 h-80 rounded-full bg-gradient-to-r from-secondary/15 to-accent/15 blur-3xl animate-pulse delay-1000"></div>
-          <div className="absolute top-1/2 left-1/3 w-48 h-48 rounded-full bg-gradient-to-r from-accent/10 to-primary/10 blur-3xl animate-pulse delay-2000"></div>
-        </div>
-        
-        <div className="relative z-10 container mx-auto max-w-7xl">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center min-h-screen py-20">
-            
-            {/* Left Column: Content */}
-            <div className="space-y-8 lg:space-y-10 text-center lg:text-left">
-              
-              {/* Brand Badge */}
-              <div className="inline-flex items-center space-x-3 px-6 py-3 rounded-full glass-panel">
-                <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-                <span className="text-sm font-accent text-muted-foreground tracking-wider">0G GALILEO TESTNET</span>
-                <Shield className="w-4 h-4 text-primary" />
-              </div>
-              
-              {/* Main Heading - Enhanced */}
-              <div className="space-y-4">
-                <h1 className="font-display text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight">
-                  <span className="block text-shimmer mb-2">zatorai</span>
-                  <span className="block text-2xl md:text-3xl lg:text-4xl font-accent text-muted-foreground font-normal">
-                    — the economy of intelligence
-                  </span>
-                </h1>
-              </div>
-              
-              {/* Value Proposition */}
-              <div className="space-y-6">
-                <p className="text-xl md:text-2xl lg:text-3xl font-medium text-accent leading-relaxed">
-                  Where data meets AI,<br className="hidden sm:block" /> 
-                  <span className="text-gradient-primary">a new economy emerges.</span>
-                </p>
-                
-                <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto lg:mx-0">
-                  The world's first decentralized intelligence marketplace. Trade datasets, 
-                  power AI innovation, and shape the future of digital intelligence on Web3.
-                </p>
-              </div>
-              
-              {/* Enhanced CTA Section */}
-              <div className="space-y-6">
-                <div className="flex flex-col sm:flex-row gap-4 lg:gap-6 justify-center lg:justify-start">
-                  <Link href="/marketplace">
-                    <button className="btn-primary text-lg group" data-testid="button-explore-marketplace">
-                      <Store className="w-5 h-5 mr-3" />
-                      explore marketplace
-                      <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" />
-                    </button>
-                  </Link>
-                  
-                  {address ? (
-                    <Link href="/upload">
-                      <button className="btn-secondary text-lg group" data-testid="button-upload-data">
-                        <Upload className="w-5 h-5 mr-3" />
-                        publish dataset
-                        <Zap className="w-4 h-4 ml-3 group-hover:scale-110 transition-transform" />
-                      </button>
-                    </Link>
-                  ) : (
-                    <button className="btn-secondary text-lg opacity-60 cursor-not-allowed" disabled>
-                      <Wallet className="w-5 h-5 mr-3" />
-                      connect wallet first
-                    </button>
-                  )}
-                </div>
-                
-                {/* Social Proof */}
-                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-6 text-sm text-muted-foreground">
-                  <div className="flex items-center space-x-2">
-                    <Database className="w-4 h-4 text-primary" />
-                    <span>{stats.datasetCount}+ Datasets</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <User className="w-4 h-4 text-accent" />
-                    <span>{stats.contributorCount}+ Contributors</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <TrendingUp className="w-4 h-4 text-secondary" />
-                    <span>{stats.totalVolume}+ Downloads</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            {/* Right Column: Samurai Logo Showcase */}
-            <div className="flex items-center justify-center lg:justify-end">
-              <div className="relative">
-                {/* Glow Ring */}
-                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary via-secondary to-accent blur-3xl opacity-30 animate-pulse scale-110"></div>
-                
-                {/* Main Logo */}
-                <div className="relative samurai-logo group">
-                  <img
-                    src={zenkaiLogoUrl}
-                    alt="zatorai - cyberpunk meditating samurai, guardian of digital intelligence"
-                    className="w-80 h-80 md:w-96 md:h-96 lg:w-[500px] lg:h-[500px] xl:w-[600px] xl:h-[600px] samurai-glow group-hover:scale-105 transition-all duration-700 ease-out"
-                    loading="eager"
-                  />
-                  
-                  {/* Floating Elements Around Logo */}
-                  <div className="absolute -top-6 -right-6 w-12 h-12 rounded-full bg-primary/20 blur-xl animate-pulse delay-500"></div>
-                  <div className="absolute -bottom-8 -left-8 w-16 h-16 rounded-full bg-accent/20 blur-xl animate-pulse delay-1000"></div>
-                  <div className="absolute top-1/3 -left-12 w-8 h-8 rounded-full bg-secondary/20 blur-lg animate-pulse delay-1500"></div>
-                </div>
-                
-                {/* Meditation State Indicator */}
-                <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full mt-8">
-                  <div className="flex items-center space-x-2 px-4 py-2 rounded-full glass-panel">
-                    <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
-                    <span className="text-xs font-accent text-muted-foreground tracking-wider">MEDITATION MODE</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+      {/* === MINIMALISTIC HERO SECTION === */}
+      <section className="relative min-h-screen flex items-center justify-center px-4 lg:px-6">
+        <div className="container mx-auto max-w-4xl text-center">
+          
+          {/* Centered Logo */}
+          <div className="flex justify-center mb-12">
+            <img
+              src={zenkaiLogoUrl}
+              alt="zenkai - meditating samurai with glowing eyes"
+              className="w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48"
+              loading="eager"
+            />
           </div>
-        </div>
-        
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <div className="w-6 h-10 border-2 border-primary/30 rounded-full flex justify-center">
-            <div className="w-1 h-3 bg-primary rounded-full mt-2 animate-pulse"></div>
+          
+          {/* Clean Typography Hierarchy */}
+          <div className="space-y-6 mb-12">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-foreground">
+              zenkai
+            </h1>
+            <p className="text-lg md:text-xl text-muted-foreground font-light">
+              intelligence economy at scale
+            </p>
+            <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              The decentralized marketplace where data meets AI, fueling the next digital economy.
+            </p>
+          </div>
+          
+          {/* Clean CTAs */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+            <Link 
+              href="/marketplace"
+              className="px-8 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-base font-medium"
+              data-testid="button-explore-marketplace"
+            >
+              Explore Marketplace
+            </Link>
+            {address ? (
+              <Link 
+                href="/upload"
+                className="px-8 py-3 border border-border text-foreground rounded-lg hover:bg-muted transition-colors text-base font-medium"
+                data-testid="button-upload-dataset"
+              >
+                Upload Dataset
+              </Link>
+            ) : (
+              <button 
+                className="px-8 py-3 border border-border text-muted-foreground rounded-lg cursor-not-allowed text-base font-medium"
+                disabled
+              >
+                Connect Wallet
+              </button>
+            )}
+          </div>
+          
+          {/* Subtle Stats */}
+          <div className="flex flex-wrap justify-center gap-8 text-sm text-muted-foreground">
+            <div className="flex items-center space-x-2">
+              <span className="w-1 h-1 bg-orange-500 rounded-full"></span>
+              <span>{stats.datasetCount} datasets</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <span className="w-1 h-1 bg-orange-500 rounded-full"></span>
+              <span>{stats.contributorCount} contributors</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <span className="w-1 h-1 bg-orange-500 rounded-full"></span>
+              <span>{stats.totalVolume} downloads</span>
+            </div>
           </div>
         </div>
       </section>
@@ -272,7 +207,7 @@ export default function Home() {
               intelligence ecosystem
             </h3>
             <p className="text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Real-time data flowing through the zatorai intelligence network
+              Real-time data flowing through the zenkai intelligence network
             </p>
           </div>
           
