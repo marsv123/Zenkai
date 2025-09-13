@@ -184,7 +184,7 @@ export default function Home() {
             </p>
             <div className="glass-cyber p-8 rounded-2xl max-w-4xl mx-auto">
               <p className="text-lg md:text-xl text-foreground/90 leading-relaxed">
-                The decentralized marketplace where data meets AI, fueling the next digital economy.
+                Zenkai is a decentralized intelligence economy designed to scale data and AI monetization become liquid, revenue-generating assets. Enabled and built on 0G Participants can securely upload, rent, and monetize datasets, while building, training, and tokenizing AI models in a single seamless dApp. Every contribution carries ownership, reputation, and exit liquidity. As data compounds, models improve, driving usage.
               </p>
             </div>
           </div>
