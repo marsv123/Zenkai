@@ -28,10 +28,10 @@ export default function Navigation() {
   return (
     <>
       <nav className={`fixed top-0 left-0 right-0 z-50 glass-cyber transition-all duration-500 ease-out ${
-        scrolled ? 'py-3' : 'py-6'
+        scrolled ? 'py-2' : 'py-4'
       }`}>
         <div className="container mx-auto px-4 lg:px-6">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-11">
             
             {/* Left: Empty space */}
             <div></div>
