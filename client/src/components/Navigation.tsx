@@ -1,7 +1,6 @@
 import { useAccount } from 'wagmi';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Link, useLocation } from 'wouter';
-import { Wallet } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 export default function Navigation() {
@@ -36,101 +35,42 @@ export default function Navigation() {
             {/* Left: Empty space */}
             <div></div>
 
-            {/* Center: zenkai */}
-            <Link href="/" 
-              className="cursor-pointer group" 
-              data-testid="nav-zenkai"
-              aria-label="zenkai homepage"
-            >
-              <div className="text-cyber-lg gradient-text-cyber">
-                zenkai
-              </div>
-            </Link>
+            {/* Center: zenkai - Wallet Connection */}
+            <ConnectButton.Custom>
+              {({
+                account,
+                chain,
+                openConnectModal,
+                authenticationStatus,
+                mounted,
+              }) => {
+                const ready = mounted && authenticationStatus !== 'loading';
+                const connected =
+                  ready &&
+                  account &&
+                  chain &&
+                  (!authenticationStatus ||
+                    authenticationStatus === 'authenticated');
 
-            {/* Right: Wallet Connection */}
-            <div className="flex items-center space-x-4">
-              
-              {/* Wallet Connection Button */}
-              <ConnectButton.Custom>
-                {({
-                  account,
-                  chain,
-                  openAccountModal,
-                  openChainModal,
-                  openConnectModal,
-                  authenticationStatus,
-                  mounted,
-                }) => {
-                  const ready = mounted && authenticationStatus !== 'loading';
-                  const connected =
-                    ready &&
-                    account &&
-                    chain &&
-                    (!authenticationStatus ||
-                      authenticationStatus === 'authenticated');
+                return (
+                  <button
+                    onClick={connected ? undefined : openConnectModal}
+                    className={`cursor-pointer group text-cyber-lg font-display transition-all duration-500 ${
+                      connected 
+                        ? 'text-[hsl(6_100%_48%)]' 
+                        : 'gradient-text-cyber animate-pulse-glow'
+                    }`}
+                    data-testid="nav-zenkai"
+                    aria-label={connected ? 'Wallet Connected' : 'Connect Wallet'}
+                  >
+                    zenkai
+                  </button>
+                );
+              }}
+            </ConnectButton.Custom>
 
-                  return (
-                    <div
-                      {...(!ready && {
-                        'aria-hidden': true,
-                        style: {
-                          opacity: 0,
-                          pointerEvents: 'none',
-                          userSelect: 'none',
-                        },
-                      })}
-                    >
-                      {(() => {
-                        if (!connected) {
-                          return null;
-                        }
-
-                        if (chain.unsupported) {
-                          return (
-                            <button
-                              onClick={openChainModal}
-                              type="button"
-                              className="flex items-center space-x-2 glass-panel border-destructive/50 text-destructive hover-cyber px-4 py-2 rounded-xl transition-all duration-500"
-                              data-testid="nav-wrong-network"
-                              aria-label="Switch Network"
-                            >
-                              <Wallet className="w-5 h-5" />
-                              <span className="hidden sm:inline">Wrong Network</span>
-                            </button>
-                          );
-                        }
-
-                        return (
-                          <button
-                            onClick={openAccountModal}
-                            type="button"
-                            className="flex items-center space-x-3 glass-panel hover-cyber px-4 py-2 rounded-xl transition-all duration-500"
-                            data-testid="nav-wallet-account"
-                            aria-label="View Account"
-                          >
-                            <div className="flex items-center space-x-2">
-                              <Wallet className="w-5 h-5 text-accent" />
-                              <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
-                            </div>
-                            <div className="text-left hidden sm:block">
-                              <div className="text-sm font-medium text-foreground">
-                                {account.displayName}
-                              </div>
-                              {account.displayBalance && (
-                                <div className="text-xs text-muted-foreground">
-                                  {account.displayBalance}
-                                </div>
-                              )}
-                            </div>
-                          </button>
-                        );
-                      })()}
-                    </div>
-                  );
-                }}
-              </ConnectButton.Custom>
-
-            </div>
+            {/* Right: Empty space for balance */}
+            <div></div>
           </div>
         </div>
 
