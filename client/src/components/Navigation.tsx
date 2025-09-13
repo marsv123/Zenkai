@@ -36,11 +36,11 @@ export default function Navigation() {
     };
 
     return (
-      <div className={`samurai-logo ${className}`}>
+      <div className={className}>
         <img
           src={zenkaiLogoUrl}
           alt="zenkai - meditating samurai with glowing eyes"
-          className={`${dimensions[size]} samurai-glow transition-all duration-300`}
+          className={`${dimensions[size]} transition-all duration-300`}
           loading="lazy"
         />
       </div>
@@ -49,7 +49,7 @@ export default function Navigation() {
 
   return (
     <>
-      <nav className={`nav-glass fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-background/95 backdrop-blur-sm border-b border-border ${
         scrolled ? 'py-2' : 'py-4'
       }`}>
         <div className="container mx-auto px-4 lg:px-6">
@@ -86,7 +86,7 @@ export default function Navigation() {
                     href={item.path}
                     className={`nav-link flex items-center space-x-2 px-6 py-3 rounded-lg transition-all duration-300 ${
                       isActive 
-                        ? 'text-primary bg-primary/10 glow-primary' 
+                        ? 'text-primary bg-primary/10 border border-primary/20' 
                         : 'text-muted-foreground hover:text-primary hover:bg-primary/5'
                     }`}
                     data-testid={`nav-${item.label}`}
@@ -140,7 +140,7 @@ export default function Navigation() {
                               <button
                                 onClick={openConnectModal}
                                 type="button"
-                                className="btn-primary flex items-center space-x-2"
+                                className="px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium flex items-center space-x-2"
                                 data-testid="nav-connect-wallet"
                               >
                                 <span>connect wallet</span>
@@ -153,7 +153,7 @@ export default function Navigation() {
                               <button
                                 onClick={openChainModal}
                                 type="button"
-                                className="btn-secondary flex items-center space-x-2"
+                                className="px-4 py-2 border border-destructive/40 text-destructive bg-transparent rounded-lg hover:bg-destructive/10 transition-colors flex items-center space-x-2"
                               >
                                 <span className="w-2 h-2 bg-destructive rounded-full"></span>
                                 <span>wrong network</span>
@@ -166,7 +166,7 @@ export default function Navigation() {
                               <button
                                 onClick={openAccountModal}
                                 type="button"
-                                className="btn-ghost flex items-center space-x-3 px-4 py-2 border border-primary/20 rounded-lg hover:border-primary/40"
+                                className="flex items-center space-x-3 px-4 py-2 border border-primary/20 rounded-lg hover:border-primary/40 text-foreground hover:bg-primary/5 transition-colors"
                                 data-testid="nav-account-button"
                               >
                                 <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
@@ -240,7 +240,7 @@ export default function Navigation() {
                     onClick={() => setMobileMenuOpen(false)}
                     className={`w-full flex items-center space-x-3 px-4 py-4 text-left rounded-xl transition-all duration-300 ${
                       isActive 
-                        ? 'text-primary bg-primary/10 glow-primary' 
+                        ? 'text-primary bg-primary/10 border border-primary/20' 
                         : 'text-muted-foreground hover:text-primary hover:bg-primary/5'
                     }`}
                     data-testid={`nav-mobile-${item.label}`}
@@ -307,7 +307,7 @@ export default function Navigation() {
                             <button
                               onClick={openChainModal}
                               type="button"
-                              className="w-full btn-secondary text-lg py-4 flex items-center justify-center space-x-2"
+                              className="w-full px-4 py-4 border border-destructive/40 text-destructive bg-transparent rounded-lg hover:bg-destructive/10 transition-colors text-lg flex items-center justify-center space-x-2"
                             >
                               <span className="w-2 h-2 bg-destructive rounded-full"></span>
                               <span>wrong network</span>
@@ -322,7 +322,7 @@ export default function Navigation() {
                               setMobileMenuOpen(false);
                             }}
                             type="button"
-                            className="w-full btn-ghost border border-primary/20 py-4 flex items-center justify-between"
+                            className="w-full px-4 py-4 border border-primary/20 rounded-lg hover:border-primary/40 text-foreground hover:bg-primary/5 transition-colors flex items-center justify-between"
                             data-testid="nav-mobile-account-button"
                           >
                             <div className="flex items-center space-x-3">
