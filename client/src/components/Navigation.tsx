@@ -84,9 +84,9 @@ export default function Navigation() {
                   <Link 
                     key={item.path} 
                     href={item.path}
-                    className={`nav-link flex items-center space-x-2 px-6 py-3 rounded-xl glass-panel hover-cyber transition-all duration-500 ${
+                    className={`nav-link flex items-center space-x-2 px-6 py-3 rounded-xl glass-panel hover-cyber focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none transition-all duration-500 ${
                       isActive 
-                        ? 'gradient-text-cyber cyber-pulse border-primary/30' 
+                        ? 'active gradient-text-cyber cyber-pulse border-primary/30' 
                         : 'text-muted-foreground hover:text-primary hover:bg-primary/10'
                     }`}
                     data-testid={`nav-${item.label}`}
