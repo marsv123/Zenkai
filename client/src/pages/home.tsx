@@ -86,7 +86,8 @@ function FeaturedDatasetCard({ dataset }: { dataset: Dataset }) {
 
 export default function Home() {
   const { address, isConnected } = useAccount();
-  const [visibleWords, setVisibleWords] = useState(0);
+  const [visibleChars, setVisibleChars] = useState(0);
+  const [showCursor, setShowCursor] = useState(true);
   const [stats, setStats] = useState({
     datasetCount: 0,
     totalVolume: 0,
@@ -94,19 +95,35 @@ export default function Home() {
     avgScore: 0
   });
 
-  const words = ['intelligence', 'economy', 'at', 'scale'];
+  const fullText = 'intelligence economy at scale';
 
-  // Word-by-word loading animation effect
+  // Letter-by-letter typewriter effect
   useEffect(() => {
-    const timer = setTimeout(() => {
-      words.forEach((_, index) => {
-        setTimeout(() => {
-          setVisibleWords(index + 1);
-        }, index * 400); // 400ms delay between each word
-      });
+    const startDelay = setTimeout(() => {
+      let charIndex = 0;
+      const typeInterval = setInterval(() => {
+        if (charIndex <= fullText.length) {
+          setVisibleChars(charIndex);
+          charIndex++;
+        } else {
+          clearInterval(typeInterval);
+          // Hide cursor after typing is complete
+          setTimeout(() => setShowCursor(false), 1000);
+        }
+      }, 80); // 80ms between each character (machine-like speed)
+      
+      return () => clearInterval(typeInterval);
     }, 800); // Initial delay before starting
     
-    return () => clearTimeout(timer);
+    // Cursor blinking effect
+    const cursorInterval = setInterval(() => {
+      setShowCursor(prev => !prev);
+    }, 500);
+    
+    return () => {
+      clearTimeout(startDelay);
+      clearInterval(cursorInterval);
+    };
   }, []);
 
   // Fetch datasets from database API for stats only
@@ -157,21 +174,13 @@ export default function Home() {
           
           {/* Enhanced Typography with Cyberpunk Styling */}
           <div className="space-y-6 mb-12">
-            <p className="text-lg md:text-xl lg:text-2xl gradient-text-zen font-accent tracking-wider">
-              {words.map((word, index) => (
-                <span
-                  key={index}
-                  className={`inline-block transition-all duration-500 transform ${
-                    index < visibleWords
-                      ? 'opacity-100 translate-y-0 animate-text-glow-reveal'
-                      : 'opacity-0 translate-y-2'
-                  }`}
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
-                  {word}
-                  {index < words.length - 1 && ' '}
-                </span>
-              ))}
+            <p className="text-lg md:text-xl lg:text-2xl gradient-text-zen font-accent tracking-wider font-mono">
+              <span className="animate-text-glow-reveal">
+                {fullText.slice(0, visibleChars)}
+              </span>
+              <span className={`inline-block w-0.5 h-6 md:h-7 lg:h-8 bg-primary ml-1 transition-opacity duration-100 ${showCursor ? 'opacity-100' : 'opacity-0'}`}>
+                {/* Blinking cursor */}
+              </span>
             </p>
             <div className="glass-cyber p-8 rounded-2xl max-w-4xl mx-auto">
               <p className="text-lg md:text-xl text-foreground/90 leading-relaxed">
