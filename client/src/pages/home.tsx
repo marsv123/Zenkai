@@ -121,76 +121,106 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* === MINIMALISTIC HERO SECTION === */}
-      <section className="relative min-h-screen flex items-center justify-center px-4 lg:px-6">
-        <div className="container mx-auto max-w-4xl text-center">
+      {/* === CYBERPUNK-ZEN HERO SECTION === */}
+      <section className="relative min-h-screen flex items-center justify-center px-4 lg:px-6 overflow-hidden">
+        <div className="container mx-auto max-w-6xl text-center relative z-10">
           
-          {/* Centered Logo */}
-          <div className="flex justify-center mb-12">
-            <img
-              src={zenkaiLogoUrl}
-              alt="zenkai - meditating samurai with glowing eyes"
-              className="w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 samurai-glow samurai-pulse"
-              loading="eager"
-            />
+          {/* Stunning Samurai Logo Centerpiece */}
+          <div className="flex justify-center mb-16">
+            <div className="relative">
+              <img
+                src={zenkaiLogoUrl}
+                alt="zenkai - meditating samurai with glowing eyes"
+                className="w-48 h-48 md:w-64 md:h-64 lg:w-80 lg:h-80 cyber-pulse hover-cyber transition-all duration-700"
+                loading="eager"
+              />
+              {/* Ambient glow effect */}
+              <div className="absolute inset-0 bg-gradient-radial from-primary/20 via-transparent to-transparent blur-2xl scale-150 animate-pulse" />
+            </div>
           </div>
           
-          {/* Clean Typography Hierarchy */}
-          <div className="space-y-6 mb-12">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-gradient-primary">
+          {/* Enhanced Typography with Cyberpunk Styling */}
+          <div className="space-y-8 mb-16">
+            <h1 className="text-cyber-xl gradient-text-cyber font-display">
               zenkai
             </h1>
-            <p className="text-lg md:text-xl text-glow-accent font-light">
+            <p className="text-zen gradient-text-zen font-accent tracking-wider">
               intelligence economy at scale
             </p>
-            <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              The decentralized marketplace where data meets AI, fueling the next digital economy.
-            </p>
+            <div className="glass-cyber p-8 rounded-2xl max-w-4xl mx-auto">
+              <p className="text-lg md:text-xl text-foreground/90 leading-relaxed">
+                The decentralized marketplace where data meets AI, fueling the next digital economy.
+              </p>
+            </div>
           </div>
           
-          {/* Clean CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+          {/* Premium Cyberpunk CTAs */}
+          <div className="flex flex-col sm:flex-row gap-6 justify-center mb-20">
             <Link 
               href="/marketplace"
-              className="btn-primary text-base"
+              className="gradient-primary hover-cyber px-10 py-4 rounded-xl font-medium text-primary-foreground transition-all duration-500 text-lg flex items-center space-x-3 group"
               data-testid="button-explore-marketplace"
             >
-              Explore Marketplace
+              <Store className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              <span>Explore Marketplace</span>
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
             {address ? (
               <Link 
                 href="/upload"
-                className="px-8 py-3 border border-border text-foreground rounded-lg hover:bg-muted transition-colors text-base font-medium"
+                className="glass-cyber hover-cyber px-10 py-4 rounded-xl font-medium text-foreground transition-all duration-500 text-lg flex items-center space-x-3 group border border-primary/30"
                 data-testid="button-upload-dataset"
               >
-                Upload Dataset
+                <Upload className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                <span>Upload Dataset</span>
               </Link>
             ) : (
               <button 
-                className="px-8 py-3 border border-border text-muted-foreground rounded-lg cursor-not-allowed text-base font-medium"
+                className="glass-panel px-10 py-4 rounded-xl text-muted-foreground cursor-not-allowed text-lg flex items-center space-x-3"
                 disabled
               >
-                Connect Wallet
+                <Wallet className="w-5 h-5" />
+                <span>Connect Wallet</span>
               </button>
             )}
           </div>
           
-          {/* Subtle Stats */}
-          <div className="flex flex-wrap justify-center gap-8 text-sm text-muted-foreground">
-            <div className="flex items-center space-x-2">
-              <span className="w-1 h-1 bg-orange-500 rounded-full"></span>
-              <span>{stats.datasetCount} datasets</span>
+          {/* Enhanced Live Stats with Glass Morphism */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
+            <div className="glass-panel p-6 rounded-xl hover-cyber transition-all duration-500">
+              <div className="flex items-center justify-center space-x-3">
+                <Database className="w-6 h-6 text-primary" />
+                <div className="text-center">
+                  <div className="text-2xl font-bold gradient-text-cyber">{stats.datasetCount}</div>
+                  <div className="text-sm text-muted-foreground tracking-wide">datasets</div>
+                </div>
+              </div>
             </div>
-            <div className="flex items-center space-x-2">
-              <span className="w-1 h-1 bg-orange-500 rounded-full"></span>
-              <span>{stats.contributorCount} contributors</span>
+            <div className="glass-panel p-6 rounded-xl hover-cyber transition-all duration-500">
+              <div className="flex items-center justify-center space-x-3">
+                <User className="w-6 h-6 text-accent" />
+                <div className="text-center">
+                  <div className="text-2xl font-bold gradient-text-cyber">{stats.contributorCount}</div>
+                  <div className="text-sm text-muted-foreground tracking-wide">contributors</div>
+                </div>
+              </div>
             </div>
-            <div className="flex items-center space-x-2">
-              <span className="w-1 h-1 bg-orange-500 rounded-full"></span>
-              <span>{stats.totalVolume} downloads</span>
+            <div className="glass-panel p-6 rounded-xl hover-cyber transition-all duration-500">
+              <div className="flex items-center justify-center space-x-3">
+                <TrendingUp className="w-6 h-6 text-secondary" />
+                <div className="text-center">
+                  <div className="text-2xl font-bold gradient-text-cyber">{stats.totalVolume}</div>
+                  <div className="text-sm text-muted-foreground tracking-wide">downloads</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+        
+        {/* Ambient Background Effects */}
+        <div className="absolute inset-0 bg-gradient-radial from-primary/5 via-transparent to-transparent" />
+        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-primary/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-24 h-24 bg-accent/10 rounded-full blur-2xl animate-pulse" style={{animationDelay: '1s'}} />
       </section>
 
       {/* === SIMPLE STATS SECTION === */}
