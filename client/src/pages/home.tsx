@@ -88,6 +88,8 @@ export default function Home() {
   const { address, isConnected } = useAccount();
   const [visibleChars, setVisibleChars] = useState(0);
   const [showCursor, setShowCursor] = useState(true);
+  const [visibleChars2, setVisibleChars2] = useState(0);
+  const [showCursor2, setShowCursor2] = useState(false);
   const [stats, setStats] = useState({
     datasetCount: 0,
     totalVolume: 0,
@@ -96,6 +98,7 @@ export default function Home() {
   });
 
   const fullText = 'intelligence economy at scale';
+  const secondText = 'Zenkai is a decentralized intelligence economy designed to scale data and AI monetization become liquid, revenue-generating assets. Enabled and built on 0G Participants can securely upload, rent, and monetize datasets, while building, training, and tokenizing AI models in a single seamless dApp. Every contribution carries ownership, reputation, and exit liquidity. As data compounds, models improve, driving usage.';
 
   // Letter-by-letter typewriter effect
   useEffect(() => {
@@ -107,8 +110,24 @@ export default function Home() {
           charIndex++;
         } else {
           clearInterval(typeInterval);
-          // Hide cursor after typing is complete
-          setTimeout(() => setShowCursor(false), 1000);
+          // Hide cursor after first text is complete
+          setShowCursor(false);
+          
+          // Start second text after a brief pause
+          setTimeout(() => {
+            setShowCursor2(true);
+            let charIndex2 = 0;
+            const typeInterval2 = setInterval(() => {
+              if (charIndex2 <= secondText.length) {
+                setVisibleChars2(charIndex2);
+                charIndex2++;
+              } else {
+                clearInterval(typeInterval2);
+                // Hide second cursor after typing is complete
+                setTimeout(() => setShowCursor2(false), 1000);
+              }
+            }, 60); // Slightly faster for the longer text
+          }, 800); // Pause between texts
         }
       }, 80); // 80ms between each character (machine-like speed)
       
@@ -118,6 +137,7 @@ export default function Home() {
     // Cursor blinking effect
     const cursorInterval = setInterval(() => {
       setShowCursor(prev => !prev);
+      setShowCursor2(prev => !prev);
     }, 500);
     
     return () => {
@@ -174,19 +194,22 @@ export default function Home() {
           
           {/* Enhanced Typography with Cyberpunk Styling */}
           <div className="space-y-6 mb-12">
-            <p className="text-lg md:text-xl lg:text-2xl gradient-text-zen font-accent tracking-wider font-mono">
-              <span className="animate-text-glow-reveal">
+            <p className="text-lg md:text-xl lg:text-2xl font-accent tracking-wider font-mono">
+              <span className="gradient-text-zen animate-text-glow-reveal">
                 {fullText.slice(0, visibleChars)}
               </span>
               <span className={`inline-block w-0.5 h-6 md:h-7 lg:h-8 bg-primary ml-1 transition-opacity duration-100 ${showCursor ? 'opacity-100' : 'opacity-0'}`}>
                 {/* Blinking cursor */}
               </span>
             </p>
-            <div className="glass-cyber p-8 rounded-2xl max-w-4xl mx-auto">
-              <p className="text-lg md:text-xl text-foreground/90 leading-relaxed">
-                Zenkai is a decentralized intelligence economy designed to scale data and AI monetization become liquid, revenue-generating assets. Enabled and built on 0G Participants can securely upload, rent, and monetize datasets, while building, training, and tokenizing AI models in a single seamless dApp. Every contribution carries ownership, reputation, and exit liquidity. As data compounds, models improve, driving usage.
-              </p>
-            </div>
+            <p className="text-sm md:text-base lg:text-lg leading-relaxed font-mono max-w-4xl mx-auto">
+              <span className="gradient-text-cyber animate-text-glow-reveal">
+                {secondText.slice(0, visibleChars2)}
+              </span>
+              <span className={`inline-block w-0.5 h-4 md:h-5 lg:h-6 bg-primary ml-1 transition-opacity duration-100 ${showCursor2 ? 'opacity-100' : 'opacity-0'}`}>
+                {/* Second blinking cursor */}
+              </span>
+            </p>
           </div>
           
           {/* Premium Cyberpunk CTAs */}
