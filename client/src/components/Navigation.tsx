@@ -3,7 +3,7 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Link, useLocation } from 'wouter';
 import { Upload, User, Home, Store, Menu, X, ChevronDown } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import zenkaiLogoUrl from '@assets/zenkai-logo.png';
+import zenkaiLogoUrl from '@assets/Logo1_1757790479722.png';
 
 export default function Navigation() {
   const [location] = useLocation();
@@ -61,7 +61,7 @@ export default function Navigation() {
               data-testid="nav-logo"
               aria-label="zenkai homepage - intelligence economy at scale"
             >
-              <SamuraiLogo className="cyber-pulse hover-cyber transition-all duration-500" />
+              <SamuraiLogo className="hover-cyber transition-all duration-500" />
               <div>
                 <div className="text-cyber-lg gradient-text-cyber">
                   zenkai
@@ -86,7 +86,7 @@ export default function Navigation() {
                     href={item.path}
                     className={`nav-link flex items-center space-x-2 px-6 py-3 rounded-xl glass-panel hover-cyber focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none transition-all duration-500 ${
                       isActive 
-                        ? 'active gradient-text-cyber cyber-pulse border-primary/30' 
+                        ? 'active gradient-text-cyber border-primary/30' 
                         : 'text-muted-foreground hover:text-primary hover:bg-primary/10'
                     }`}
                     data-testid={`nav-${item.label}`}
@@ -351,7 +351,7 @@ export default function Navigation() {
             {/* Mobile Branding Footer */}
             <div className="mt-8 pt-6 border-t border-border">
               <div className="flex items-center justify-center space-x-3 opacity-60">
-                <SamuraiLogo size="small" className="samurai-pulse" />
+                <SamuraiLogo size="small" />
                 <span className="font-display text-sm text-muted-foreground">
                   powered by zatorai intelligence
                 </span>

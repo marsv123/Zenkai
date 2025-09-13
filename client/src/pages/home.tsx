@@ -6,7 +6,7 @@ import { Wallet, Upload, Store, User, ShoppingCart, Eye, Wand2, Star, TrendingUp
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import zenkaiLogoUrl from '@assets/zenkai-logo.png';
+import zenkaiLogoUrl from '@assets/Logo1_1757790479722.png';
 
 // Dataset type definition for frontend
 interface Dataset {
@@ -43,7 +43,7 @@ function FeaturedDatasetCard({ dataset }: { dataset: Dataset }) {
           </Badge>
         </div>
         <div className="ml-6">
-          <div className="gradient-primary px-4 py-2 text-primary-foreground text-lg font-bold rounded-xl cyber-pulse">
+          <div className="gradient-primary px-4 py-2 text-primary-foreground text-lg font-bold rounded-xl">
             {dataset.price} IMT
           </div>
         </div>
@@ -131,7 +131,7 @@ export default function Home() {
               <img
                 src={zenkaiLogoUrl}
                 alt="zenkai - meditating samurai with glowing eyes"
-                className="w-48 h-48 md:w-64 md:h-64 lg:w-80 lg:h-80 cyber-pulse hover-cyber transition-all duration-700"
+                className="w-48 h-48 md:w-64 md:h-64 lg:w-80 lg:h-80 hover-cyber transition-all duration-700"
                 loading="eager"
               />
               {/* Ambient glow effect */}
