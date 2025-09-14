@@ -411,7 +411,7 @@ export default function Home() {
             </a>
 
             <a
-              href="https://twitter.com/yourhandle"
+              href="https://twitter.com/VikingMars"
               target="_blank"
               rel="noopener noreferrer"
               className="text-center glass-cyber hover-cyber p-6 rounded-2xl transition-all duration-500 group"
@@ -421,7 +421,7 @@ export default function Home() {
                 <Twitter className="w-6 h-6 text-primary-foreground" />
               </div>
               <h4 className="font-medium gradient-text-zen mb-2">Twitter/X</h4>
-              <p className="text-sm text-foreground/60">@yourhandle</p>
+              <p className="text-sm text-foreground/60">@VikingMars</p>
             </a>
 
             <a
