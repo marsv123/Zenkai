@@ -333,7 +333,7 @@ export default function Home() {
               },
               {
                 title: "Tokenize your AI",
-                description: "Turn your AI into an investable asset. Register it, set a query price in ZAI, and open it to the marketplace.",
+                description: "Turn your AI model into an investable asset on our marketplace, by tokenizing it.",
                 icon: Shield,
                 route: "/tokenize"
               }
