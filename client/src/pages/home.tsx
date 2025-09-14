@@ -183,11 +183,11 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background">
       {/* === CYBERPUNK-ZEN HERO SECTION === */}
-      <section className="relative min-h-screen flex items-center justify-center px-4 lg:px-6 overflow-hidden">
+      <section className="relative py-20 px-4 lg:px-6 overflow-hidden">
         <div className="container mx-auto max-w-6xl text-center relative z-10">
           
           {/* Stunning Samurai Logo Centerpiece */}
-          <div className="flex justify-center mb-16">
+          <div className="flex justify-center mb-8">
             <div className="relative">
               <img
                 src={zenkaiLogoUrl}
@@ -201,7 +201,7 @@ export default function Home() {
           </div>
           
           {/* Enhanced Typography with Cyberpunk Styling */}
-          <div className="space-y-6 mb-12">
+          <div className="space-y-6 mb-6">
             <p className="text-lg md:text-xl lg:text-2xl font-accent tracking-wider font-mono">
               <span className="gradient-text-zen animate-text-glow-reveal">
                 {fullText.slice(0, visibleChars)}
