@@ -270,11 +270,6 @@ export default function Home() {
           
           <div className="max-w-4xl mx-auto">
             <div className="glass-cyber hover-cyber p-12 rounded-3xl transition-all duration-500 group">
-              <div className="flex items-center justify-center mb-8">
-                <div className="w-20 h-20 gradient-primary rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Brain className="w-10 h-10 text-primary-foreground" />
-                </div>
-              </div>
               
               <p className="text-xl text-accent/90 leading-relaxed text-center max-w-3xl mx-auto mb-10">
                 Powered by 0G's AI-native blockchain, Zenkai fuses data and AI into a decentralized, scalable marketplace of intelligence.
