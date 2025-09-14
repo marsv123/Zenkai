@@ -33,7 +33,7 @@ interface Dataset {
 // Premium Cyberpunk Dataset Card Component
 function FeaturedDatasetCard({ dataset }: { dataset: Dataset }) {
   return (
-    <div className="glass-cyber hover-cyber p-8 h-full rounded-2xl border border-primary/20 group transition-all duration-700" data-testid={`dataset-card-${dataset.id}`}>
+    <article className="glass-cyber hover-cyber p-8 h-full rounded-2xl border border-primary/20 group transition-all duration-700" data-testid={`dataset-card-${dataset.id}`} role="article" aria-labelledby={`dataset-title-${dataset.id}`} aria-describedby={`dataset-desc-${dataset.id}`}>
       <div className="flex items-start justify-between mb-6">
         <div className="flex-1">
           <h4 className="text-xl font-medium gradient-text-cyber mb-4 line-clamp-2 group-hover:scale-105 transition-transform duration-500">
@@ -81,7 +81,7 @@ function FeaturedDatasetCard({ dataset }: { dataset: Dataset }) {
           <Eye className="w-5 h-5 text-accent group-hover:scale-110 transition-transform" />
         </button>
       </div>
-    </div>
+    </article>
   );
 }
 

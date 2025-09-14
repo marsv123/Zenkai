@@ -7,6 +7,7 @@ import { config } from './lib/wagmi';
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Navigation from "@/components/Navigation";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import Home from "@/pages/home";
 import Marketplace from "@/pages/marketplace";
 import Upload from "@/pages/upload";
@@ -22,18 +23,21 @@ function Router() {
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      <Switch>
-        <Route path="/" component={Home} />
-        <Route path="/marketplace" component={Marketplace} />
-        <Route path="/upload" component={Upload} />
-        <Route path="/dashboard" component={Dashboard} />
-        <Route path="/how-it-works" component={HowItWorks} />
-        <Route path="/compose" component={Compose} />
-        <Route path="/train" component={Train} />
-        <Route path="/tokenize" component={Tokenize} />
-        {/* Fallback to 404 */}
-        <Route component={NotFound} />
-      </Switch>
+      <main id="main-content" className="container mx-auto px-4 lg:px-6 pt-8">
+        <Breadcrumbs />
+        <Switch>
+          <Route path="/" component={Home} />
+          <Route path="/marketplace" component={Marketplace} />
+          <Route path="/upload" component={Upload} />
+          <Route path="/dashboard" component={Dashboard} />
+          <Route path="/how-it-works" component={HowItWorks} />
+          <Route path="/compose" component={Compose} />
+          <Route path="/train" component={Train} />
+          <Route path="/tokenize" component={Tokenize} />
+          {/* Fallback to 404 */}
+          <Route component={NotFound} />
+        </Switch>
+      </main>
     </div>
   );
 }
