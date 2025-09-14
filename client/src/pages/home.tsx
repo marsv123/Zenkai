@@ -296,7 +296,8 @@ export default function Home() {
               What is Zenkai
             </h3>
             <p className="text-zen text-accent/80 max-w-2xl mx-auto">
-              Simple steps to join the decentralized intelligence economy
+              Powered by 0G's AI-native blockchain, Zenkai fuses data and intelligence into a decentralized, scalable marketplace of intelligence.
+              Participants can rent datasets or build, train, and tokenize AI models within one seamless dApp. Every contribution carries built-in ownership, reputation, and monetization. As data compounds and models evolve, value creation accelerates, fueling continuous growth across the ecosystem.
             </p>
           </div>
           
