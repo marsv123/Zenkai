@@ -206,25 +206,18 @@ export default function Home() {
           </div>
           
           {/* Premium Cyberpunk CTAs */}
-          <div className="flex flex-col sm:flex-row gap-6 justify-center mb-20">
-            
-            {address && (
-              <Link 
-                href="/upload"
-                className="glass-cyber hover-cyber px-10 py-4 rounded-xl font-medium text-foreground transition-all duration-500 text-lg flex items-center space-x-3 group border border-primary/30"
-                data-testid="button-upload-dataset"
-              >
-                <Upload className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                <span>Upload Dataset</span>
-              </Link>
-            )}
+          <div className="flex justify-center mb-20">
+            <Link 
+              href="/marketplace"
+              className="gradient-primary hover-cyber px-10 py-4 rounded-xl font-medium text-primary-foreground transition-all duration-500 text-lg flex items-center space-x-3 group"
+              data-testid="button-explore-marketplace"
+            >
+              <Store className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              <span>Explore Marketplace</span>
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </Link>
           </div>
           
-          {/* Enhanced Live Stats with Glass Morphism */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            
-            
-          </div>
         </div>
         
         {/* Ambient Background Effects */}
