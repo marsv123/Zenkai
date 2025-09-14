@@ -90,6 +90,7 @@ export default function Home() {
   const [showCursor, setShowCursor] = useState(true);
   const [visibleChars2, setVisibleChars2] = useState(0);
   const [showCursor2, setShowCursor2] = useState(false);
+  const [blinkingCursor, setBlinkingCursor] = useState(false);
   const [stats, setStats] = useState({
     datasetCount: 0,
     totalVolume: 0,
@@ -112,6 +113,8 @@ export default function Home() {
           clearInterval(typeInterval);
           // Hide cursor after first text is complete
           setShowCursor(false);
+          // Start blinking cursor
+          setBlinkingCursor(true);
           
           // Start second text after 2 seconds
           setTimeout(() => {
@@ -138,6 +141,17 @@ export default function Home() {
       clearTimeout(startDelay);
     };
   }, []);
+
+  // Matrix-style blinking cursor after typewriter finishes
+  useEffect(() => {
+    if (blinkingCursor) {
+      const cursorInterval = setInterval(() => {
+        setShowCursor(prev => !prev);
+      }, 530); // 530ms for Matrix-like blink speed
+
+      return () => clearInterval(cursorInterval);
+    }
+  }, [blinkingCursor]);
 
 
   // Fetch datasets from database API for stats only
@@ -192,6 +206,11 @@ export default function Home() {
               <span className="gradient-text-zen animate-text-glow-reveal">
                 {fullText.slice(0, visibleChars)}
               </span>
+              {blinkingCursor && (
+                <span className={`inline-block w-0.5 h-6 md:h-7 lg:h-8 bg-primary ml-1 transition-opacity duration-100 ${showCursor ? 'opacity-100' : 'opacity-0'}`}>
+                  {/* Matrix-style blinking cursor */}
+                </span>
+              )}
             </p>
             
           </div>
