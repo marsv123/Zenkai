@@ -346,6 +346,64 @@ export default function Home() {
         <div className="absolute bottom-1/4 right-0 w-56 h-56 bg-primary/5 rounded-full blur-3xl" />
       </section>
 
+      {/* === CYBERPUNK HOW IT WORKS === */}
+      <section className="py-20 px-4 border-t border-primary/20 relative overflow-hidden">
+        <div className="container mx-auto max-w-6xl relative z-10">
+          <div className="text-center mb-16">
+            <h3 className="text-cyber-lg gradient-text-cyber mb-6">
+              How It Works
+            </h3>
+            <p className="text-zen text-accent/80 max-w-2xl mx-auto">
+              Simple steps to join the decentralized intelligence economy
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Step 1: Share */}
+            <div className="text-center glass-cyber hover-cyber p-8 rounded-2xl transition-all duration-500 group">
+              <div className="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+                <Upload className="w-8 h-8 text-primary-foreground" />
+              </div>
+              <h4 className="text-xl font-semibold gradient-text-cyber mb-4">
+                Upload Datasets
+              </h4>
+              <p className="text-base text-foreground/80 leading-relaxed">
+                Share your data on IPFS, set pricing, and earn from every download.
+              </p>
+            </div>
+
+            {/* Step 2: Discover */}
+            <div className="text-center glass-cyber hover-cyber p-8 rounded-2xl transition-all duration-500 group">
+              <div className="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+                <Store className="w-8 h-8 text-primary-foreground" />
+              </div>
+              <h4 className="text-xl font-semibold gradient-text-cyber mb-4">
+                Discover Intelligence
+              </h4>
+              <p className="text-base text-foreground/80 leading-relaxed">
+                Browse curated datasets and purchase using IMT tokens.
+              </p>
+            </div>
+
+            {/* Step 3: Build */}
+            <div className="text-center glass-cyber hover-cyber p-8 rounded-2xl transition-all duration-500 group">
+              <div className="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+                <Wand2 className="w-8 h-8 text-primary-foreground" />
+              </div>
+              <h4 className="text-xl font-semibold gradient-text-cyber mb-4">
+                Build the Future
+              </h4>
+              <p className="text-base text-foreground/80 leading-relaxed">
+                Create AI applications powered by decentralized intelligence.
+              </p>
+            </div>
+          </div>
+        </div>
+        {/* Ambient background effects */}
+        <div className="absolute top-1/4 left-0 w-48 h-48 bg-accent/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 right-0 w-56 h-56 bg-primary/5 rounded-full blur-3xl" />
+      </section>
+
       {/* === CYBERPUNK FOOTER CTA === */}
       <section className="py-20 px-4 text-center border-t border-primary/20 relative overflow-hidden">
         <div className="container mx-auto max-w-4xl relative z-10">
