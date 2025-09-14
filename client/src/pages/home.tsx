@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAccount } from 'wagmi';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'wouter';
-import { Wallet, Upload, Store, User, ShoppingCart, Eye, Wand2, Star, TrendingUp, Database, ArrowRight, Zap, Brain, Network, Shield } from 'lucide-react';
+import { Wallet, Upload, Store, User, ShoppingCart, Eye, Wand2, Star, TrendingUp, Database, ArrowRight, Zap, Brain, Network, Shield, Mail, Github, Twitter, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -360,6 +360,78 @@ export default function Home() {
         {/* Ambient background effects */}
         <div className="absolute top-1/4 left-0 w-48 h-48 bg-accent/5 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 right-0 w-56 h-56 bg-primary/5 rounded-full blur-3xl" />
+      </section>
+
+      {/* Get in Touch Section */}
+      <section className="py-20 px-4 lg:px-6 border-t border-border">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-16">
+            <h3 className="text-cyber-lg gradient-text-cyber mb-4">
+              Get in touch
+            </h3>
+            <p className="text-zen text-accent/80">
+              Let's connect and build together
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-4xl mx-auto">
+            <a
+              href="mailto:your@email.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-center glass-cyber hover-cyber p-6 rounded-2xl transition-all duration-500 group"
+              data-testid="link-email"
+            >
+              <div className="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                <Mail className="w-6 h-6 text-primary-foreground" />
+              </div>
+              <h4 className="font-medium gradient-text-zen mb-2">Email</h4>
+              <p className="text-sm text-foreground/60">your@email.com</p>
+            </a>
+
+            <a
+              href="https://github.com/yourrepo"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-center glass-cyber hover-cyber p-6 rounded-2xl transition-all duration-500 group"
+              data-testid="link-github"
+            >
+              <div className="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                <Github className="w-6 h-6 text-primary-foreground" />
+              </div>
+              <h4 className="font-medium gradient-text-zen mb-2">GitHub</h4>
+              <p className="text-sm text-foreground/60">github.com/yourrepo</p>
+            </a>
+
+            <a
+              href="https://twitter.com/yourhandle"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-center glass-cyber hover-cyber p-6 rounded-2xl transition-all duration-500 group"
+              data-testid="link-twitter"
+            >
+              <div className="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                <Twitter className="w-6 h-6 text-primary-foreground" />
+              </div>
+              <h4 className="font-medium gradient-text-zen mb-2">Twitter/X</h4>
+              <p className="text-sm text-foreground/60">@yourhandle</p>
+            </a>
+
+            <a
+              href="https://discord.gg/yourinvite"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-center glass-cyber hover-cyber p-6 rounded-2xl transition-all duration-500 group"
+              data-testid="link-discord"
+            >
+              <div className="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                <MessageCircle className="w-6 h-6 text-primary-foreground" />
+              </div>
+              <h4 className="font-medium gradient-text-zen mb-2">Discord</h4>
+              <p className="text-sm text-foreground/60">Join our server</p>
+            </a>
+          </div>
+        </div>
       </section>
 
     </div>
