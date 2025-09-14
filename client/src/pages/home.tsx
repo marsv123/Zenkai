@@ -6,7 +6,7 @@ import { Wallet, Upload, Store, User, ShoppingCart, Eye, Wand2, Star, TrendingUp
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import zenkaiLogoUrl from '@assets/Logo1_1757790479722.png';
+import zenkaiLogoUrl from '@assets/Logo11_1757876955560.png';
 
 // Dataset type definition for frontend
 interface Dataset {
