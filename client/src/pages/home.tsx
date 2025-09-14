@@ -207,9 +207,10 @@ export default function Home() {
           
           {/* CTA Section */}
           <div className="glass-cyber p-12 rounded-3xl mb-12">
-            <h3 className="text-4xl font-bold gradient-text-cyber mb-6">
-              Dive into the intelligence economy.
-            </h3>
+            <p className="text-lg font-medium gradient-text-cyber mb-8 max-w-4xl mx-auto leading-relaxed">
+              Powered by 0G's AI-native blockchain, Zenkai fuses data and intelligence into a decentralized, scalable marketplace of intelligence.
+              Participants can rent datasets or seamlessly compose, train, and tokenize AI models within one unified dApp. Every contribution carries built-in ownership, reputation, and monetization. As data compounds and models evolve, value creation accelerates, fueling continuous growth across the ecosystem.
+            </p>
             
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
