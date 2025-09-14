@@ -90,7 +90,6 @@ export default function Home() {
   const [showCursor, setShowCursor] = useState(true);
   const [visibleChars2, setVisibleChars2] = useState(0);
   const [showCursor2, setShowCursor2] = useState(false);
-  const [dotCount, setDotCount] = useState(0);
   const [stats, setStats] = useState({
     datasetCount: 0,
     totalVolume: 0,
@@ -99,7 +98,6 @@ export default function Home() {
   });
 
   const fullText = 'intelligence economy at scale';
-  const DOTS = ['', '.', '..', '...'];
   const secondText = 'Zenkai is a decentralized intelligence economy designed to scale data and AI monetization become liquid, revenue-generating assets. Enabled and built on 0G Participants can securely upload, rent, and monetize datasets, while building, training, and tokenizing AI models in a single seamless dApp. Every contribution carries ownership, reputation, and exit liquidity. As data compounds, models improve, driving usage.';
 
   // Letter-by-letter typewriter effect
@@ -141,16 +139,6 @@ export default function Home() {
     };
   }, []);
 
-  // Sequential dots animation after typewriter finishes
-  useEffect(() => {
-    if (visibleChars === fullText.length) {
-      const dotInterval = setInterval(() => {
-        setDotCount((prev) => (prev + 1) % 4);
-      }, 400); // 400ms between each dot change
-
-      return () => clearInterval(dotInterval);
-    }
-  }, [visibleChars, fullText.length]);
 
   // Fetch datasets from database API for stats only
   const { data: datasets = [], isLoading: isLoadingDatasets } = useQuery({
@@ -203,9 +191,6 @@ export default function Home() {
             <p className="text-lg md:text-xl lg:text-2xl font-accent tracking-wider font-mono">
               <span className="gradient-text-zen animate-text-glow-reveal">
                 {fullText.slice(0, visibleChars)}
-              </span>
-              <span className="gradient-text-zen ml-1 tabular-nums" aria-live="polite" data-testid="text-loading-dots">
-                {visibleChars === fullText.length ? DOTS[dotCount] : ''}
               </span>
             </p>
             
