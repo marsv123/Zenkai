@@ -348,7 +348,7 @@ export default function Home() {
                   {step.title === "Monetize your data" ? (
                     <span className="text-3xl font-bold text-primary-foreground">$</span>
                   ) : step.title === "Tokenize your AI" ? (
-                    <span className="text-3xl font-bold text-primary-foreground">◉</span>
+                    <span className="text-4xl font-bold text-primary-foreground">◉</span>
                   ) : (
                     <step.icon className="w-8 h-8 text-primary-foreground" />
                   )}
