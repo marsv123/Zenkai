@@ -17,7 +17,7 @@ contract ContributorNFT is ERC721, Ownable {
     // Mapping from address to token ID
     mapping(address => uint256) public contributorTokenId;
 
-    constructor() ERC721("Zatori Contributor", "ZCON") Ownable(msg.sender) {}
+    constructor() ERC721("Zenkai Contributor", "ZCON") Ownable(msg.sender) {}
 
     /**
      * @dev Mint a contributor NFT if the address doesn't already have one

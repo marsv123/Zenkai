@@ -13,13 +13,13 @@ contract DatasetRegistry is Ownable, ReentrancyGuard {
     struct Dataset {
         address owner;
         string uri;          // IPFS URI
-        uint256 price;       // Price in IMT tokens
+        uint256 price;       // Price in ZAI tokens
         uint256 score;       // Quality score (0-100)
         bool active;         // Whether the dataset is active for sale
         uint256 totalSales;  // Total number of sales
     }
 
-    IERC20 public immutable imtToken;
+    IERC20 public immutable zaiToken;
     address public treasury;
     uint256 public constant FEE_PERCENTAGE = 4; // 4% fee
     uint256 public constant SCORE_DECIMALS = 100; // Score out of 100
@@ -53,15 +53,15 @@ contract DatasetRegistry is Ownable, ReentrancyGuard {
         bool active
     );
 
-    constructor(address _imtToken, address _treasury) Ownable(msg.sender) {
-        imtToken = IERC20(_imtToken);
+    constructor(address _zaiToken, address _treasury) Ownable(msg.sender) {
+        zaiToken = IERC20(_zaiToken);
         treasury = _treasury;
     }
 
     /**
      * @dev Register a new dataset
      * @param uri IPFS URI of the dataset
-     * @param price Price in IMT tokens
+     * @param price Price in ZAI tokens
      * @return datasetId The ID of the registered dataset
      */
     function register(string memory uri, uint256 price) 
@@ -103,11 +103,11 @@ contract DatasetRegistry is Ownable, ReentrancyGuard {
         
         // Transfer tokens
         require(
-            imtToken.transferFrom(msg.sender, dataset.owner, ownerAmount),
+            zaiToken.transferFrom(msg.sender, dataset.owner, ownerAmount),
             "Transfer to owner failed"
         );
         require(
-            imtToken.transferFrom(msg.sender, treasury, fee),
+            zaiToken.transferFrom(msg.sender, treasury, fee),
             "Transfer to treasury failed"
         );
         
@@ -121,7 +121,7 @@ contract DatasetRegistry is Ownable, ReentrancyGuard {
     /**
      * @dev Update dataset price and status (only owner)
      * @param datasetId ID of the dataset to update
-     * @param newPrice New price in IMT tokens
+     * @param newPrice New price in ZAI tokens
      * @param active Whether the dataset should be active
      */
     function updateDataset(

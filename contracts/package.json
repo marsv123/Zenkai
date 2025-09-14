@@ -1,7 +1,8 @@
 {
-  "name": "zatori-contracts",
+  "name": "zenkai-contracts",
   "version": "1.0.0",
-  "description": "Smart contracts for Zatori intelligence marketplace",
+  "type": "module",
+  "description": "Smart contracts for Zenkai intelligence marketplace",
   "scripts": {
     "build": "hardhat compile",
     "deploy": "hardhat run scripts/deploy.ts --network z0g",
