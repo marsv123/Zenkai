@@ -320,7 +320,7 @@ export default function Home() {
                 route: "/dashboard?tab=monetize"
               },
               {
-                title: "Compose your AI",
+                title: "Build your AI",
                 description: "Assemble your AI model from modular building blocks, tailored to your needs.",
                 icon: Brain,
                 route: "/compose"
