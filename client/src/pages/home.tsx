@@ -347,6 +347,8 @@ export default function Home() {
                 <div className="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
                   {step.title === "Monetize your data" ? (
                     <span className="text-3xl font-bold text-primary-foreground">$</span>
+                  ) : step.title === "Tokenize your AI" ? (
+                    <span className="text-3xl font-bold text-primary-foreground">⚬</span>
                   ) : (
                     <step.icon className="w-8 h-8 text-primary-foreground" />
                   )}
