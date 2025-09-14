@@ -303,7 +303,7 @@ export default function Home() {
           
           <div className="grid md:grid-cols-1 gap-8">
             {/* Step 2: Discover */}
-            <div className="text-center glass-cyber hover-cyber p-8 rounded-2xl transition-all duration-500 group">
+            <div className="text-center glass-cyber hover-cyber p-8 rounded-2xl transition-all duration-500 group max-w-md mx-auto">
               <div className="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
                 <Store className="w-8 h-8 text-primary-foreground" />
               </div>
@@ -312,19 +312,6 @@ export default function Home() {
               </h4>
               <p className="text-base text-foreground/80 leading-relaxed">
                 Browse curated datasets and purchase using IMT tokens.
-              </p>
-            </div>
-
-            {/* Step 3: Build */}
-            <div className="text-center glass-cyber hover-cyber p-8 rounded-2xl transition-all duration-500 group">
-              <div className="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                <Wand2 className="w-8 h-8 text-primary-foreground" />
-              </div>
-              <h4 className="text-xl font-semibold gradient-text-cyber mb-4">
-                Build the Future
-              </h4>
-              <p className="text-base text-foreground/80 leading-relaxed">
-                Create AI applications powered by decentralized intelligence.
               </p>
             </div>
           </div>
