@@ -301,33 +301,56 @@ export default function Home() {
             </p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8">
-            {/* Step 1: Share */}
-            <div className="text-center glass-cyber hover-cyber p-8 rounded-2xl transition-all duration-500 group">
-              <div className="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                <Upload className="w-8 h-8 text-primary-foreground" />
-              </div>
-              <h4 className="text-xl font-semibold gradient-text-cyber mb-4">
-                Upload Datasets
-              </h4>
-              <p className="text-base text-foreground/80 leading-relaxed">
-                Share your data on IPFS, set pricing, and earn from every download.
-              </p>
-            </div>
-
-
-            {/* Step 3: Build */}
-            <div className="text-center glass-cyber hover-cyber p-8 rounded-2xl transition-all duration-500 group">
-              <div className="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                <Wand2 className="w-8 h-8 text-primary-foreground" />
-              </div>
-              <h4 className="text-xl font-semibold gradient-text-cyber mb-4">
-                Build the Future
-              </h4>
-              <p className="text-base text-foreground/80 leading-relaxed">
-                Create AI applications powered by decentralized intelligence.
-              </p>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+            {[
+              {
+                title: "Upload your data",
+                description: "Publish your dataset to IPFS, secure ownership on-chain, and make it available to the intelligence economy.",
+                icon: Upload,
+                route: "/upload"
+              },
+              {
+                title: "Monetize your data",
+                description: "Set your price in ZAI, track demand, and earn every time your dataset is used.",
+                icon: TrendingUp,
+                route: "/dashboard?tab=monetize"
+              },
+              {
+                title: "Compose your AI",
+                description: "Assemble your model from modular building blocks — define its logic before training.",
+                icon: Brain,
+                route: "/compose"
+              },
+              {
+                title: "Train your AI",
+                description: "Feed your model with datasets and run a demo to test performance.",
+                icon: Zap,
+                route: "/train"
+              },
+              {
+                title: "Tokenize your AI",
+                description: "Turn your AI into an investable asset. Register it, set a query price in ZAI, and open it to the marketplace.",
+                icon: Shield,
+                route: "/tokenize"
+              }
+            ].map((step, index) => (
+              <Link
+                key={index}
+                href={step.route}
+                className="text-center glass-cyber hover-cyber p-8 rounded-2xl transition-all duration-500 group cursor-pointer"
+                data-testid={`card-${step.title.toLowerCase().replace(/\s+/g, '-')}`}
+              >
+                <div className="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+                  <step.icon className="w-8 h-8 text-primary-foreground" />
+                </div>
+                <h4 className="text-xl font-semibold gradient-text-cyber mb-4">
+                  {step.title}
+                </h4>
+                <p className="text-base text-foreground/80 leading-relaxed">
+                  {step.description}
+                </p>
+              </Link>
+            ))}
           </div>
         </div>
         {/* Ambient background effects */}

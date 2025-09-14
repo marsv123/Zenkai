@@ -1,0 +1,45 @@
+Please update the “How It Works” section of the ZatorAI dApp.
+
+Currently it has 3 cards (“Upload Datasets”, “Discover Intelligence”, “Build the Future”). Replace them with 5 cards that reflect the actual ZatorAI customer journey.
+
+⚠️ Important: Do not change any of the existing design system — keep the same colors, typography, spacing, animations, and overall layout. Only update the content and functionality.
+
+🔹 New Journey Steps (Cards)
+
+① Upload your data
+Text: “Publish your dataset to IPFS, secure ownership on-chain, and make it available to the intelligence economy.”
+On click → Navigate to /upload.
+
+② Monetize your data
+Text: “Set your price in ZAI, track demand, and earn every time your dataset is used.”
+On click → Navigate to /dashboard?tab=monetize.
+
+③ Compose your AI
+Text: “Assemble your model from modular building blocks — define its logic before training.”
+On click → Navigate to /compose.
+👉 Add a placeholder page /compose with dummy pipeline UI (cards/blocks).
+
+④ Train your AI
+Text: “Feed your model with datasets and run a demo to test performance.”
+On click → Navigate to /train.
+👉 Add a placeholder page /train with dataset selector + fake accuracy output.
+
+⑤ Tokenize your AI
+Text: “Turn your AI into an investable asset. Register it, set a query price in ZAI, and open it to the marketplace.”
+On click → Navigate to /tokenize.
+👉 Add a placeholder page /tokenize with form: model name, endpoint URL, price per query.
+
+🔹 Implementation Notes
+
+Keep all styling/design consistent with the current cards (no color/typography/layout changes).
+
+Render the 5 cards dynamically from a config array (title, description, route).
+
+Ensure each card links correctly to its route.
+
+For /compose, /train, /tokenize → scaffold minimal placeholder pages so judges can click through.
+
+🔹 Deliverable
+
+The “How It Works” section should now show 5 clickable cards that guide users through the ZatorAI journey.
+Design stays exactly the same as current; only text, number of cards, and routing change.
