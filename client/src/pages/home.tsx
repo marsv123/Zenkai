@@ -191,8 +191,8 @@ export default function Home() {
               <span className="gradient-text-zen animate-text-glow-reveal">
                 {fullText.slice(0, visibleChars)}
               </span>
-              <span className={`inline-block w-0.5 h-6 md:h-7 lg:h-8 bg-primary ml-1 transition-opacity duration-100 ${showCursor ? 'opacity-100' : 'opacity-0'}`}>
-                {/* Blinking cursor */}
+              <span className="gradient-text-zen animate-pulse ml-1">
+                ...
               </span>
             </p>
             
