@@ -407,7 +407,7 @@ export default function Home() {
                 <Github className="w-6 h-6 text-primary-foreground" />
               </div>
               <h4 className="font-medium gradient-text-zen mb-2">GitHub</h4>
-              <p className="text-sm text-foreground/60">https://github.com/marsv123/Zenkai</p>
+              <p className="text-sm text-foreground/60">GitHub Repo</p>
             </a>
 
             <a
