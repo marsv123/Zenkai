@@ -215,36 +215,7 @@ export default function Home() {
             
           </div>
           
-          {/* CTA Section */}
-          <div className="glass-cyber p-12 rounded-3xl mb-12">
-            <p className="text-lg font-medium gradient-text-cyber mb-8 max-w-4xl mx-auto leading-relaxed">
-              Powered by 0G's AI-native blockchain, Zenkai fuses data and intelligence into a decentralized, scalable marketplace of intelligence.
-              Participants can rent datasets or seamlessly compose, train, and tokenize AI models within one unified dApp. Every contribution carries built-in ownership, reputation, and monetization. As data compounds and models evolve, value creation accelerates, fueling continuous growth across the ecosystem.
-            </p>
-            
-            
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Link 
-                href="/marketplace"
-                className="gradient-primary hover-cyber px-10 py-4 rounded-xl font-medium text-primary-foreground transition-all duration-500 text-lg flex items-center justify-center space-x-3 group"
-                data-testid="button-get-started-marketplace"
-              >
-                <Store className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                <span>Explore Marketplace</span>
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-              {address && (
-                <Link 
-                  href="/upload"
-                  className="glass-panel hover-cyber px-10 py-4 rounded-xl font-medium text-foreground transition-all duration-500 text-lg flex items-center justify-center space-x-3 group border border-primary/30"
-                  data-testid="button-get-started-upload"
-                >
-                  <Upload className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                  <span>Upload Your First Dataset</span>
-                </Link>
-              )}
-            </div>
-          </div>
+          
           
         </div>
         
