@@ -325,9 +325,7 @@ export default function Home() {
             <h3 className="text-cyber-lg gradient-text-cyber mb-6">
               Ready to Join the Intelligence Economy?
             </h3>
-            <p className="text-zen text-accent/80 mb-12 max-w-2xl mx-auto">
-              Start trading datasets on the decentralized marketplace
-            </p>
+            
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Link 
                 href="/marketplace"
