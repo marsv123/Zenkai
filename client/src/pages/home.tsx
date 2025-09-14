@@ -333,7 +333,7 @@ export default function Home() {
               },
               {
                 title: "Tokenize your AI",
-                description: "Turn your AI model into an investable asset on our marketplace, by tokenizing it.",
+                description: "Turn your AI model into an investable asset, by tokenizing it on Zenkai.",
                 icon: Shield,
                 route: "/tokenize"
               }
