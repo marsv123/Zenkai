@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import zenkaiLogoUrl from '@assets/Logo11_1757876955560.png';
+import zcashIconUrl from '@assets/zcash-icon-black_1757883096308.webp';
 
 // Dataset type definition for frontend
 interface Dataset {
@@ -348,7 +349,7 @@ export default function Home() {
                   {step.title === "Monetize your data" ? (
                     <span className="text-3xl font-bold text-primary-foreground">$</span>
                   ) : step.title === "Tokenize your AI" ? (
-                    <span className="text-4xl font-bold text-primary-foreground">◉</span>
+                    <img src={zcashIconUrl} alt="Token" className="w-8 h-8 filter brightness-0 invert" />
                   ) : (
                     <step.icon className="w-8 h-8 text-primary-foreground" />
                   )}
