@@ -1,0 +1,12 @@
+{
+  "ZAI": "0x604966d7123963291058c323B19D293335EcC92a",
+  "ContributorNFT": "0x2A96200Cdd3195aA9b2B4E6D8a986c942aaa207D",
+  "DatasetRegistry": null,
+  "demoWallets": {
+    "wallet1": "0x742d35Cc6634C0532925a3b8D0CaC5E5e8b8e4C8",
+    "wallet2": "0x83B7c4c8f3a3e9f2e7b6c5d4a3b2c1f0e9d8c7b6"
+  },
+  "chainId": 16601,
+  "deployedAt": "2025-09-14T21:46:29.142Z",
+  "status": "partial"
+}
