@@ -397,7 +397,7 @@ export default function Home() {
             </a>
 
             <a
-              href="https://github.com/yourrepo"
+              href="https://github.com/marsv123/Zenkai"
               target="_blank"
               rel="noopener noreferrer"
               className="text-center glass-cyber hover-cyber p-6 rounded-2xl transition-all duration-500 group"
@@ -407,7 +407,7 @@ export default function Home() {
                 <Github className="w-6 h-6 text-primary-foreground" />
               </div>
               <h4 className="font-medium gradient-text-zen mb-2">GitHub</h4>
-              <p className="text-sm text-foreground/60">github.com/yourrepo</p>
+              <p className="text-sm text-foreground/60">https://github.com/marsv123/Zenkai</p>
             </a>
 
             <a
