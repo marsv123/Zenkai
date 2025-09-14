@@ -264,7 +264,7 @@ export default function Home() {
         <div className="container mx-auto max-w-6xl relative z-10">
           <div className="text-center mb-16">
             <h3 className="text-cyber-lg gradient-text-cyber mb-6">
-              What is Zenkai
+              What is Zenkai?
             </h3>
             <p className="text-zen text-accent/80 max-w-2xl mx-auto mb-8">
               Powered by 0G's AI-native blockchain, Zenkai fuses data and intelligence into a decentralized, scalable marketplace of intelligence.
