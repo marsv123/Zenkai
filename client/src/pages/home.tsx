@@ -327,7 +327,7 @@ export default function Home() {
               },
               {
                 title: "Train your AI",
-                description: "Train your AI with datasets to test and improve performance.",
+                description: "Feed your AI models with datasets to improve performance.",
                 icon: Zap,
                 route: "/train"
               },
