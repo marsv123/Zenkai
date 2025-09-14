@@ -205,7 +205,35 @@ export default function Home() {
             </p>
           </div>
           
-          
+          {/* CTA Section */}
+          <div className="glass-cyber p-12 rounded-3xl mb-12">
+            <h3 className="text-4xl font-bold gradient-text-cyber mb-6">
+              Dive into the intelligence economy.
+            </h3>
+            
+            
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+              <Link 
+                href="/marketplace"
+                className="gradient-primary hover-cyber px-10 py-4 rounded-xl font-medium text-primary-foreground transition-all duration-500 text-lg flex items-center justify-center space-x-3 group"
+                data-testid="button-get-started-marketplace"
+              >
+                <Store className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                <span>Explore Marketplace</span>
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Link>
+              {address && (
+                <Link 
+                  href="/upload"
+                  className="glass-panel hover-cyber px-10 py-4 rounded-xl font-medium text-foreground transition-all duration-500 text-lg flex items-center justify-center space-x-3 group border border-primary/30"
+                  data-testid="button-get-started-upload"
+                >
+                  <Upload className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                  <span>Upload Your First Dataset</span>
+                </Link>
+              )}
+            </div>
+          </div>
           
         </div>
         
