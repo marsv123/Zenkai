@@ -208,7 +208,7 @@ export default function Home() {
           {/* Premium Cyberpunk CTAs */}
           <div className="flex flex-col sm:flex-row gap-6 justify-center mb-20">
             
-            {address ? (
+            {address && (
               <Link 
                 href="/upload"
                 className="glass-cyber hover-cyber px-10 py-4 rounded-xl font-medium text-foreground transition-all duration-500 text-lg flex items-center space-x-3 group border border-primary/30"
@@ -217,14 +217,6 @@ export default function Home() {
                 <Upload className="w-5 h-5 group-hover:scale-110 transition-transform" />
                 <span>Upload Dataset</span>
               </Link>
-            ) : (
-              <button 
-                className="glass-panel px-10 py-4 rounded-xl text-muted-foreground cursor-not-allowed text-lg flex items-center space-x-3"
-                disabled
-              >
-                <Wallet className="w-5 h-5" />
-                <span>Connect Wallet</span>
-              </button>
             )}
           </div>
           
