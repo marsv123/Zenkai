@@ -315,7 +315,7 @@ export default function Home() {
               },
               {
                 title: "Monetize your data",
-                description: "Set your price in ZAI, track demand, and earn every time your dataset is used.",
+                description: "Set your price in ZAI - Zenkai`s native token - and earn very thime your dataset is used.",
                 icon: TrendingUp,
                 route: "/dashboard?tab=monetize"
               },
