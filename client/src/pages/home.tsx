@@ -293,7 +293,7 @@ export default function Home() {
         <div className="container mx-auto max-w-6xl relative z-10">
           <div className="text-center mb-16">
             <h3 className="text-cyber-lg gradient-text-cyber mb-6">
-              How It Works
+              What is Zenkai
             </h3>
             <p className="text-zen text-accent/80 max-w-2xl mx-auto">
               Simple steps to join the decentralized intelligence economy
