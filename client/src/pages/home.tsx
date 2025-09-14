@@ -301,20 +301,7 @@ export default function Home() {
             </p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8">
-            {/* Step 1: Share */}
-            <div className="text-center glass-cyber hover-cyber p-8 rounded-2xl transition-all duration-500 group">
-              <div className="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                <Upload className="w-8 h-8 text-primary-foreground" />
-              </div>
-              <h4 className="text-xl font-semibold gradient-text-cyber mb-4">
-                Upload Datasets
-              </h4>
-              <p className="text-base text-foreground/80 leading-relaxed">
-                Share your data on IPFS, set pricing, and earn from every download.
-              </p>
-            </div>
-
+          <div className="grid md:grid-cols-2 gap-8">
             {/* Step 2: Discover */}
             <div className="text-center glass-cyber hover-cyber p-8 rounded-2xl transition-all duration-500 group">
               <div className="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
