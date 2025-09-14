@@ -322,7 +322,12 @@ export default function Home() {
       <section className="py-20 px-4 text-center border-t border-primary/20 relative overflow-hidden">
         <div className="container mx-auto max-w-4xl relative z-10">
           <div className="glass-cyber p-12 rounded-3xl">
-            
+            <h3 className="text-4xl font-bold gradient-text-cyber mb-6">
+              Ready to Join the Intelligence Economy?
+            </h3>
+            <p className="text-xl text-foreground/80 mb-12 max-w-2xl mx-auto leading-relaxed">
+              Start exploring datasets or contribute your own data to earn in the decentralized AI marketplace.
+            </p>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Link 
@@ -334,7 +339,7 @@ export default function Home() {
                 <span>Explore Marketplace</span>
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
-              {address ? (
+              {address && (
                 <Link 
                   href="/upload"
                   className="glass-panel hover-cyber px-10 py-4 rounded-xl font-medium text-foreground transition-all duration-500 text-lg flex items-center justify-center space-x-3 group border border-primary/30"
