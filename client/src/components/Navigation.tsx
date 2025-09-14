@@ -57,10 +57,10 @@ export default function Navigation() {
                   <button
                     onClick={connected ? openAccountModal : openConnectModal}
                     className="cursor-pointer group text-cyber-lg font-display transition-all duration-500 text-white hover:text-[hsl(22_100%_60%)] active:text-[hsl(16_100%_55%)]"
-                    data-testid="nav-kaizen"
+                    data-testid="nav-zenkai"
                     aria-label={connected ? 'Manage Wallet' : 'Connect Wallet'}
                   >
-                    Kaizen
+                    Zenkai
                   </button>
                 );
               }}
