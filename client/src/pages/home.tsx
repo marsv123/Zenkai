@@ -309,7 +309,7 @@ export default function Home() {
             {[
               {
                 title: "Upload your data",
-                description: "Publish your dataset to IPFS, secure ownership on-chain, and make it available to the intelligence economy.",
+                description: "Upload your dataset, secure ownership and make it availabale on our intelligence marketplace.",
                 icon: Upload,
                 route: "/upload"
               },
