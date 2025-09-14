@@ -321,7 +321,7 @@ export default function Home() {
               },
               {
                 title: "Compose your AI",
-                description: "Assemble your model from modular building blocks — define its logic before training.",
+                description: "Asssemble your AI model from modular building blocks according to your needs",
                 icon: Brain,
                 route: "/compose"
               },
