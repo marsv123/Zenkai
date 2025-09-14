@@ -315,18 +315,6 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Step 2: Discover */}
-            <div className="text-center glass-cyber hover-cyber p-8 rounded-2xl transition-all duration-500 group">
-              <div className="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                <Store className="w-8 h-8 text-primary-foreground" />
-              </div>
-              <h4 className="text-xl font-semibold gradient-text-cyber mb-4">
-                Discover Intelligence
-              </h4>
-              <p className="text-base text-foreground/80 leading-relaxed">
-                Browse curated datasets and purchase using IMT tokens.
-              </p>
-            </div>
 
             {/* Step 3: Build */}
             <div className="text-center glass-cyber hover-cyber p-8 rounded-2xl transition-all duration-500 group">
@@ -347,34 +335,6 @@ export default function Home() {
         <div className="absolute bottom-1/4 right-0 w-56 h-56 bg-primary/5 rounded-full blur-3xl" />
       </section>
 
-      {/* === CYBERPUNK FOOTER CTA === */}
-      <section className="py-20 px-4 text-center border-t border-primary/20 relative overflow-hidden">
-        <div className="container mx-auto max-w-4xl relative z-10">
-          <div className="glass-cyber p-12 rounded-3xl">
-            <h3 className="text-4xl font-bold gradient-text-cyber mb-6">
-              Dive into the intelligence economy.
-            </h3>
-            
-            
-            <div className="flex justify-center">
-              {address && (
-                <Link 
-                  href="/upload"
-                  className="glass-panel hover-cyber px-10 py-4 rounded-xl font-medium text-foreground transition-all duration-500 text-lg flex items-center justify-center space-x-3 group border border-primary/30"
-                  data-testid="button-get-started-upload"
-                >
-                  <Upload className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                  <span>Upload Your First Dataset</span>
-                </Link>
-              )}
-            </div>
-          </div>
-        </div>
-        {/* Ambient background effects */}
-        <div className="absolute inset-0 bg-gradient-radial from-primary/10 via-transparent to-transparent" />
-        <div className="absolute top-0 left-1/4 w-72 h-72 bg-accent/5 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}} />
-      </section>
     </div>
   );
 }
