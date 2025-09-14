@@ -310,7 +310,7 @@ function SearchAndFilters({
   ];
 
   return (
-    <div className="glass-panel p-6 mb-8">
+    <div className="glass-cyber hover-cyber p-6 mb-8" data-testid="search-filters-panel">
       <div className="flex flex-col lg:flex-row gap-6">
         
         {/* Search Bar */}
@@ -527,10 +527,13 @@ function SearchAndFilters({
 // Platform Overview Hero Component
 function PlatformOverviewHero({ onExploreClick }: { onExploreClick: () => void }) {
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative overflow-hidden glass-cyber" data-testid="marketplace-hero">
       {/* Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-br from-background via-background/95 to-primary/5"></div>
       <div className="absolute inset-0 bg-cyber-grid opacity-10"></div>
+      {/* Ambient glow effects */}
+      <div className="absolute top-1/4 left-0 w-48 h-48 bg-accent/5 rounded-full blur-3xl" />
+      <div className="absolute bottom-1/4 right-0 w-56 h-56 bg-primary/5 rounded-full blur-3xl" />
       
       <div className="relative container mx-auto px-4 lg:px-6 py-16 lg:py-24">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -544,22 +547,22 @@ function PlatformOverviewHero({ onExploreClick }: { onExploreClick: () => void }
                   <br />
                   <span className="text-accent">Marketplace</span>
                 </h1>
-                <p className="text-xl lg:text-2xl text-muted-foreground font-light leading-relaxed">
+                <p className="text-xl lg:text-2xl text-accent/90 font-light leading-relaxed max-w-3xl">
                   Discover, acquire, and trade AI datasets on the most advanced decentralized platform
                 </p>
               </div>
               
-              <div className="flex flex-wrap gap-4">
-                <div className="flex items-center space-x-2 text-sm">
-                  <Shield className="w-5 h-5 text-primary" />
+              <div className="flex flex-wrap gap-6">
+                <div className="flex items-center space-x-2 text-sm hover:scale-105 transition-transform duration-300" data-testid="feature-blockchain">
+                  <Shield className="w-5 h-5 text-primary hover:scale-110 transition-transform" />
                   <span className="text-foreground font-medium">Blockchain Secured</span>
                 </div>
-                <div className="flex items-center space-x-2 text-sm">
-                  <Zap className="w-5 h-5 text-accent" />
+                <div className="flex items-center space-x-2 text-sm hover:scale-105 transition-transform duration-300" data-testid="feature-ai">
+                  <Zap className="w-5 h-5 text-accent hover:scale-110 transition-transform" />
                   <span className="text-foreground font-medium">AI Enhanced</span>
                 </div>
-                <div className="flex items-center space-x-2 text-sm">
-                  <Database className="w-5 h-5 text-secondary" />
+                <div className="flex items-center space-x-2 text-sm hover:scale-105 transition-transform duration-300" data-testid="feature-network">
+                  <Database className="w-5 h-5 text-secondary hover:scale-110 transition-transform" />
                   <span className="text-foreground font-medium">0G Network</span>
                 </div>
               </div>
@@ -567,27 +570,27 @@ function PlatformOverviewHero({ onExploreClick }: { onExploreClick: () => void }
             
             <div className="flex flex-col sm:flex-row gap-4">
               <button 
-                className="btn-primary text-lg px-8 py-4 group" 
+                className="btn-primary hover-cyber text-lg px-8 py-4 group" 
                 data-testid="button-explore-datasets"
                 onClick={onExploreClick}
               >
-                <Search className="w-5 h-5 mr-3" />
+                <Search className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
                 Explore Datasets
                 <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" />
               </button>
-              <Link href="/how-it-works">
-                <button className="btn-ghost text-lg px-8 py-4 border border-accent/30 hover:border-accent" data-testid="button-learn-more">
-                  <Eye className="w-5 h-5 mr-3" />
+              <Button asChild variant="ghost" className="hover-cyber text-lg px-8 py-4 border border-accent/30 hover:border-accent" data-testid="button-learn-more">
+                <Link href="/how-it-works">
+                  <Eye className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
                   Learn More
-                </button>
-              </Link>
+                </Link>
+              </Button>
             </div>
           </div>
           
           {/* Platform Stats */}
           <div className="space-y-8">
-            <div className="glass-panel p-8 space-y-6">
-              <h3 className="text-2xl font-display font-semibold text-foreground mb-6">
+            <div className="glass-cyber hover-cyber p-8 space-y-6" data-testid="platform-metrics">
+              <h3 className="text-2xl font-display font-semibold gradient-text-cyber mb-6">
                 Platform Metrics
               </h3>
               
@@ -1058,10 +1061,10 @@ export default function Marketplace() {
         {/* Load More Section */}
         {filteredDatasets.length > 0 && (
           <div className="text-center mt-12">
-            <div className="inline-flex items-center space-x-2 px-6 py-3 rounded-full glass-panel">
+            <div className="inline-flex items-center space-x-2 px-6 py-3 rounded-full glass-cyber hover-cyber" data-testid="realtime-status">
               <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
               <span className="text-sm font-accent text-muted-foreground">
-                Real-time data from the zatorai network
+                Real-time data from the 0G network
               </span>
             </div>
           </div>
