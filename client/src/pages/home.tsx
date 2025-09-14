@@ -205,18 +205,7 @@ export default function Home() {
             </p>
           </div>
           
-          {/* Premium Cyberpunk CTAs */}
-          <div className="flex justify-center mb-20">
-            <Link 
-              href="/marketplace"
-              className="gradient-primary hover-cyber px-10 py-4 rounded-xl font-medium text-primary-foreground transition-all duration-500 text-lg flex items-center space-x-3 group"
-              data-testid="button-explore-marketplace"
-            >
-              <Store className="w-5 h-5 group-hover:scale-110 transition-transform" />
-              <span>Explore Marketplace</span>
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </div>
+          
           
         </div>
         
