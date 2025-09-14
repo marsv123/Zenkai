@@ -44,7 +44,7 @@ function FeaturedDatasetCard({ dataset }: { dataset: Dataset }) {
         </div>
         <div className="ml-6">
           <div className="gradient-primary px-4 py-2 text-primary-foreground text-lg font-bold rounded-xl">
-            {dataset.price} IMT
+            {dataset.price} ZAI
           </div>
         </div>
       </div>
@@ -99,7 +99,7 @@ export default function Home() {
   });
 
   const fullText = 'intelligence economy at scale';
-  const secondText = 'Zenkai is a decentralized intelligence economy designed to scale data and AI monetization become liquid, revenue-generating assets. Enabled and built on 0G Participants can securely upload, rent, and monetize datasets, while building, training, and tokenizing AI models in a single seamless dApp. Every contribution carries ownership, reputation, and exit liquidity. As data compounds, models improve, driving usage.';
+  const secondText = 'Kaizen is a decentralized intelligence economy designed to scale data and AI monetization become liquid, revenue-generating assets. Enabled and built on 0G Participants can securely upload, rent, and monetize datasets, while building, training, and tokenizing AI models in a single seamless dApp. Every contribution carries ownership, reputation, and exit liquidity. As data compounds, models improve, driving usage.';
 
   // Letter-by-letter typewriter effect
   useEffect(() => {
@@ -191,7 +191,7 @@ export default function Home() {
             <div className="relative">
               <img
                 src={zenkaiLogoUrl}
-                alt="zenkai - meditating samurai with glowing eyes"
+                alt="Kaizen - meditating samurai with glowing eyes"
                 className="w-48 h-48 md:w-64 md:h-64 lg:w-80 lg:h-80 hover-cyber transition-all duration-700"
                 loading="eager"
               />
@@ -259,28 +259,39 @@ export default function Home() {
         </section>
       )}
 
-      {/* === CYBERPUNK HOW IT WORKS === */}
+      {/* === WHAT IS KAIZEN === */}
       <section className="py-20 px-4 border-t border-primary/20 relative overflow-hidden">
         <div className="container mx-auto max-w-6xl relative z-10">
           <div className="text-center mb-16">
             <h3 className="text-cyber-lg gradient-text-cyber mb-6">
-              What is Zenkai?
+              What is Kaizen?
             </h3>
-            <p className="text-zen text-accent/80 max-w-2xl mx-auto mb-8">
-              Powered by 0G's AI-native blockchain, Zenkai fuses data and AI into a decentralized, scalable marketplace of intelligence.
-              Participants can rent datasets or build, train, and tokenize AI models within one seamless dApp. Every contribution carries built-in ownership, reputation, and monetization. As data compounds and models evolve, value creation accelerates, fueling continuous growth across the ecosystem.
-            </p>
-            
-            <div className="mb-8">
-              <Link 
-                href="/marketplace"
-                className="gradient-primary hover-cyber px-10 py-4 rounded-xl font-medium text-primary-foreground transition-all duration-500 text-lg inline-flex items-center justify-center space-x-3 group"
-                data-testid="button-get-started-marketplace"
-              >
-                <Store className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                <span>Explore Marketplace</span>
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
+          </div>
+          
+          <div className="max-w-4xl mx-auto">
+            <div className="glass-cyber hover-cyber p-12 rounded-3xl transition-all duration-500 group">
+              <div className="flex items-center justify-center mb-8">
+                <div className="w-20 h-20 gradient-primary rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Brain className="w-10 h-10 text-primary-foreground" />
+                </div>
+              </div>
+              
+              <p className="text-xl text-accent/90 leading-relaxed text-center max-w-3xl mx-auto mb-10">
+                Powered by 0G's AI-native blockchain, Kaizen fuses data and AI into a decentralized, scalable marketplace of intelligence.
+                Participants can rent datasets or build, train, and tokenize AI models within one seamless dApp. Every contribution carries built-in ownership, reputation, and monetization. As data compounds and models evolve, value creation accelerates, fueling continuous growth across the ecosystem.
+              </p>
+              
+              <div className="text-center">
+                <Link 
+                  href="/marketplace"
+                  className="gradient-primary hover-cyber px-10 py-4 rounded-xl font-medium text-primary-foreground transition-all duration-500 text-lg inline-flex items-center justify-center space-x-3 group"
+                  data-testid="button-get-started-marketplace"
+                >
+                  <Store className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                  <span>Explore Marketplace</span>
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div>
             </div>
           </div>
         </div>

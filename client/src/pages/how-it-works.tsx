@@ -8,14 +8,14 @@ export default function HowItWorks() {
       <section className="relative pt-32 pb-16 px-4 lg:px-6 overflow-hidden">
         <div className="container mx-auto max-w-4xl text-center relative z-10">
           <h1 className="text-cyber-xl gradient-text-cyber font-display mb-8">
-            How zenkai Works
+            How Kaizen Works
           </h1>
           <p className="text-zen gradient-text-zen font-accent tracking-wider mb-8">
             Simple steps to join the decentralized intelligence economy
           </p>
           <div className="glass-cyber p-8 rounded-2xl max-w-3xl mx-auto">
             <p className="text-lg md:text-xl text-foreground/90 leading-relaxed">
-              zenkai transforms how data meets AI, creating a decentralized marketplace 
+              Kaizen transforms how data meets AI, creating a decentralized marketplace 
               where intelligence becomes liquid and accessible to all builders in the ecosystem.
             </p>
           </div>
@@ -40,7 +40,7 @@ export default function HowItWorks() {
                 Upload Datasets
               </h3>
               <p className="text-base text-foreground/80 leading-relaxed mb-6">
-                Share your data on IPFS, set pricing in IMT tokens, and earn from every download. 
+                Share your data on IPFS, set pricing in ZAI tokens, and earn from every download. 
                 Your datasets are secured on the decentralized network with full ownership control.
               </p>
               <div className="space-y-3 text-sm text-muted-foreground">
@@ -50,7 +50,7 @@ export default function HowItWorks() {
                 </div>
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-accent rounded-full"></div>
-                  <span>Set IMT token pricing</span>
+                  <span>Set ZAI token pricing</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-accent rounded-full"></div>
@@ -68,7 +68,7 @@ export default function HowItWorks() {
                 Discover Intelligence
               </h3>
               <p className="text-base text-foreground/80 leading-relaxed mb-6">
-                Browse curated datasets from verified contributors. Purchase using IMT tokens 
+                Browse curated datasets from verified contributors. Purchase using ZAI tokens 
                 with transparent pricing and instant access to AI-ready data.
               </p>
               <div className="space-y-3 text-sm text-muted-foreground">
@@ -78,7 +78,7 @@ export default function HowItWorks() {
                 </div>
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-accent rounded-full"></div>
-                  <span>Purchase with IMT tokens</span>
+                  <span>Purchase with ZAI tokens</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-accent rounded-full"></div>
@@ -146,7 +146,7 @@ export default function HowItWorks() {
                 </li>
                 <li className="flex items-center space-x-2">
                   <div className="w-1 h-1 bg-primary rounded-full"></div>
-                  <span>IMT token-based payments</span>
+                  <span>ZAI token-based payments</span>
                 </li>
                 <li className="flex items-center space-x-2">
                   <div className="w-1 h-1 bg-primary rounded-full"></div>

@@ -14,7 +14,7 @@ export default function UploadDataset() {
               Upload Dataset
             </h1>
             <p className="text-xl text-muted-foreground">
-              Share your data with the world and earn IMT tokens
+              Share your data with the world and earn ZAI tokens
             </p>
           </div>
 
@@ -53,7 +53,7 @@ export default function UploadDataset() {
               <div>
                 <h4 className="font-semibold mb-2">3. Set your price</h4>
                 <p className="text-sm text-muted-foreground">
-                  Determine a fair price in IMT tokens based on the size, quality, and uniqueness of your dataset.
+                  Determine a fair price in ZAI tokens based on the size, quality, and uniqueness of your dataset.
                 </p>
               </div>
               <div>

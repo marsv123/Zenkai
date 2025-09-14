@@ -1,8 +1,8 @@
-# Zatori - Intelligence Marketplace on 0G
+# Kaizen - Intelligence Marketplace on 0G
 
 ## Overview
 
-Zatori is a decentralized intelligence marketplace built on the 0G Galileo testnet where datasets can be registered, rented, and consumed by AI systems. The platform enables secure trading of AI datasets using smart contracts and IPFS for decentralized storage. Users can register datasets with metadata, set pricing in IMT tokens, and purchase access to datasets through blockchain transactions. The platform includes AI-powered dataset summarization and a comprehensive review system.
+Kaizen is a decentralized intelligence marketplace built on the 0G Galileo testnet where datasets can be registered, rented, and consumed by AI systems. The platform enables secure trading of AI datasets using smart contracts and IPFS for decentralized storage. Users can register datasets with metadata, set pricing in ZAI tokens, and purchase access to datasets through blockchain transactions. The platform includes AI-powered dataset summarization and a comprehensive review system.
 
 ## User Preferences
 
@@ -27,7 +27,7 @@ Preferred communication style: Simple, everyday language.
 
 **Smart Contract Layer**
 - Hardhat development environment with TypeScript configuration
-- Three main contracts: IMT (ERC20 token), ContributorNFT (ERC721), and DatasetRegistry
+- Three main contracts: ZAI (ERC20 token), ContributorNFT (ERC721), and DatasetRegistry
 - DatasetRegistry manages dataset registration, pricing, and access control with 4% treasury fee
 - Deployment scripts configured for 0G Galileo testnet (Chain ID: 16601)
 - Contract ABI export system for frontend integration

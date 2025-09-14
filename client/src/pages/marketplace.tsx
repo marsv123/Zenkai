@@ -126,7 +126,7 @@ function DatasetListItem({ dataset }: { dataset: Dataset }) {
         {/* Price and Actions */}
         <div className="flex items-center space-x-4">
           <div className="px-4 py-2 bg-gradient-to-r from-primary to-secondary text-primary-foreground text-sm font-bold rounded-xl shadow-lg min-w-[100px] text-center">
-            {dataset.price} IMT
+            {dataset.price} ZAI
           </div>
           
           <div className="flex gap-2">
@@ -185,7 +185,7 @@ function DatasetCard({ dataset }: { dataset: Dataset }) {
           </div>
           <div className="ml-4 flex flex-col items-end space-y-2">
             <div className="px-4 py-2 bg-gradient-to-r from-primary to-secondary text-primary-foreground text-sm font-bold rounded-xl shadow-lg">
-              {dataset.price} IMT
+              {dataset.price} ZAI
             </div>
             {dataset.isActive && (
               <div className="flex items-center space-x-1 text-xs text-accent">
@@ -402,7 +402,7 @@ function SearchAndFilters({
           <div className="flex-1">
             <div className="space-y-3">
               <label className="text-sm font-medium text-foreground flex items-center space-x-2">
-                <span>Price Range (IMT)</span>
+                <span>Price Range (ZAI)</span>
                 <Filter className="w-4 h-4 text-muted-foreground" aria-hidden="true" />
               </label>
               <div className="flex items-center space-x-3">
