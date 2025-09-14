@@ -266,13 +266,38 @@ export default function Home() {
             <h3 className="text-cyber-lg gradient-text-cyber mb-6">
               What is Zenkai
             </h3>
-            <p className="text-zen text-accent/80 max-w-2xl mx-auto">
+            <p className="text-zen text-accent/80 max-w-2xl mx-auto mb-8">
               Powered by 0G's AI-native blockchain, Zenkai fuses data and intelligence into a decentralized, scalable marketplace of intelligence.
               Participants can rent datasets or build, train, and tokenize AI models within one seamless dApp. Every contribution carries built-in ownership, reputation, and monetization. As data compounds and models evolve, value creation accelerates, fueling continuous growth across the ecosystem.
             </p>
+            
+            <div className="mb-8">
+              <Link 
+                href="/marketplace"
+                className="gradient-primary hover-cyber px-10 py-4 rounded-xl font-medium text-primary-foreground transition-all duration-500 text-lg inline-flex items-center justify-center space-x-3 group"
+                data-testid="button-get-started-marketplace"
+              >
+                <Store className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                <span>Explore Marketplace</span>
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
           </div>
           
-          
+          <div className="grid md:grid-cols-1 gap-8">
+            {/* Step 2: Discover */}
+            <div className="text-center glass-cyber hover-cyber p-8 rounded-2xl transition-all duration-500 group max-w-md mx-auto">
+              <div className="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+                <Store className="w-8 h-8 text-primary-foreground" />
+              </div>
+              <h4 className="text-xl font-semibold gradient-text-cyber mb-4">
+                Discover Intelligence
+              </h4>
+              <p className="text-base text-foreground/80 leading-relaxed">
+                Browse curated datasets and purchase using IMT tokens.
+              </p>
+            </div>
+          </div>
         </div>
         {/* Ambient background effects */}
         <div className="absolute top-1/4 left-0 w-48 h-48 bg-accent/5 rounded-full blur-3xl" />
@@ -346,16 +371,7 @@ export default function Home() {
             </h3>
             
             
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Link 
-                href="/marketplace"
-                className="gradient-primary hover-cyber px-10 py-4 rounded-xl font-medium text-primary-foreground transition-all duration-500 text-lg flex items-center justify-center space-x-3 group"
-                data-testid="button-get-started-marketplace"
-              >
-                <Store className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                <span>Explore Marketplace</span>
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
+            <div className="flex justify-center">
               {address && (
                 <Link 
                   href="/upload"
