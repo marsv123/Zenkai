@@ -301,7 +301,7 @@ export default function Home() {
             </p>
           </div>
           
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-1 gap-8">
             {/* Step 2: Discover */}
             <div className="text-center glass-cyber hover-cyber p-8 rounded-2xl transition-all duration-500 group">
               <div className="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
