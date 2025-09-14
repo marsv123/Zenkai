@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAccount } from 'wagmi';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'wouter';
-import { Wallet, Upload, Store, User, ShoppingCart, Eye, Wand2, Star, TrendingUp, Database, ArrowRight, Zap, Brain, Network, Shield, Mail, Github, Twitter, MessageCircle } from 'lucide-react';
+import { Wallet, Upload, Store, User, ShoppingCart, Eye, Wand2, Star, TrendingUp, Database, ArrowRight, Zap, Brain, Network, Shield, Mail, Github, Twitter, MessageCircle, DollarSign } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -316,7 +316,7 @@ export default function Home() {
               {
                 title: "Monetize your data",
                 description: "Offer your datasets for AI training, set a price and earn with every use.",
-                icon: TrendingUp,
+                icon: DollarSign,
                 route: "/dashboard?tab=monetize"
               },
               {
