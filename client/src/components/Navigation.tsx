@@ -89,7 +89,7 @@ export default function Navigation() {
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
-                    className="glass-panel hover-cyber px-4 py-2 rounded-xl font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="glass-panel px-4 py-2 rounded-xl font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary"
                     data-testid="nav-menu"
                     aria-label="Navigation menu"
                   >
