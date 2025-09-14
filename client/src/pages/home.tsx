@@ -383,7 +383,7 @@ export default function Home() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-4xl mx-auto">
             <a
-              href="mailto:your@email.com"
+              href="mailto:vikingsmars@gmail.com"
               target="_blank"
               rel="noopener noreferrer"
               className="text-center glass-cyber hover-cyber p-6 rounded-2xl transition-all duration-500 group"
@@ -393,7 +393,7 @@ export default function Home() {
                 <Mail className="w-6 h-6 text-primary-foreground" />
               </div>
               <h4 className="font-medium gradient-text-zen mb-2">Email</h4>
-              <p className="text-sm text-foreground/60">your@email.com</p>
+              <p className="text-sm text-foreground/60">vikingsmars@gmail.com</p>
             </a>
 
             <a
