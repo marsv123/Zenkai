@@ -323,7 +323,7 @@ export default function Home() {
         <div className="container mx-auto max-w-4xl relative z-10">
           <div className="glass-cyber p-12 rounded-3xl">
             <h3 className="text-4xl font-bold gradient-text-cyber mb-6">
-              Ready to Join the Intelligence Economy?
+              Dive into the intelligence economy.
             </h3>
             
             
