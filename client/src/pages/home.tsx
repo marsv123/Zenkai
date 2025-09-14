@@ -277,7 +277,8 @@ export default function Home() {
               </div>
               
               <p className="text-xl text-accent/90 leading-relaxed text-center max-w-3xl mx-auto mb-10">
-                intelligence economy at scale
+                Powered by 0G's AI-native blockchain, Zenkai fuses data and AI into a decentralized, scalable marketplace of intelligence.
+                Participants can rent datasets or build, train, and tokenize AI models within one seamless dApp. Every contribution carries built-in ownership, reputation, and monetization. As data compounds and models evolve, value creation accelerates, fueling continuous growth across the ecosystem.
               </p>
               
               <div className="text-center">
