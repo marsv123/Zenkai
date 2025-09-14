@@ -35,7 +35,7 @@ export default function Navigation() {
             {/* Left: Empty space */}
             <div></div>
 
-            {/* Center: zenkai - Wallet Connection */}
+            {/* Center: Kaizen - Wallet Connection */}
             <ConnectButton.Custom>
               {({
                 account,
@@ -57,10 +57,10 @@ export default function Navigation() {
                   <button
                     onClick={connected ? openAccountModal : openConnectModal}
                     className="cursor-pointer group text-cyber-lg font-display transition-all duration-500 text-white hover:text-[hsl(22_100%_60%)] active:text-[hsl(16_100%_55%)]"
-                    data-testid="nav-zenkai"
+                    data-testid="nav-kaizen"
                     aria-label={connected ? 'Manage Wallet' : 'Connect Wallet'}
                   >
-                    zenkai
+                    Kaizen
                   </button>
                 );
               }}
