@@ -195,11 +195,7 @@ export default function Home() {
                 {/* Blinking cursor */}
               </span>
             </p>
-            <p className="text-sm md:text-base lg:text-lg leading-relaxed font-mono max-w-4xl mx-auto">
-              <span className={`inline-block w-0.5 h-4 md:h-5 lg:h-6 bg-primary ml-1 transition-opacity duration-100 ${showCursor2 ? 'opacity-100' : 'opacity-0'}`}>
-                {/* Second blinking cursor */}
-              </span>
-            </p>
+            
           </div>
           
           {/* CTA Section */}
