@@ -325,9 +325,7 @@ export default function Home() {
             <h3 className="text-4xl font-bold gradient-text-cyber mb-6">
               Ready to Join the Intelligence Economy?
             </h3>
-            <p className="text-xl text-foreground/80 mb-12 max-w-2xl mx-auto leading-relaxed">
-              Start exploring datasets or contribute your own data to earn in the decentralized AI marketplace.
-            </p>
+            
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Link 
