@@ -322,9 +322,7 @@ export default function Home() {
       <section className="py-20 px-4 text-center border-t border-primary/20 relative overflow-hidden">
         <div className="container mx-auto max-w-4xl relative z-10">
           <div className="glass-cyber p-12 rounded-3xl">
-            <h3 className="text-cyber-lg gradient-text-cyber mb-6">
-              Ready to Join the Intelligence Economy?
-            </h3>
+            
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Link 
