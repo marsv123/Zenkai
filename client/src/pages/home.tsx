@@ -345,7 +345,11 @@ export default function Home() {
                 data-testid={`card-${step.title.toLowerCase().replace(/\s+/g, '-')}`}
               >
                 <div className="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                  <step.icon className="w-8 h-8 text-primary-foreground" />
+                  {step.title === "Monetize your data" ? (
+                    <span className="text-3xl font-bold text-primary-foreground">$</span>
+                  ) : (
+                    <step.icon className="w-8 h-8 text-primary-foreground" />
+                  )}
                 </div>
                 <h4 className="text-xl font-semibold gradient-text-cyber mb-4">
                   {step.title}
