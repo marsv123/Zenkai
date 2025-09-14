@@ -343,14 +343,6 @@ export default function Home() {
                   <Upload className="w-5 h-5 group-hover:scale-110 transition-transform" />
                   <span>Upload Your First Dataset</span>
                 </Link>
-              ) : (
-                <button 
-                  className="glass-panel px-10 py-4 rounded-xl text-muted-foreground cursor-not-allowed text-lg flex items-center justify-center space-x-3"
-                  disabled
-                >
-                  <Wallet className="w-5 h-5" />
-                  <span>Connect Wallet to Upload</span>
-                </button>
               )}
             </div>
           </div>
