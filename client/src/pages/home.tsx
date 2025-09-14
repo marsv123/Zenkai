@@ -424,19 +424,6 @@ export default function Home() {
               <p className="text-sm text-foreground/60">@VikingMars</p>
             </a>
 
-            <a
-              href="https://discord.gg/yourinvite"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-center glass-cyber hover-cyber p-6 rounded-2xl transition-all duration-500 group"
-              data-testid="link-discord"
-            >
-              <div className="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                <MessageCircle className="w-6 h-6 text-primary-foreground" />
-              </div>
-              <h4 className="font-medium gradient-text-zen mb-2">Discord</h4>
-              <p className="text-sm text-foreground/60">Join our server</p>
-            </a>
           </div>
         </div>
       </section>
