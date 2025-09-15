@@ -369,6 +369,46 @@ export default function Home() {
         <div className="absolute bottom-1/4 right-0 w-56 h-56 bg-primary/5 rounded-full blur-3xl" />
       </section>
 
+      {/* Platform Metrics Section */}
+      <section className="py-20 px-4 lg:px-6 border-t border-border relative overflow-hidden">
+        <div className="container mx-auto max-w-6xl relative z-10">
+          <div className="text-center mb-16">
+            <h3 className="text-cyber-lg gradient-text-cyber mb-6">
+              Platform Metrics
+            </h3>
+            <p className="text-zen text-accent/80 max-w-2xl mx-auto">
+              Real-time insights from the decentralized intelligence marketplace
+            </p>
+          </div>
+          
+          <div className="max-w-4xl mx-auto">
+            <div className="glass-cyber hover-cyber p-8 rounded-2xl">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div className="text-center">
+                  <div className="text-3xl lg:text-4xl font-bold gradient-text-cyber mb-2" data-testid="metric-datasets">1,247</div>
+                  <div className="text-sm text-muted-foreground">Datasets Available</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl lg:text-4xl font-bold gradient-text-cyber mb-2" data-testid="metric-downloads">23.4K</div>
+                  <div className="text-sm text-muted-foreground">Total Downloads</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl lg:text-4xl font-bold gradient-text-cyber mb-2" data-testid="metric-providers">567</div>
+                  <div className="text-sm text-muted-foreground">Active Providers</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl lg:text-4xl font-bold gradient-text-cyber mb-2" data-testid="metric-volume">$2.3M</div>
+                  <div className="text-sm text-muted-foreground">Volume Traded</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* Ambient background effects */}
+        <div className="absolute top-1/4 left-0 w-48 h-48 bg-accent/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 right-0 w-56 h-56 bg-primary/5 rounded-full blur-3xl" />
+      </section>
+
       {/* Get in Touch Section */}
       <section className="py-20 px-4 lg:px-6 border-t border-border">
         <div className="container mx-auto max-w-6xl">

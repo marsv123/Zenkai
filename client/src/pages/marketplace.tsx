@@ -555,33 +555,6 @@ function PlatformOverviewHero({ onExploreClick }: { onExploreClick: () => void }
             
           </div>
           
-          {/* Platform Stats */}
-          <div className="space-y-8">
-            <div className="glass-cyber hover-cyber p-8 space-y-6" data-testid="platform-metrics">
-              <h3 className="text-2xl font-display font-semibold gradient-text-cyber mb-6">
-                Platform Metrics
-              </h3>
-              
-              <div className="grid grid-cols-2 gap-6">
-                <div className="text-center">
-                  <div className="text-3xl font-bold gradient-text-cyber mb-2">1,247</div>
-                  <div className="text-sm text-muted-foreground">Datasets Available</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold gradient-text-cyber mb-2">23.4K</div>
-                  <div className="text-sm text-muted-foreground">Total Downloads</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold gradient-text-cyber mb-2">567</div>
-                  <div className="text-sm text-muted-foreground">Active Providers</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold gradient-text-cyber mb-2">$2.3M</div>
-                  <div className="text-sm text-muted-foreground">Volume Traded</div>
-                </div>
-              </div>
-            </div>
-          </div>
           
         </div>
       </div>
