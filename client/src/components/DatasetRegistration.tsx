@@ -324,11 +324,22 @@ export default function DatasetRegistration() {
 
   // Form validation helper
   const isFormValid = useCallback(() => {
-    return formData.uri.trim() !== '' && 
-           formData.uri.startsWith('ipfs://') &&
-           formData.title.trim() !== '' && 
-           formData.price.trim() !== '' && 
-           parseFloat(formData.price) > 0;
+    const uriValid = formData.uri.trim() !== '' && formData.uri.startsWith('ipfs://');
+    const titleValid = formData.title.trim() !== '';
+    const priceValid = formData.price.trim() !== '' && parseFloat(formData.price) > 0;
+    
+    // Debug logging for form validation
+    console.log('Form validation check:', {
+      uri: formData.uri,
+      uriValid,
+      title: formData.title,
+      titleValid,
+      price: formData.price,
+      priceValid,
+      overall: uriValid && titleValid && priceValid
+    });
+    
+    return uriValid && titleValid && priceValid;
   }, [formData]);
 
   // Reset form to initial state

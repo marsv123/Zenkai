@@ -4,7 +4,6 @@ import { useQuery } from '@tanstack/react-query';
 import { Link } from 'wouter';
 import { Wallet, Upload, Store, User, ShoppingCart, Eye, Wand2, Star, TrendingUp, Database, ArrowRight, Zap, Brain, Network, Shield, Mail, Github, Twitter, MessageCircle, DollarSign } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import zenkaiLogoUrl from '@assets/Logo11_1757876955560.png';
@@ -88,13 +87,72 @@ function FeaturedDatasetCard({ dataset }: { dataset: Dataset }) {
 
 export default function Home() {
   const { address, isConnected } = useAccount();
-  const { openConnectModal } = useConnectModal();
+  const [visibleChars, setVisibleChars] = useState(0);
+  const [showCursor, setShowCursor] = useState(true);
+  const [visibleChars2, setVisibleChars2] = useState(0);
+  const [showCursor2, setShowCursor2] = useState(false);
+  const [blinkingCursor, setBlinkingCursor] = useState(false);
   const [stats, setStats] = useState({
     datasetCount: 0,
     totalVolume: 0,
     contributorCount: 0,
     avgScore: 0
   });
+
+  const fullText = 'intelligence economy at scale.';
+  const secondText = 'Kaizen is a decentralized intelligence economy designed to scale data and AI monetization become liquid, revenue-generating assets. Enabled and built on 0G Participants can securely upload, rent, and monetize datasets, while building, training, and tokenizing AI models in a single seamless dApp. Every contribution carries ownership, reputation, and exit liquidity. As data compounds, models improve, driving usage.';
+
+  // Letter-by-letter typewriter effect
+  useEffect(() => {
+    const startDelay = setTimeout(() => {
+      let charIndex = 0;
+      const typeInterval = setInterval(() => {
+        if (charIndex <= fullText.length) {
+          setVisibleChars(charIndex);
+          charIndex++;
+        } else {
+          clearInterval(typeInterval);
+          // Hide cursor after first text is complete
+          setShowCursor(false);
+          // Remove blinking cursor - text is complete
+          setBlinkingCursor(false);
+          
+          // Start second text after 2 seconds
+          setTimeout(() => {
+            setShowCursor2(true);
+            let charIndex2 = 0;
+            const typeInterval2 = setInterval(() => {
+              if (charIndex2 <= secondText.length) {
+                setVisibleChars2(charIndex2);
+                charIndex2++;
+              } else {
+                clearInterval(typeInterval2);
+                // Hide second cursor immediately when complete
+                setShowCursor2(false);
+              }
+            }, 40); // Faster for the longer text
+          }, 2000); // 2 second pause between texts
+        }
+      }, 80); // 80ms between each character (machine-like speed)
+      
+      return () => clearInterval(typeInterval);
+    }, 800); // Initial delay before starting
+    
+    return () => {
+      clearTimeout(startDelay);
+    };
+  }, []);
+
+  // Matrix-style blinking cursor after typewriter finishes
+  useEffect(() => {
+    if (blinkingCursor) {
+      const cursorInterval = setInterval(() => {
+        setShowCursor(prev => !prev);
+      }, 530); // 530ms for Matrix-like blink speed
+
+      return () => clearInterval(cursorInterval);
+    }
+  }, [blinkingCursor]);
 
 
   // Fetch datasets from database API for stats only
@@ -144,37 +202,18 @@ export default function Home() {
           </div>
           
           {/* Enhanced Typography with Cyberpunk Styling */}
-          <div className="space-y-8 mb-12">
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-accent tracking-wide font-mono gradient-text-zen">
-              Marketplace: Explore, acquire, and utilize decentralized datasets and AI models.
-            </h1>
+          <div className="space-y-6 mb-6">
+            <p className="text-lg md:text-xl lg:text-2xl font-accent tracking-wider font-mono">
+              <span className="gradient-text-zen animate-text-glow-reveal">
+                {fullText.slice(0, visibleChars)}
+              </span>
+              {blinkingCursor && (
+                <span className={`inline-block w-0.5 h-6 md:h-7 lg:h-8 bg-primary ml-1 transition-opacity duration-100 ${showCursor ? 'opacity-100' : 'opacity-0'}`}>
+                  {/* Matrix-style blinking cursor */}
+                </span>
+              )}
+            </p>
             
-            {/* Three CTA Buttons Side by Side */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-4xl mx-auto">
-              <Button
-                onClick={openConnectModal}
-                disabled={isConnected}
-                className="gradient-primary hover-cyber px-8 py-4 text-lg font-medium text-primary-foreground transition-all duration-500 flex items-center space-x-2 group min-w-[200px]"
-                data-testid="button-connect-wallet-hero"
-              >
-                <Wallet className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                <span>{isConnected ? 'Wallet Connected' : 'Connect Wallet'}</span>
-              </Button>
-              
-              <Button asChild variant="ghost" className="glass-cyber hover-cyber px-8 py-4 text-lg font-medium border border-accent/30 hover:border-accent transition-all duration-500 flex items-center space-x-2 group min-w-[200px]" data-testid="button-explore-datasets-hero">
-                <Link href="/marketplace">
-                  <Database className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                  <span>Explore Datasets</span>
-                </Link>
-              </Button>
-              
-              <Button asChild variant="ghost" className="glass-cyber hover-cyber px-8 py-4 text-lg font-medium border border-accent/30 hover:border-accent transition-all duration-500 flex items-center space-x-2 group min-w-[200px]" data-testid="button-explore-ai-models-hero">
-                <Link href="/tokenize">
-                  <Brain className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                  <span>Explore AI Models</span>
-                </Link>
-              </Button>
-            </div>
           </div>
           
           
