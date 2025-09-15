@@ -157,7 +157,7 @@ export default function Navigation() {
                   <DropdownMenuSub>
                     <DropdownMenuSubTrigger 
                       data-testid="nav-ai-tools"
-                      className="bg-transparent hover:bg-transparent focus:bg-transparent text-foreground hover:text-foreground focus:text-foreground transition-colors"
+                      className="bg-transparent hover:bg-transparent focus:bg-transparent text-foreground hover:text-foreground focus:text-foreground data-[state=open]:text-foreground data-[highlighted]:text-foreground transition-colors"
                     >
                       AI Tools
                     </DropdownMenuSubTrigger>
