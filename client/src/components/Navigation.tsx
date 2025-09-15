@@ -15,6 +15,7 @@ import {
   DropdownMenuPortal,
   DropdownMenuSub,
 } from '@/components/ui/dropdown-menu';
+import content from '@/lib/config/content.json';
 
 export default function Navigation() {
   const [location, setLocation] = useLocation();
@@ -30,19 +31,23 @@ export default function Navigation() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Navigation items
-  const navItems = [
+  // Main navigation items
+  const mainNavItems = [
     { path: '/', label: 'Home', testId: 'nav-home' },
-    { path: '/marketplace', label: 'Marketplace', testId: 'nav-marketplace' },
-    { path: '/upload', label: 'Upload', testId: 'nav-upload' },
-    { path: '/dashboard', label: 'Dashboard', testId: 'nav-dashboard' }
+    { path: '/marketplace', label: 'Marketplace', testId: 'nav-marketplace' }
   ];
 
-  const aiItems = [
-    { path: '/compose', label: 'Compose AI', testId: 'nav-compose' },
-    { path: '/train', label: 'Train', testId: 'nav-train' },
-    { path: '/tokenize', label: 'Tokenize', testId: 'nav-tokenize' }
+  // How It Works submenu items
+  const howItWorksItems = [
+    { path: '/upload', label: content.navigation.upload, testId: 'nav-upload' },
+    { path: '/monetize', label: content.navigation.monetize, testId: 'nav-monetize' },
+    { path: '/build', label: content.navigation.build, testId: 'nav-build' },
+    { path: '/train', label: content.navigation.train, testId: 'nav-train' },
+    { path: '/tokenize', label: content.navigation.tokenize, testId: 'nav-tokenize' }
   ];
+
+  // Dashboard item (only visible when wallet is connected)
+  const dashboardItem = { path: '/dashboard', label: content.navigation.dashboard, testId: 'nav-dashboard' };
 
   const isActivePath = (path: string) => {
     return location === path || (path !== '/' && location.startsWith(path));
@@ -137,7 +142,7 @@ export default function Navigation() {
                   <DropdownMenuSeparator />
                   
                   {/* Main Navigation Items */}
-                  {navItems.map((item) => (
+                  {mainNavItems.map((item) => (
                     <DropdownMenuItem 
                       key={item.path}
                       onSelect={() => setLocation(item.path)}
@@ -153,20 +158,20 @@ export default function Navigation() {
 
                   <DropdownMenuSeparator />
 
-                  {/* AI Tools Submenu */}
+                  {/* How It Works Submenu */}
                   <DropdownMenuSub>
                     <DropdownMenuSubTrigger 
-                      data-testid="nav-ai-tools"
+                      data-testid="nav-how-it-works"
                       className="bg-transparent hover:bg-transparent focus:bg-transparent text-foreground hover:text-foreground focus:text-foreground data-[state=open]:text-foreground data-[highlighted]:text-foreground data-[state=open]:bg-transparent [&[data-highlighted]]:text-foreground [&[data-highlighted]]:bg-transparent [&[data-state=open]]:text-foreground [&[data-state=open]]:bg-transparent transition-colors"
                       style={{ color: 'hsl(var(--foreground))', backgroundColor: 'transparent' }}
                     >
-                      AI Tools
+                      How It Works
                     </DropdownMenuSubTrigger>
                     <DropdownMenuPortal>
                       <DropdownMenuSubContent 
                         className="glass-cyber border-primary/20"
                       >
-                        {aiItems.map((item) => (
+                        {howItWorksItems.map((item) => (
                           <DropdownMenuItem 
                             key={item.path}
                             onSelect={() => setLocation(item.path)}
@@ -182,6 +187,23 @@ export default function Navigation() {
                       </DropdownMenuSubContent>
                     </DropdownMenuPortal>
                   </DropdownMenuSub>
+
+                  {/* Dashboard (only when wallet connected) */}
+                  {address && (
+                    <>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem 
+                        onSelect={() => setLocation(dashboardItem.path)}
+                        className={`cursor-pointer hover:bg-muted/20 hover:text-foreground focus:bg-muted/20 focus:text-foreground transition-colors ${
+                          isActivePath(dashboardItem.path) ? 'bg-primary/10 text-primary' : ''
+                        }`}
+                        data-testid={dashboardItem.testId}
+                        aria-current={isActivePath(dashboardItem.path) ? 'page' : undefined}
+                      >
+                        {dashboardItem.label}
+                      </DropdownMenuItem>
+                    </>
+                  )}
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
