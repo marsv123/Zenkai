@@ -151,9 +151,70 @@
       "stakingRewardsDesc": "Rewards for token holders who stake"
     }
   },
-  "dashboard": {
-    "headline": "My Dashboard",
-    "subHeadline": "Manage your assets, track earnings, and monitor your reputation in the Zenkai ecosystem",
+  "homePage": {
+    "hero": {
+      "headline": "Intelligent agents driving an",
+      "subHeadline": "Zenkai is a decentralized intelligence economy designed to scale data and AI monetization. Datasets and models become liquid, revenue-generating assets. Enabled and built on 0G, participants can securely upload, rent, and monetize datasets, while building, training, and tokenizing AI models in a single seamless dApp. Every contribution carries ownership, reputation, and exit liquidity. As data compounds, models improve, driving usage.",
+      "primaryButton": "Get Started",
+      "secondaryButton": "Learn More"
+    },
+    "featuredDatasets": {
+      "title": "Featured Datasets",
+      "description": "Curated intelligence for AI innovation"
+    },
+    "about": {
+      "title": "About Zenkai",
+      "description": "Building the future of decentralized AI and data monetization"
+    },
+    "howItWorks": {
+      "title": "How It Works",
+      "description": "Simple steps to join the decentralized intelligence economy",
+      "steps": [
+        {
+          "title": "Upload Datasets",
+          "description": "Securely share your data with decentralized storage"
+        },
+        {
+          "title": "Discover Intelligence", 
+          "description": "Access diverse AI models and datasets in the marketplace"
+        },
+        {
+          "title": "Build the Future",
+          "description": "Create, train, and monetize AI models collaboratively"
+        }
+      ]
+    },
+    "metrics": {
+      "title": "Platform Metrics",
+      "description": "Real-time insights from the decentralized intelligence marketplace"
+    },
+    "contact": {
+      "title": "Get in touch",
+      "description": "Let's connect and build together"
+    }
+  },
+  "notFoundPage": {
+    "title": "404 Page Not Found",
+    "description": "Did you forget to add the page to the router?",
+    "homeButton": "Go Home"
+  },
+  "dashboardPage": {
+    "walletConnect": {
+      "title": "Connect Your Wallet", 
+      "description": "Connect your wallet to access your personal dashboard and manage your AI assets in the decentralized intelligence economy.",
+      "homeButton": "Return to Home"
+    },
+    "main": {
+      "title": "Your Dashboard",
+      "description": "Manage your AI assets and track your marketplace activity"
+    },
+    "tabs": {
+      "overview": "Overview",
+      "activity": "Activity", 
+      "earnings": "Earnings",
+      "assets": "Assets",
+      "reputation": "Reputation"
+    },
     "sections": {
       "overview": "Wallet Overview",
       "activity": "My Activity", 

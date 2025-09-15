@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import zenkaiLogoUrl from '@assets/Logo11_1757876955560.png';
 import zcashIconUrl from '@assets/zcash-icon-black_1757883096308.webp';
+import content from '@/lib/config/content.json';
 
 // Dataset type definition for frontend
 interface Dataset {
@@ -235,10 +236,10 @@ export default function Home() {
             <div className="flex flex-col md:flex-row items-center justify-between mb-16">
               <div>
                 <h3 className="text-cyber-lg gradient-text-cyber mb-3">
-                  Featured Datasets
+                  {content.homePage.featuredDatasets.title}
                 </h3>
                 <p className="text-zen text-accent/80">
-                  Curated intelligence for AI innovation
+                  {content.homePage.featuredDatasets.description}
                 </p>
               </div>
               <Link 
@@ -265,7 +266,7 @@ export default function Home() {
         <div className="container mx-auto max-w-6xl relative z-10">
           <div className="text-center mb-16">
             <h3 className="text-cyber-lg gradient-text-cyber mb-6">
-              About Zenkai
+              {content.homePage.about.title}
             </h3>
           </div>
           

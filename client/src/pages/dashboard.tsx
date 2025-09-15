@@ -94,13 +94,13 @@ export default function Dashboard() {
               <Wallet className="w-12 h-12 text-primary-foreground" />
             </div>
             <h2 className="text-4xl font-display font-bold gradient-text-cyber mb-6">
-              Connect Your Wallet
+              {content.dashboardPage.walletConnect.title}
             </h2>
             <p className="text-xl text-accent/90 leading-relaxed max-w-2xl mx-auto mb-8">
-              Connect your wallet to access your personal dashboard and manage your AI assets in the decentralized intelligence economy.
+              {content.dashboardPage.walletConnect.description}
             </p>
             <Button asChild className="gradient-primary hover-cyber font-display font-semibold text-lg px-8 py-4" data-testid="button-connect-wallet">
-              <Link href="/">Return to Home</Link>
+              <Link href="/">{content.dashboardPage.walletConnect.homeButton}</Link>
             </Button>
           </div>
         </div>
@@ -136,10 +136,10 @@ export default function Dashboard() {
             <div>
               <h1 className="text-4xl md:text-5xl font-display font-bold mb-4 gradient-text-cyber flex items-center">
                 <User className="w-10 h-10 md:w-12 md:h-12 mr-4 text-primary hover:scale-110 transition-transform duration-300" data-testid="icon-dashboard" />
-                Your Dashboard
+                {content.dashboardPage.main.title}
               </h1>
               <p className="text-xl md:text-2xl text-accent/90 leading-relaxed">
-                Manage your AI assets and track your marketplace activity
+                {content.dashboardPage.main.description}
               </p>
             </div>
             
@@ -156,23 +156,23 @@ export default function Dashboard() {
             <TabsList className="grid w-full lg:w-fit grid-cols-2 lg:grid-cols-5 mb-8 glass-cyber">
               <TabsTrigger value="overview" className="flex items-center" data-testid="tab-overview">
                 <BarChart3 className="w-4 h-4 mr-2" />
-                Overview
+                {content.dashboardPage.tabs.overview}
               </TabsTrigger>
               <TabsTrigger value="activity" className="flex items-center" data-testid="tab-activity">
                 <Activity className="w-4 h-4 mr-2" />
-                Activity
+                {content.dashboardPage.tabs.activity}
               </TabsTrigger>
               <TabsTrigger value="earnings" className="flex items-center" data-testid="tab-earnings">
                 <TrendingUp className="w-4 h-4 mr-2" />
-                Earnings
+                {content.dashboardPage.tabs.earnings}
               </TabsTrigger>
               <TabsTrigger value="assets" className="flex items-center" data-testid="tab-assets">
                 <Shield className="w-4 h-4 mr-2" />
-                Assets
+                {content.dashboardPage.tabs.assets}
               </TabsTrigger>
               <TabsTrigger value="reputation" className="flex items-center" data-testid="tab-reputation">
                 <Trophy className="w-4 h-4 mr-2" />
-                Reputation
+                {content.dashboardPage.tabs.reputation}
               </TabsTrigger>
             </TabsList>
 
