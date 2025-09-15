@@ -1,0 +1,164 @@
+Please extend and redesign the Zenkai dApp with the following updates.
+
+🚫 Do NOT Touch
+
+The main landing page must stay exactly as it is — no changes.
+
+The design theme (colors, typography, gradients, effects, styling) must remain unchanged.
+
+✅ Navigation Updates
+
+Update the dropdown navigation menu to include these How It Works subpages (in this order):
+
+Upload Your Data
+
+Monetize Your Data
+
+Build Your AI
+
+Train Your AI
+
+Tokenize Your AI
+
+My Dashboard (only visible after wallet connect)
+
+Remove any old/irrelevant entries from this menu.
+
+Ensure menu styling stays consistent (no new colors, effects, or hover glows).
+
+✅ Subpage Redesigns
+
+Upload Your Data
+
+Purpose: dataset upload flow.
+
+Fields: dataset title, category/type, description, tags/annotations.
+
+Show 0G’s role (storage, optional zero-knowledge).
+
+Emphasize importance of metadata for credibility/discovery.
+
+Monetize Your Data
+
+Purpose: monetization flow.
+
+Features:
+
+Suggested rent/subscription price (auto-generated).
+
+Option to set custom price.
+
+Option to sell dataset outright (one-time).
+
+Show potential earnings & exposure before publishing.
+
+Build Your AI
+
+Keep existing functionality unless modular block design can be made clearer.
+
+Emphasize intuitive “building block” assembly of AI models.
+
+Train Your AI
+
+Purpose: dataset-to-model linking.
+
+Provide training flow + simple “Test Run” button to preview output.
+
+Tokenize Your AI
+
+Purpose: tokenization of AI models.
+
+Features:
+
+Set per-query price.
+
+Define revenue sharing.
+
+List tokenized models in marketplace.
+
+✅ New Feature: Wallet-Connected Dashboard
+
+Only accessible after wallet connection.
+
+Sections:
+
+Wallet Overview → address (shortened), ZAI balance, deposit/withdraw.
+
+My Activity → transaction log with status indicators.
+
+Earnings & Spending → total earned vs. spent, breakdown.
+
+My Assets → uploaded datasets + tokenized models with stats.
+
+Reputation & Achievements (optional) → ContributorNFT score + simple badges.
+
+🔗 Behavior: After successful wallet connection, redirect user to Dashboard.
+
+✅ JSON Content System
+
+Centralize all copy/text into a content.json file in client/src/lib/config/.
+
+Example structure:
+
+{
+  "navigation": {
+    "upload": "Upload Your Data",
+    "monetize": "Monetize Your Data",
+    "build": "Build Your AI",
+    "train": "Train Your AI",
+    "tokenize": "Tokenize Your AI",
+    "dashboard": "My Dashboard"
+  },
+  "uploadPage": {
+    "headline": "Upload datasets securely with built-in ownership protection.",
+    "button": "Upload & Register"
+  },
+  "monetizePage": {
+    "headline": "Set rent or one-time sale prices to monetize your datasets.",
+    "button": "Publish for Rent or Sale"
+  },
+  "buildPage": {
+    "headline": "Assemble AI models with intuitive modular blocks.",
+    "button": "Start Building"
+  },
+  "trainPage": {
+    "headline": "Train your AI models with datasets and test performance.",
+    "button": "Run Training"
+  },
+  "tokenizePage": {
+    "headline": "Turn your AI model into an investable asset via tokenization.",
+    "button": "Tokenize Model"
+  },
+  "dashboard": {
+    "overview": "Wallet Overview",
+    "activity": "My Activity",
+    "earnings": "Earnings & Spending",
+    "assets": "My Assets",
+    "reputation": "Reputation & Achievements"
+  }
+}
+
+
+Import and use this JSON across all subpages. Replace all static text with references like content.uploadPage.headline.
+
+📌 Styling Requirements
+
+Keep existing theme (colors, typography, effects).
+
+Do not add new design elements.
+
+Do not alter the landing page or marketplace.
+
+Only restructure/rewrite content where specified.
+
+⚡ Deliverables
+
+Updated dropdown navigation.
+
+Redesigned subpages (Upload, Monetize, Build, Train, Tokenize).
+
+Wallet-connected Dashboard.
+
+JSON content system powering all page copy.
+
+Main page untouched, styling preserved.

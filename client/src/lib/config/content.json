@@ -1,0 +1,224 @@
+{
+  "navigation": {
+    "upload": "Upload Your Data",
+    "monetize": "Monetize Your Data", 
+    "build": "Build Your AI",
+    "train": "Train Your AI",
+    "tokenize": "Tokenize Your AI",
+    "dashboard": "My Dashboard"
+  },
+  "uploadPage": {
+    "headline": "Upload datasets securely with built-in ownership protection.",
+    "subHeadline": "Share your data with 0G's decentralized storage and zero-knowledge privacy",
+    "button": "Upload & Register",
+    "sections": {
+      "datasetInfo": {
+        "title": "Dataset Information",
+        "description": "Provide accurate details about your dataset to maximize credibility and discovery."
+      },
+      "zeroG": {
+        "title": "Powered by 0G Network", 
+        "description": "Your data is stored on 0G's decentralized infrastructure with optional zero-knowledge privacy protection, ensuring ownership and security."
+      },
+      "metadata": {
+        "title": "Metadata Matters",
+        "description": "Rich metadata increases your dataset's discoverability and builds credibility with potential buyers. Include detailed descriptions, proper categorization, and relevant tags."
+      }
+    },
+    "fields": {
+      "title": "Dataset Title",
+      "titlePlaceholder": "Enter a descriptive title for your dataset",
+      "category": "Category/Type",
+      "description": "Description",
+      "descriptionPlaceholder": "Describe your dataset's contents, collection methodology, and potential use cases",
+      "tags": "Tags/Annotations",
+      "tagsPlaceholder": "machine-learning, finance, time-series (comma separated)",
+      "ipfsHash": "IPFS Hash",
+      "ipfsPlaceholder": "ipfs://your-dataset-hash",
+      "price": "Price in ZAI Tokens"
+    }
+  },
+  "monetizePage": {
+    "headline": "Set rent or one-time sale prices to monetize your datasets.",
+    "subHeadline": "Choose your monetization strategy and maximize your data's earning potential",
+    "button": "Publish for Rent or Sale",
+    "sections": {
+      "pricingStrategy": {
+        "title": "Pricing Strategy",
+        "description": "Choose how you want to monetize your dataset"
+      },
+      "suggestedPricing": {
+        "title": "AI-Powered Price Suggestions",
+        "description": "Our algorithm analyzes similar datasets to suggest optimal pricing"
+      },
+      "earningsPreview": {
+        "title": "Potential Earnings Preview", 
+        "description": "See projected earnings and market exposure before publishing"
+      }
+    },
+    "options": {
+      "subscription": "Subscription/Rent",
+      "subscriptionDesc": "Recurring revenue from ongoing access",
+      "oneTime": "One-time Sale",
+      "oneTimeDesc": "Single purchase, full ownership transfer",
+      "custom": "Custom Pricing",
+      "customDesc": "Set your own price based on unique value"
+    }
+  },
+  "buildPage": {
+    "headline": "Assemble AI models with intuitive modular blocks.",
+    "subHeadline": "Drag, drop, and connect building blocks to create powerful AI pipelines",
+    "button": "Start Building",
+    "sections": {
+      "pipeline": {
+        "title": "AI Pipeline Builder",
+        "description": "Visual interface for assembling modular AI components"
+      },
+      "blocks": {
+        "title": "Available Building Blocks", 
+        "description": "Pre-configured modules for common AI tasks"
+      },
+      "preview": {
+        "title": "Pipeline Preview",
+        "description": "Real-time visualization of your AI architecture"
+      }
+    },
+    "blocks": {
+      "dataInput": "Data Input",
+      "dataInputDesc": "Load and preprocess data",
+      "neuralNetwork": "Neural Network", 
+      "neuralNetworkDesc": "Core ML architecture",
+      "optimizer": "Optimizer",
+      "optimizerDesc": "Training optimization",
+      "hyperparams": "Hyperparameters",
+      "hyperparamsDesc": "Model configuration"
+    }
+  },
+  "trainPage": {
+    "headline": "Train your AI models with datasets and test performance.",
+    "subHeadline": "Link datasets to models and run training experiments with performance monitoring", 
+    "button": "Run Training",
+    "testButton": "Test Run",
+    "sections": {
+      "datasetSelection": {
+        "title": "Dataset Selection",
+        "description": "Choose datasets for training your AI model"
+      },
+      "trainingConfig": {
+        "title": "Training Configuration",
+        "description": "Configure training parameters and monitoring"
+      },
+      "performance": {
+        "title": "Performance Monitoring",
+        "description": "Real-time training metrics and validation results"
+      }
+    },
+    "status": {
+      "idle": "Ready to Train",
+      "preparing": "Preparing Training Data",
+      "training": "Training in Progress",
+      "testing": "Running Test",
+      "completed": "Training Completed",
+      "failed": "Training Failed"
+    }
+  },
+  "tokenizePage": {
+    "headline": "Turn your AI model into an investable asset via tokenization.",
+    "subHeadline": "Create tradeable tokens backed by your AI model's performance and usage",
+    "button": "Tokenize Model", 
+    "sections": {
+      "modelSelection": {
+        "title": "Select AI Model",
+        "description": "Choose a trained model to tokenize"
+      },
+      "tokenomics": {
+        "title": "Tokenomics Configuration",
+        "description": "Define pricing and revenue sharing parameters"
+      },
+      "marketplace": {
+        "title": "Marketplace Listing",
+        "description": "List your tokenized model for trading and usage"
+      }
+    },
+    "fields": {
+      "queryPrice": "Per-Query Price",
+      "queryPriceDesc": "Price charged for each API call to your model",
+      "revenueShare": "Revenue Sharing",
+      "revenueShareDesc": "Percentage of profits shared with token holders",
+      "tokenSupply": "Token Supply",
+      "tokenSupplyDesc": "Total number of tokens to mint",
+      "stakingRewards": "Staking Rewards",
+      "stakingRewardsDesc": "Rewards for token holders who stake"
+    }
+  },
+  "dashboard": {
+    "headline": "My Dashboard",
+    "subHeadline": "Manage your assets, track earnings, and monitor your reputation in the Zenkai ecosystem",
+    "sections": {
+      "overview": "Wallet Overview",
+      "activity": "My Activity", 
+      "earnings": "Earnings & Spending",
+      "assets": "My Assets",
+      "reputation": "Reputation & Achievements"
+    },
+    "overview": {
+      "title": "Wallet Overview",
+      "balance": "ZAI Balance",
+      "address": "Wallet Address",
+      "deposit": "Deposit",
+      "withdraw": "Withdraw",
+      "copy": "Copy Address"
+    },
+    "activity": {
+      "title": "Recent Activity",
+      "noTransactions": "No transactions yet",
+      "viewAll": "View All Transactions",
+      "status": {
+        "pending": "Pending",
+        "confirmed": "Confirmed", 
+        "failed": "Failed",
+        "draft": "Draft"
+      }
+    },
+    "earnings": {
+      "title": "Earnings & Spending",
+      "totalEarned": "Total Earned",
+      "totalSpent": "Total Spent", 
+      "netPosition": "Net Position",
+      "thisMonth": "This Month",
+      "breakdown": "Breakdown"
+    },
+    "assets": {
+      "title": "My Assets",
+      "datasets": "Uploaded Datasets",
+      "models": "Tokenized Models",
+      "noAssets": "No assets yet",
+      "viewMarketplace": "Browse Marketplace"
+    },
+    "reputation": {
+      "title": "Reputation & Achievements",
+      "contributorScore": "Contributor Score",
+      "totalReviews": "Reviews Received",
+      "avgRating": "Average Rating",
+      "badges": "Achievement Badges",
+      "noBadges": "No badges earned yet"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error occurred",
+    "retry": "Try Again",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "view": "View",
+    "share": "Share",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "connectWallet": "Connect Wallet",
+    "disconnectWallet": "Disconnect Wallet",
+    "switchNetwork": "Switch Network",
+    "comingSoon": "Coming Soon"
+  }
+}

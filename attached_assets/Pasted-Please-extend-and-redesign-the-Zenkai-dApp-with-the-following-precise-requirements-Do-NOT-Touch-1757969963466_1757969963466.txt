@@ -1,0 +1,221 @@
+Please extend and redesign the Zenkai dApp with the following precise requirements.
+
+🚫 Do NOT Touch
+
+Landing page (home) must stay exactly as it is.
+
+Marketplace page must not be structurally or visually changed.
+
+Design theme (colors, typography, gradients, shadcn/ui styles, effects) must remain unchanged.
+
+✅ Navigation Updates
+
+Update dropdown navigation menu to be labeled “How It Works”.
+
+Replace its items with these six pages, in this order:
+
+Upload Your Data → /upload-data
+
+Monetize Your Data → /monetize-data
+
+Build Your AI → /build-ai
+
+Train Your AI → /train-ai
+
+Tokenize Your AI → /tokenize-ai
+
+Dashboard → /dashboard (wallet-connected only)
+
+Remove all old/irrelevant entries.
+
+Styling of the menu must remain consistent (no new hover effects, no color changes).
+
+✅ Subpage Redesigns
+1) /upload-data
+
+Hero text:
+
+Title: Upload datasets securely with built-in ownership protection.
+
+Subtext: Provide accurate details to maximize credibility and discovery.
+
+Content:
+
+Step guide (tiles): Prepare → Annotate & Describe → Upload to IPFS → Register on 0G
+
+Upload form (reuse existing inputs):
+
+Dataset Title (required)
+
+Category / Type (dropdown)
+
+Description (textarea)
+
+Tags / Annotations (comma separated)
+
+IPFS URI (must start with ipfs://)
+
+Price (ZAI)
+
+Behavior:
+
+Validate fields (block submit if invalid).
+
+On submit → call DatasetRegistry.register(uri, price) and show success toast.
+
+Redirect to /monetize-data?id={datasetId} after success.
+
+2) /monetize-data
+
+Hero text:
+
+Title: Turn your datasets into income-generating assets.
+
+Content:
+
+Dataset picker → dropdown of user-owned datasets (from DatasetRegistry).
+
+Pricing model cards (three):
+
+Subscription (monthly ZAI)
+
+Per-use / rental (per access fee)
+
+One-time sale (exclusive transfer price)
+
+Suggested price (auto-generated mock, editable).
+
+Revenue preview (mock calculation).
+
+Publish button → writes to chain (subscription/per-use) or backend (one-time sale).
+
+3) /build-ai
+
+Hero text:
+
+Title: Compose AI models tailored to your needs.
+
+Content:
+
+Template cards: NLP classifier, CV detector, Time-series predictor.
+
+Pipeline builder (mock UI, block style).
+
+Preview panel (JSON/config view).
+
+Continue button → /train-ai?template={id}
+
+4) /train-ai
+
+Hero text:
+
+Title: Train, test, and refine your AI models.
+
+Content:
+
+Select datasets (multi-select from owned/purchased).
+
+Training params (sliders: epochs, batch size).
+
+“Test Run” button → display mock charts (accuracy, loss) + metrics card.
+
+Save & proceed → /tokenize-ai?modelId={mockId}
+
+5) /tokenize-ai
+
+Hero text:
+
+Title: Turn AI models into tokenized assets.
+
+Content:
+
+Model summary from previous steps.
+
+Monetization settings:
+
+Per-query price (ZAI)
+
+Revenue sharing (creator %, investors %)
+
+Visibility toggle (list in marketplace).
+
+Tokenize & Publish → record in backend (mock for hackathon) or contract if available.
+
+6) /dashboard (wallet-connected only)
+
+Behavior:
+
+After wallet connection (RainbowKit success), automatically redirect to /dashboard.
+
+Sections:
+
+Wallet Overview → Address (shortened), ZAI balance (from ERC20), deposit/withdraw buttons.
+
+My Activity → Table of recent tx (uploads, purchases, tokenizations).
+
+Earnings & Spending → Totals earned vs. spent, simple chart or stat row.
+
+My Assets → Uploaded datasets + tokenized models with stats.
+
+Reputation & Achievements (optional) → ContributorNFT score + badges.
+
+🔗 Smart Contract Integration
+
+Use existing wagmi hooks + deployed contracts on 0G Galileo Testnet:
+
+ZAI Token (ERC20): 0x604966d7123963291058c323B19D293335EcC92a
+
+ContributorNFT (ERC721): 0x2A96200Cdd3195aA9b2B4E6D8a986c942aaa207D
+
+DatasetRegistry (Marketplace): 0xa7502234A9e90172F237075a1872Ec7fF108FE77
+
+Environment variables (ensure in .env):
+
+VITE_ZAI_ADDRESS=0x604966d7123963291058c323B19D293335EcC92a
+VITE_CONTRIBUTOR_NFT_ADDRESS=0x2A96200Cdd3195aA9b2B4E6D8a986c942aaa207D
+VITE_DATASET_REGISTRY_ADDRESS=0xa7502234A9e90172F237075a1872Ec7fF108FE77
+VITE_IPFS_GATEWAY=https://ipfs.io/ipfs/
+
+📌 Styling Requirements
+
+Reuse current theme and components.
+
+No new colors, fonts, hover effects, or design patterns.
+
+Keep UI/UX consistent with landing + marketplace.
+
+🧪 Acceptance Criteria
+
+Menu shows “How It Works” with the 6 items in order.
+
+Each subpage has correct hero text + intended form/sections.
+
+Upload → dataset validated + registered on 0G → redirect works.
+
+Monetize → I can set subscription/rental/one-time sale.
+
+Build/Train/Tokenize → I can step through flow with mock previews.
+
+Dashboard → after wallet connect, I see balance, activity, assets.
+
+Landing + Marketplace remain untouched.
+
+Styling/theme identical to existing.
+
+🎨 Mockup Request
+
+Before coding, please generate visual mockups/wireframes for:
+
+Updated dropdown menu with 6 entries.
+
+Dashboard layout (Wallet overview, Activity, Earnings/Spending, My Assets).
+
+⚡ Deliverable:
+
+PR with all new routes and pages (/upload-data, /monetize-data, /build-ai, /train-ai, /tokenize-ai, /dashboard).
+
+Updated dropdown menu.
+
+Dashboard with mocks where data unavailable.
+
+No regressions on existing landing or marketplace.
