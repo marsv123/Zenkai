@@ -551,10 +551,7 @@ function PlatformOverviewHero({ onExploreClick }: { onExploreClick: () => void }
                   Explore, purchase and utilize decentralized datasets and AI models.
                 </p>
               </div>
-              
-              
             </div>
-            
             
           </div>
           
@@ -581,28 +578,6 @@ function PlatformOverviewHero({ onExploreClick }: { onExploreClick: () => void }
                 <div className="text-center">
                   <div className="text-3xl font-bold gradient-text-cyber mb-2">$2.3M</div>
                   <div className="text-sm text-muted-foreground">Volume Traded</div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="space-y-4">
-              <h4 className="text-lg font-semibold text-foreground">Key Features</h4>
-              <div className="space-y-3">
-                <div className="flex items-center space-x-3">
-                  <Shield className="w-5 h-5 text-primary flex-shrink-0" />
-                  <span className="text-muted-foreground">Blockchain-verified dataset authenticity</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <Zap className="w-5 h-5 text-accent flex-shrink-0" />
-                  <span className="text-muted-foreground">AI-powered dataset summarization</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <Award className="w-5 h-5 text-secondary flex-shrink-0" />
-                  <span className="text-muted-foreground">Quality ratings and reviews</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <TrendingUp className="w-5 h-5 text-primary flex-shrink-0" />
-                  <span className="text-muted-foreground">Real-time market pricing</span>
                 </div>
               </div>
             </div>
