@@ -552,20 +552,7 @@ function PlatformOverviewHero({ onExploreClick }: { onExploreClick: () => void }
                 </p>
               </div>
               
-              <div className="flex flex-wrap gap-6">
-                <div className="flex items-center space-x-2 text-sm hover:scale-105 transition-transform duration-300" data-testid="feature-blockchain">
-                  <Shield className="w-5 h-5 text-primary hover:scale-110 transition-transform" />
-                  <span className="text-foreground font-medium">Blockchain Secured</span>
-                </div>
-                <div className="flex items-center space-x-2 text-sm hover:scale-105 transition-transform duration-300" data-testid="feature-ai">
-                  <Zap className="w-5 h-5 text-accent hover:scale-110 transition-transform" />
-                  <span className="text-foreground font-medium">AI Enhanced</span>
-                </div>
-                <div className="flex items-center space-x-2 text-sm hover:scale-105 transition-transform duration-300" data-testid="feature-network">
-                  <Database className="w-5 h-5 text-secondary hover:scale-110 transition-transform" />
-                  <span className="text-foreground font-medium">0G Network</span>
-                </div>
-              </div>
+              
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4">
