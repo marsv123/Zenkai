@@ -542,7 +542,7 @@ function PlatformOverviewHero({ onExploreClick }: { onExploreClick: () => void }
           <div className="space-y-8">
             <div className="space-y-6">
               <div className="space-y-6">
-                <h1 className="text-4xl lg:text-6xl font-display font-bold gradient-text-cyber leading-normal">
+                <h1 className="text-4xl lg:text-6xl font-display font-bold gradient-text-cyber leading-relaxed">
                   Intelligence <span className="text-accent">Marketplace</span>
                 </h1>
                 <p className="text-xl lg:text-2xl text-accent/90 font-light leading-relaxed max-w-4xl mx-auto">
