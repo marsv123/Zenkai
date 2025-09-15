@@ -555,14 +555,7 @@ function PlatformOverviewHero({ onExploreClick }: { onExploreClick: () => void }
               
             </div>
             
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button asChild variant="ghost" className="hover-cyber text-lg px-8 py-4 border border-accent/30 hover:border-accent" data-testid="button-learn-more">
-                <Link href="/how-it-works">
-                  <Eye className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
-                  Learn More
-                </Link>
-              </Button>
-            </div>
+            
           </div>
           
           {/* Platform Stats */}
