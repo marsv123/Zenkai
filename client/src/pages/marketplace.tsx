@@ -297,16 +297,23 @@ function SearchAndFilters({
   viewMode: 'grid' | 'list';
   onViewModeChange: (mode: 'grid' | 'list') => void;
 }) {
-  const categories = [
-    'All Categories',
-    'Machine Learning',
-    'Computer Vision', 
-    'Natural Language Processing',
+  const datasetCategories = [
     'Financial Data',
-    'Healthcare',
-    'IoT Sensors',
-    'Social Media',
-    'Scientific Research'
+    'Healthcare Data',
+    'IoT Sensor Data',
+    'Social Media Data',
+    'Scientific Research Data',
+    'Image & Video Data',
+    'Text & Language Data'
+  ];
+
+  const aiModelCategories = [
+    'Machine Learning Models',
+    'Computer Vision Models',
+    'Natural Language Processing Models',
+    'Predictive Analytics Models',
+    'Classification Models',
+    'Recommendation Models'
   ];
 
   return (
@@ -338,7 +345,23 @@ function SearchAndFilters({
               <SelectValue placeholder="Category" />
             </SelectTrigger>
             <SelectContent>
-              {categories.map((category) => (
+              <SelectItem value="All Categories">All Categories</SelectItem>
+              
+              {/* Dataset Categories */}
+              <div className="px-2 py-1.5 text-sm font-medium text-primary border-b border-border/30 mb-1">
+                Datasets
+              </div>
+              {datasetCategories.map((category) => (
+                <SelectItem key={category} value={category}>
+                  {category}
+                </SelectItem>
+              ))}
+              
+              {/* AI Model Categories */}
+              <div className="px-2 py-1.5 text-sm font-medium text-accent border-b border-border/30 mb-1 mt-2">
+                AI Models
+              </div>
+              {aiModelCategories.map((category) => (
                 <SelectItem key={category} value={category}>
                   {category}
                 </SelectItem>
