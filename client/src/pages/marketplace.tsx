@@ -822,7 +822,7 @@ export default function Marketplace() {
                 <p className="text-muted-foreground mb-8 leading-relaxed">
                   {searchFilters.search ? 
                     `No datasets match your search criteria. Try adjusting your filters or search terms.` :
-                    `Be the first to upload a dataset and earn from every download!`
+                    `Be the first to upload and monetize a dataset!`
                   }
                 </p>
                 
@@ -937,7 +937,7 @@ export default function Marketplace() {
                   <p className="text-muted-foreground mb-8 leading-relaxed">
                     {searchFilters.search ? 
                       `No datasets match your search criteria. Try adjusting your filters or search terms.` :
-                      `Be the first to upload a dataset and earn from every download!`
+                      `Be the first to upload and monetize a dataset!`
                     }
                   </p>
                   
