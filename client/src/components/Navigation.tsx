@@ -142,7 +142,7 @@ export default function Navigation() {
                       <Link
                         href={item.path}
                         className={`w-full cursor-pointer hover:bg-muted/20 hover:text-foreground focus:bg-muted/20 focus:text-foreground transition-colors ${
-                          isActivePath(item.path) ? 'bg-muted/20 text-foreground font-medium' : ''
+                          isActivePath(item.path) ? 'bg-primary/10 text-primary' : ''
                         }`}
                         data-testid={item.testId}
                         aria-current={isActivePath(item.path) ? 'page' : undefined}
