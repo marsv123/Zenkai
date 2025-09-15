@@ -7,7 +7,6 @@ import { config } from './lib/wagmi';
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Navigation from "@/components/Navigation";
-import Breadcrumbs from "@/components/Breadcrumbs";
 import Home from "@/pages/home";
 import Marketplace from "@/pages/marketplace";
 import Upload from "@/pages/upload";
@@ -24,7 +23,6 @@ function Router() {
     <div className="min-h-screen bg-background">
       <Navigation />
       <main id="main-content" className="container mx-auto px-4 lg:px-6 pt-8">
-        <Breadcrumbs />
         <Switch>
           <Route path="/" component={Home} />
           <Route path="/marketplace" component={Marketplace} />
