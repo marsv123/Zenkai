@@ -1,6 +1,7 @@
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useAccount } from 'wagmi';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Link } from 'wouter';
 import { Dataset } from '@/../../shared/schema';
 import { 
@@ -18,7 +19,8 @@ import {
   Zap,
   Shield,
   Award,
-  ArrowRight
+  ArrowRight,
+  Wallet
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -536,23 +538,18 @@ function PlatformOverviewHero({ onExploreClick }: { onExploreClick: () => void }
       <div className="absolute bottom-1/4 right-0 w-56 h-56 bg-primary/5 rounded-full blur-3xl" />
       
       <div className="relative container mx-auto px-4 lg:px-6 py-16 lg:py-24">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="max-w-4xl mx-auto text-center">
           
           {/* Main Content */}
           <div className="space-y-8">
             <div className="space-y-6">
               <div className="space-y-4">
                 <h1 className="text-4xl lg:text-6xl font-display font-bold gradient-text-cyber leading-tight">
-                  Intelligence
-                  <br />
-                  <span className="text-accent">Marketplace</span>
+                  Marketplace: Explore, acquire, and utilize decentralized datasets and AI models.
                 </h1>
-                <p className="text-xl lg:text-2xl text-accent/90 font-light leading-relaxed max-w-3xl">
-                  Discover, acquire, and trade AI datasets on the most advanced decentralized platform
-                </p>
               </div>
               
-              <div className="flex flex-wrap gap-6">
+              <div className="flex flex-wrap justify-center gap-6">
                 <div className="flex items-center space-x-2 text-sm hover:scale-105 transition-transform duration-300" data-testid="feature-blockchain">
                   <Shield className="w-5 h-5 text-primary hover:scale-110 transition-transform" />
                   <span className="text-foreground font-medium">Blockchain Secured</span>
@@ -568,72 +565,38 @@ function PlatformOverviewHero({ onExploreClick }: { onExploreClick: () => void }
               </div>
             </div>
             
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <ConnectButton.Custom>
+                {({ account, chain, openConnectModal, mounted }) => {
+                  const connected = mounted && account && chain;
+                  return (
+                    <button
+                      onClick={openConnectModal}
+                      className="btn-primary hover-cyber text-lg px-8 py-4 group"
+                      data-testid="button-connect-wallet"
+                    >
+                      <Wallet className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
+                      Connect Wallet
+                    </button>
+                  );
+                }}
+              </ConnectButton.Custom>
+              
               <button 
-                className="btn-primary hover-cyber text-lg px-8 py-4 group" 
+                className="btn-secondary hover-cyber text-lg px-8 py-4 group" 
                 data-testid="button-explore-datasets"
                 onClick={onExploreClick}
               >
                 <Search className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
                 Explore Datasets
-                <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" />
               </button>
-              <Button asChild variant="ghost" className="hover-cyber text-lg px-8 py-4 border border-accent/30 hover:border-accent" data-testid="button-learn-more">
-                <Link href="/how-it-works">
-                  <Eye className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
-                  Learn More
+              
+              <Button asChild variant="secondary" className="hover-cyber text-lg px-8 py-4" data-testid="button-explore-ai-models">
+                <Link href="/tokenize">
+                  <Zap className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
+                  Explore AI Models
                 </Link>
               </Button>
-            </div>
-          </div>
-          
-          {/* Platform Stats */}
-          <div className="space-y-8">
-            <div className="glass-cyber hover-cyber p-8 space-y-6" data-testid="platform-metrics">
-              <h3 className="text-2xl font-display font-semibold gradient-text-cyber mb-6">
-                Platform Metrics
-              </h3>
-              
-              <div className="grid grid-cols-2 gap-6">
-                <div className="text-center">
-                  <div className="text-3xl font-bold gradient-text-cyber mb-2">1,247</div>
-                  <div className="text-sm text-muted-foreground">Datasets Available</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold gradient-text-cyber mb-2">23.4K</div>
-                  <div className="text-sm text-muted-foreground">Total Downloads</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold gradient-text-cyber mb-2">567</div>
-                  <div className="text-sm text-muted-foreground">Active Providers</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold gradient-text-cyber mb-2">$2.3M</div>
-                  <div className="text-sm text-muted-foreground">Volume Traded</div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="space-y-4">
-              <h4 className="text-lg font-semibold text-foreground">Key Features</h4>
-              <div className="space-y-3">
-                <div className="flex items-center space-x-3">
-                  <Shield className="w-5 h-5 text-primary flex-shrink-0" />
-                  <span className="text-muted-foreground">Blockchain-verified dataset authenticity</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <Zap className="w-5 h-5 text-accent flex-shrink-0" />
-                  <span className="text-muted-foreground">AI-powered dataset summarization</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <Award className="w-5 h-5 text-secondary flex-shrink-0" />
-                  <span className="text-muted-foreground">Quality ratings and reviews</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <TrendingUp className="w-5 h-5 text-primary flex-shrink-0" />
-                  <span className="text-muted-foreground">Real-time market pricing</span>
-                </div>
-              </div>
             </div>
           </div>
           
