@@ -843,8 +843,7 @@ export default function Marketplace() {
                       data-testid="button-upload-first"
                       aria-label="Upload the first dataset to get started"
                     >
-                      <Upload className="w-5 h-5 mr-2" aria-hidden="true" />
-                      Upload First Dataset
+                      Upload
                     </Link>
                   ) : (
                     <div className="text-sm text-muted-foreground">
@@ -959,8 +958,7 @@ export default function Marketplace() {
                         data-testid="button-upload-first-grid"
                         aria-label="Upload the first dataset to get started"
                       >
-                        <Upload className="w-5 h-5 mr-2" aria-hidden="true" />
-                        Upload First Dataset
+                        Upload
                       </Link>
                     ) : (
                       <div className="text-sm text-muted-foreground">
