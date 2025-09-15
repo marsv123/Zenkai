@@ -155,7 +155,7 @@ export default function Navigation() {
 
                   {/* AI Tools Submenu */}
                   <DropdownMenuSub>
-                    <DropdownMenuSubTrigger className="hover:bg-muted/20 hover:text-foreground focus:bg-muted/20 focus:text-foreground transition-colors">
+                    <DropdownMenuSubTrigger className="bg-transparent hover:bg-muted/20 hover:text-foreground focus:bg-muted/20 focus:text-foreground transition-colors">
                       AI Tools
                     </DropdownMenuSubTrigger>
                     <DropdownMenuPortal>
