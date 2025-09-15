@@ -23,7 +23,7 @@ export default function UploadDataset() {
             <CardHeader>
               <CardTitle className="text-2xl font-display gradient-text-cyber">Dataset Information</CardTitle>
               <CardDescription className="text-lg text-muted-foreground">
-                Provide details about your dataset. Make sure your data is uploaded to IPFS first.
+                Provide accurate details about your dataset to maximize credibility and discovery.
               </CardDescription>
             </CardHeader>
             <CardContent>
