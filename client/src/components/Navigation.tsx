@@ -138,17 +138,16 @@ export default function Navigation() {
                   
                   {/* Main Navigation Items */}
                   {navItems.map((item) => (
-                    <DropdownMenuItem key={item.path} asChild>
-                      <Link
-                        href={item.path}
-                        className={`w-full cursor-pointer hover:bg-muted/20 hover:text-foreground focus:bg-muted/20 focus:text-foreground transition-colors ${
-                          isActivePath(item.path) ? 'bg-primary/10 text-primary' : ''
-                        }`}
-                        data-testid={item.testId}
-                        aria-current={isActivePath(item.path) ? 'page' : undefined}
-                      >
-                        {item.label}
-                      </Link>
+                    <DropdownMenuItem 
+                      key={item.path}
+                      onSelect={() => setLocation(item.path)}
+                      className={`cursor-pointer hover:bg-muted/20 hover:text-foreground focus:bg-muted/20 focus:text-foreground transition-colors ${
+                        isActivePath(item.path) ? 'bg-primary/10 text-primary' : ''
+                      }`}
+                      data-testid={item.testId}
+                      aria-current={isActivePath(item.path) ? 'page' : undefined}
+                    >
+                      {item.label}
                     </DropdownMenuItem>
                   ))}
 
