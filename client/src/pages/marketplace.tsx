@@ -536,7 +536,7 @@ function PlatformOverviewHero({ onExploreClick }: { onExploreClick: () => void }
       <div className="absolute bottom-1/4 right-0 w-56 h-56 bg-primary/5 rounded-full blur-3xl" />
       
       <div className="relative container mx-auto px-4 lg:px-6 py-16 lg:py-24">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="flex flex-col items-center text-center max-w-5xl mx-auto">
           
           {/* Main Content */}
           <div className="space-y-8">
@@ -547,14 +547,13 @@ function PlatformOverviewHero({ onExploreClick }: { onExploreClick: () => void }
                   <br />
                   <span className="text-accent">Marketplace</span>
                 </h1>
-                <p className="text-xl lg:text-2xl text-accent/90 font-light leading-relaxed max-w-3xl">
+                <p className="text-xl lg:text-2xl text-accent/90 font-light leading-relaxed max-w-4xl mx-auto">
                   Explore, purchase and utilize decentralized datasets and AI models.
                 </p>
               </div>
             </div>
             
           </div>
-          
           
         </div>
       </div>
