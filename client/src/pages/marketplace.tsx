@@ -548,7 +548,7 @@ function PlatformOverviewHero({ onExploreClick }: { onExploreClick: () => void }
                   <span className="text-accent">Marketplace</span>
                 </h1>
                 <p className="text-xl lg:text-2xl text-accent/90 font-light leading-relaxed max-w-3xl">
-                  Discover, acquire, and trade AI datasets on the most advanced decentralized platform
+                  Explore, purchase and utilize decentralized datasets and AI models.
                 </p>
               </div>
               
