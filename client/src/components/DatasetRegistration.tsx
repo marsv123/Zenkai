@@ -15,7 +15,7 @@ import { useToast } from '@/hooks/use-toast';
 import { queryClient } from '@/lib/queryClient';
 
 // Contract configurations
-const DATASET_REGISTRY_ADDRESS = (import.meta.env.VITE_DATASET_REGISTRY_ADDRESS || '0x0000000000000000000000000000000000000000') as `0x${string}`;
+const DATASET_REGISTRY_ADDRESS = (import.meta.env.VITE_DATASET_REGISTRY_ADDRESS || '0xa7502234A9e90172F237075a1872Ec7fF108FE77') as `0x${string}`;
 const DATASET_REGISTRY_ABI = [
   {
     name: 'register',
@@ -324,11 +324,22 @@ export default function DatasetRegistration() {
 
   // Form validation helper
   const isFormValid = useCallback(() => {
-    return formData.uri.trim() !== '' && 
-           formData.uri.startsWith('ipfs://') &&
-           formData.title.trim() !== '' && 
-           formData.price.trim() !== '' && 
-           parseFloat(formData.price) > 0;
+    const uriValid = formData.uri.trim() !== '' && formData.uri.startsWith('ipfs://');
+    const titleValid = formData.title.trim() !== '';
+    const priceValid = formData.price.trim() !== '' && parseFloat(formData.price) > 0;
+    
+    // Debug logging for form validation
+    console.log('Form validation check:', {
+      uri: formData.uri,
+      uriValid,
+      title: formData.title,
+      titleValid,
+      price: formData.price,
+      priceValid,
+      overall: uriValid && titleValid && priceValid
+    });
+    
+    return uriValid && titleValid && priceValid;
   }, [formData]);
 
   // Reset form to initial state
@@ -688,7 +699,15 @@ export default function DatasetRegistration() {
                        txState.status === 'confirming' || 
                        txState.status === 'success'}
               className="flex-1"
-              data-testid="button-submit"
+              data-testid="button-register-dataset"
+              onClick={(e) => {
+                console.log('Button clicked, validation state:', {
+                  address: !!address,
+                  isFormValid: isFormValid(),
+                  txStatus: txState.status,
+                  formData
+                });
+              }}
             >
               {txState.status === 'preparing' && 'Preparing...'}
               {txState.status === 'waiting_for_wallet' && 'Waiting for Wallet...'}
