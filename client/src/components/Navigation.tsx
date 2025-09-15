@@ -155,11 +155,16 @@ export default function Navigation() {
 
                   {/* AI Tools Submenu */}
                   <DropdownMenuSub>
-                    <DropdownMenuSubTrigger className="bg-transparent hover:bg-muted/20 hover:text-foreground focus:bg-muted/20 focus:text-foreground transition-colors">
+                    <DropdownMenuSubTrigger 
+                      data-testid="nav-ai-tools"
+                      className="bg-transparent hover:bg-muted/20 hover:text-foreground focus:bg-muted/20 focus:text-foreground transition-colors"
+                    >
                       AI Tools
                     </DropdownMenuSubTrigger>
                     <DropdownMenuPortal>
-                      <DropdownMenuSubContent className="glass-cyber border-primary/20">
+                      <DropdownMenuSubContent 
+                        className="glass-cyber border-primary/20"
+                      >
                         {aiItems.map((item) => (
                           <DropdownMenuItem 
                             key={item.path}
