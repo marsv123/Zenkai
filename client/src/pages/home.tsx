@@ -114,8 +114,8 @@ export default function Home() {
           clearInterval(typeInterval);
           // Hide cursor after first text is complete
           setShowCursor(false);
-          // Start blinking cursor
-          setBlinkingCursor(true);
+          // Remove blinking cursor - text is complete
+          setBlinkingCursor(false);
           
           // Start second text after 2 seconds
           setTimeout(() => {
