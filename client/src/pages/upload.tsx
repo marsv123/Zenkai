@@ -11,7 +11,7 @@ export default function UploadDataset() {
           <div className="text-center mb-12" data-testid="upload-header">
             <h1 className="text-4xl md:text-5xl font-display font-bold mb-4 flex items-center justify-center gradient-text-cyber">
               <Upload className="w-10 h-10 md:w-12 md:h-12 mr-4 text-primary hover:scale-110 transition-transform duration-300" data-testid="icon-upload" />
-              Upload Dataset
+              Upload Datasets
             </h1>
             <p className="text-xl md:text-2xl text-accent/90 leading-relaxed max-w-2xl mx-auto">
               Share your data with the world and earn ZAI tokens
