@@ -21,6 +21,7 @@ export default function Navigation() {
   const [location, setLocation] = useLocation();
   const { address } = useAccount();
   const [scrolled, setScrolled] = useState(false);
+  const [previousAddress, setPreviousAddress] = useState<string | undefined>(undefined);
 
   // Handle scroll effect for enhanced navigation
   useEffect(() => {
@@ -30,6 +31,36 @@ export default function Navigation() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Handle wallet connection redirect to dashboard
+  useEffect(() => {
+    // Only redirect if:
+    // 1. User just connected (address is now present but wasn't before)
+    // 2. User is not already on the dashboard or any of the workflow pages
+    // 3. User is not on the home page (where they might want to stay)
+    if (
+      address && 
+      !previousAddress && 
+      location !== '/dashboard' && 
+      location !== '/' &&
+      !location.startsWith('/upload') &&
+      !location.startsWith('/monetize') &&
+      !location.startsWith('/build') &&
+      !location.startsWith('/train') &&
+      !location.startsWith('/tokenize') &&
+      !location.startsWith('/marketplace')
+    ) {
+      // Small delay to ensure wallet connection is fully established
+      const redirectTimer = setTimeout(() => {
+        setLocation('/dashboard');
+      }, 500);
+      
+      return () => clearTimeout(redirectTimer);
+    }
+    
+    // Update previous address to track connection changes
+    setPreviousAddress(address);
+  }, [address, previousAddress, location, setLocation]);
 
   // Main navigation items
   const mainNavItems = [
