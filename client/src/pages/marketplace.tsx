@@ -839,7 +839,7 @@ export default function Marketplace() {
                   ) : address ? (
                     <Link 
                       href="/upload"
-                      className="btn-primary" 
+                      className="btn-primary inline-flex items-center justify-center" 
                       data-testid="button-upload-first"
                       aria-label="Upload the first dataset to get started"
                     >
@@ -955,7 +955,7 @@ export default function Marketplace() {
                     ) : address ? (
                       <Link 
                         href="/upload"
-                        className="btn-primary" 
+                        className="btn-primary inline-flex items-center justify-center" 
                         data-testid="button-upload-first-grid"
                         aria-label="Upload the first dataset to get started"
                       >
