@@ -322,6 +322,15 @@ export default function DatasetRegistration() {
     }
   }, [address, formData]);
 
+  // Form validation helper
+  const isFormValid = useCallback(() => {
+    return formData.uri.trim() !== '' && 
+           formData.uri.startsWith('ipfs://') &&
+           formData.title.trim() !== '' && 
+           formData.price.trim() !== '' && 
+           parseFloat(formData.price) > 0;
+  }, [formData]);
+
   // Reset form to initial state
   const resetForm = useCallback(() => {
     setFormData({
@@ -672,6 +681,7 @@ export default function DatasetRegistration() {
             <Button 
               type="submit"
               disabled={!address || 
+                       !isFormValid() ||
                        txState.status === 'preparing' || 
                        txState.status === 'waiting_for_wallet' || 
                        txState.status === 'submitting' || 
