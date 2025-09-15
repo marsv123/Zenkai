@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { Link } from 'wouter';
-import { ArrowLeft, Play, Brain, Database, TrendingUp, Clock, Zap } from 'lucide-react';
+import { ArrowLeft, Play, Brain, Database, TrendingUp, Clock, Zap, TestTube2, Link as LinkIcon, Settings, FlaskConical, Activity, Target } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import { Separator } from '@/components/ui/separator';
+import content from '@/lib/config/content.json';
 
 interface Dataset {
   id: string;
@@ -14,11 +16,22 @@ interface Dataset {
   price: string;
 }
 
+interface Model {
+  id: string;
+  name: string;
+  architecture: string;
+  blocks: number;
+  status: 'draft' | 'ready' | 'training';
+}
+
 export default function TrainPage() {
   const [selectedDataset, setSelectedDataset] = useState<string>('dataset-1');
+  const [selectedModel, setSelectedModel] = useState<string>('model-1');
   const [isTraining, setIsTraining] = useState(false);
+  const [isTestRun, setIsTestRun] = useState(false);
   const [trainingProgress, setTrainingProgress] = useState(0);
   const [accuracy, setAccuracy] = useState(0);
+  const [trainingStatus, setTrainingStatus] = useState<'idle' | 'preparing' | 'training' | 'testing' | 'completed' | 'failed'>('idle');
 
   const mockDatasets: Dataset[] = [
     { id: 'dataset-1', name: 'E-commerce Reviews Dataset', size: '2.3 GB', category: 'Text Analysis', price: '50 ZAI' },
@@ -27,196 +40,379 @@ export default function TrainPage() {
     { id: 'dataset-4', name: 'Social Media Sentiment', size: '3.2 GB', category: 'NLP', price: '60 ZAI' },
   ];
 
+  const mockModels: Model[] = [
+    { id: 'model-1', name: 'Text Classifier v1', architecture: 'BERT-based', blocks: 12, status: 'ready' },
+    { id: 'model-2', name: 'Time Series Predictor', architecture: 'LSTM', blocks: 8, status: 'ready' },
+    { id: 'model-3', name: 'Image Recognition Model', architecture: 'ResNet-50', blocks: 15, status: 'draft' },
+    { id: 'model-4', name: 'Sentiment Analyzer', architecture: 'Transformer', blocks: 24, status: 'ready' },
+  ];
+
   const handleStartTraining = () => {
     setIsTraining(true);
+    setIsTestRun(false);
     setTrainingProgress(0);
     setAccuracy(0);
+    setTrainingStatus('preparing');
     
     // Simulate training progress
+    setTimeout(() => setTrainingStatus('training'), 1000);
+    
     const interval = setInterval(() => {
       setTrainingProgress((prev) => {
-        const newProgress = prev + Math.random() * 10;
+        const newProgress = prev + Math.random() * 8;
         if (newProgress >= 100) {
           clearInterval(interval);
           setIsTraining(false);
-          setAccuracy(85.7 + Math.random() * 10); // Random accuracy between 85.7-95.7%
+          setTrainingStatus('completed');
+          setAccuracy(85.7 + Math.random() * 10);
           return 100;
         }
         return newProgress;
       });
-    }, 200);
+    }, 300);
+  };
+
+  const handleTestRun = () => {
+    setIsTestRun(true);
+    setIsTraining(false);
+    setTrainingProgress(0);
+    setTrainingStatus('testing');
+    
+    // Simulate quick test run
+    const interval = setInterval(() => {
+      setTrainingProgress((prev) => {
+        const newProgress = prev + Math.random() * 15;
+        if (newProgress >= 100) {
+          clearInterval(interval);
+          setIsTestRun(false);
+          setTrainingStatus('completed');
+          setAccuracy(78.2 + Math.random() * 8);
+          return 100;
+        }
+        return newProgress;
+      });
+    }, 150);
   };
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="border-b border-primary/20 bg-background/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
-              <ArrowLeft className="w-5 h-5" />
-              <span>Back to Home</span>
-            </Link>
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-6xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-12" data-testid="train-header">
+            <h1 className="text-4xl md:text-5xl font-display font-bold mb-4 gradient-text-cyber">
+              <Brain className="w-10 h-10 md:w-12 md:h-12 mr-4 text-primary hover:scale-110 transition-transform duration-300 inline-block" data-testid="icon-train" />
+              {content.trainPage.headline}
+            </h1>
+            <p className="text-xl md:text-2xl text-accent/90 leading-relaxed max-w-3xl mx-auto">
+              {content.trainPage.subHeadline}
+            </p>
           </div>
-          <h1 className="text-2xl font-bold gradient-text-cyber">Train Your AI</h1>
-          <Button 
-            className="gradient-primary hover-cyber" 
-            disabled={isTraining}
-            onClick={handleStartTraining}
-            data-testid="button-start-training"
-          >
-            <Play className="w-4 h-4 mr-2" />
-            {isTraining ? 'Training...' : 'Start Training'}
-          </Button>
-        </div>
-      </div>
 
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid lg:grid-cols-2 gap-8">
-          {/* Dataset Selection */}
-          <Card className="glass-cyber border-primary/30">
-            <CardHeader>
-              <CardTitle className="gradient-text-cyber flex items-center">
-                <Database className="w-5 h-5 mr-2" />
-                Select Training Dataset
-              </CardTitle>
-              <CardDescription>Choose a dataset to train your AI model</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {mockDatasets.map((dataset) => (
-                  <div
-                    key={dataset.id}
-                    className={`p-4 rounded-xl border cursor-pointer transition-all duration-300 ${
-                      selectedDataset === dataset.id
-                        ? 'border-primary/50 glass-panel bg-primary/5'
-                        : 'border-primary/20 glass-panel hover:border-primary/30'
-                    }`}
-                    onClick={() => setSelectedDataset(dataset.id)}
-                    data-testid={`dataset-${dataset.id}`}
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <h4 className="font-medium">{dataset.name}</h4>
-                      <Badge className="glass-panel border-primary/30 gradient-text-zen">
-                        {dataset.category}
+          <div className="grid lg:grid-cols-3 gap-8">
+            
+            {/* Left Column: Configuration */}
+            <div className="lg:col-span-1 space-y-6">
+              
+              {/* Model Selection */}
+              <Card className="glass-cyber hover-cyber" data-testid="card-model-selection">
+                <CardHeader>
+                  <CardTitle className="text-lg font-display gradient-text-cyber flex items-center">
+                    <Brain className="w-5 h-5 mr-2 text-primary" />
+                    Select AI Model
+                  </CardTitle>
+                  <CardDescription>
+                    Choose your AI model to train with datasets
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {mockModels.map((model) => (
+                    <div
+                      key={model.id}
+                      className={`p-3 rounded-xl border cursor-pointer transition-all duration-300 ${
+                        selectedModel === model.id
+                          ? 'border-primary/50 glass-panel bg-primary/5'
+                          : 'border-primary/20 glass-panel hover:border-primary/30'
+                      }`}
+                      onClick={() => setSelectedModel(model.id)}
+                      data-testid={`model-${model.id}`}
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="font-medium text-sm">{model.name}</h4>
+                        <Badge className={`text-xs ${
+                          model.status === 'ready' ? 'bg-primary/10 text-primary border-primary/20' :
+                          model.status === 'training' ? 'bg-secondary/10 text-secondary border-secondary/20' :
+                          'bg-muted/10 text-muted-foreground border-muted/20'
+                        }`}>
+                          {model.status}
+                        </Badge>
+                      </div>
+                      <div className="text-xs text-foreground/70 space-y-1">
+                        <div>Architecture: {model.architecture}</div>
+                        <div>Blocks: {model.blocks}</div>
+                      </div>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+
+              {/* Dataset Selection */}
+              <Card className="glass-cyber hover-cyber" data-testid="card-dataset-selection">
+                <CardHeader>
+                  <CardTitle className="text-lg font-display gradient-text-cyber flex items-center">
+                    <Database className="w-5 h-5 mr-2 text-secondary" />
+                    {content.trainPage.sections.datasetSelection.title}
+                  </CardTitle>
+                  <CardDescription>
+                    {content.trainPage.sections.datasetSelection.description}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {mockDatasets.map((dataset) => (
+                    <div
+                      key={dataset.id}
+                      className={`p-3 rounded-xl border cursor-pointer transition-all duration-300 ${
+                        selectedDataset === dataset.id
+                          ? 'border-secondary/50 glass-panel bg-secondary/5'
+                          : 'border-border hover:border-secondary/30 glass-panel'
+                      }`}
+                      onClick={() => setSelectedDataset(dataset.id)}
+                      data-testid={`dataset-${dataset.id}`}
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="font-medium text-sm">{dataset.name}</h4>
+                        <Badge className="bg-secondary/10 text-secondary border-secondary/20 text-xs">
+                          {dataset.category}
+                        </Badge>
+                      </div>
+                      <div className="flex items-center justify-between text-xs text-foreground/70">
+                        <span>{dataset.size}</span>
+                        <span className="text-primary font-medium">{dataset.price}</span>
+                      </div>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+
+              {/* Training Configuration */}
+              <Card className="glass-cyber hover-cyber" data-testid="card-training-config">
+                <CardHeader>
+                  <CardTitle className="text-lg font-display gradient-text-cyber flex items-center">
+                    <Settings className="w-5 h-5 mr-2 text-accent" />
+                    {content.trainPage.sections.trainingConfig.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="flex items-center justify-between p-3 glass-panel rounded-xl">
+                    <div className="flex items-center">
+                      <Target className="w-4 h-4 mr-2 text-accent" />
+                      <span className="text-sm font-medium">Epochs</span>
+                    </div>
+                    <span className="text-sm font-bold">10</span>
+                  </div>
+                  <div className="flex items-center justify-between p-3 glass-panel rounded-xl">
+                    <div className="flex items-center">
+                      <Zap className="w-4 h-4 mr-2 text-primary" />
+                      <span className="text-sm font-medium">Batch Size</span>
+                    </div>
+                    <span className="text-sm font-bold">32</span>
+                  </div>
+                  <div className="flex items-center justify-between p-3 glass-panel rounded-xl">
+                    <div className="flex items-center">
+                      <Activity className="w-4 h-4 mr-2 text-secondary" />
+                      <span className="text-sm font-medium">Learning Rate</span>
+                    </div>
+                    <span className="text-sm font-bold">0.001</span>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Center Column: Training Progress */}
+            <div className="lg:col-span-2 space-y-6">
+              
+              {/* Status & Actions */}
+              <Card className="glass-cyber hover-cyber" data-testid="card-training-status">
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <CardTitle className="text-xl font-display gradient-text-cyber flex items-center">
+                        <Activity className="w-6 h-6 mr-2 text-primary" />
+                        {content.trainPage.sections.performance.title}
+                      </CardTitle>
+                      <CardDescription>
+                        {content.trainPage.sections.performance.description}
+                      </CardDescription>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Badge className={`${
+                        trainingStatus === 'idle' ? 'bg-muted/10 text-muted-foreground border-muted/20' :
+                        trainingStatus === 'preparing' ? 'bg-accent/10 text-accent border-accent/20' :
+                        trainingStatus === 'training' ? 'bg-primary/10 text-primary border-primary/20' :
+                        trainingStatus === 'testing' ? 'bg-secondary/10 text-secondary border-secondary/20' :
+                        trainingStatus === 'completed' ? 'bg-primary/10 text-primary border-primary/20' :
+                        'bg-destructive/10 text-destructive border-destructive/20'
+                      } animate-pulse`}>
+                        {content.trainPage.status[trainingStatus]}
                       </Badge>
                     </div>
-                    <div className="flex items-center justify-between text-sm text-foreground/70">
-                      <span>Size: {dataset.size}</span>
-                      <span className="text-primary font-medium">{dataset.price}</span>
-                    </div>
                   </div>
-                ))}
-              </div>
-              
-              {/* Selected Dataset Summary */}
-              <div className="mt-6 p-4 glass-panel rounded-xl border border-primary/20">
-                <h5 className="font-medium mb-2">Selected Dataset</h5>
-                <div className="text-sm text-foreground/80">
-                  <p><strong>Name:</strong> {mockDatasets.find(d => d.id === selectedDataset)?.name}</p>
-                  <p><strong>Size:</strong> {mockDatasets.find(d => d.id === selectedDataset)?.size}</p>
-                  <p><strong>Cost:</strong> {mockDatasets.find(d => d.id === selectedDataset)?.price}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Training Progress & Results */}
-          <Card className="glass-cyber border-primary/30">
-            <CardHeader>
-              <CardTitle className="gradient-text-cyber flex items-center">
-                <Brain className="w-5 h-5 mr-2" />
-                Training Progress
-              </CardTitle>
-              <CardDescription>Monitor your AI model training performance</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
-                {/* Progress Bar */}
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium">Training Progress</span>
-                    <span className="text-sm text-foreground/70">{Math.round(trainingProgress)}%</span>
-                  </div>
-                  <Progress value={trainingProgress} className="h-2" />
-                </div>
-
-                {/* Training Stats */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="p-4 glass-panel rounded-xl">
-                    <div className="flex items-center space-x-2 mb-2">
-                      <TrendingUp className="w-4 h-4 text-primary" />
-                      <span className="text-sm font-medium">Accuracy</span>
-                    </div>
-                    <div className="text-2xl font-bold gradient-text-cyber" data-testid="accuracy-value">
-                      {accuracy > 0 ? `${accuracy.toFixed(1)}%` : '--'}
-                    </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center space-x-4 mb-6">
+                    <Button 
+                      className="gradient-primary hover-cyber flex-1" 
+                      disabled={isTraining || isTestRun}
+                      onClick={handleStartTraining}
+                      data-testid="button-start-training"
+                    >
+                      <Play className="w-4 h-4 mr-2" />
+                      {content.trainPage.button}
+                    </Button>
+                    <Button 
+                      variant="outline"
+                      className="border-secondary/30 hover:border-secondary/50 hover-cyber text-secondary flex-1" 
+                      disabled={isTraining || isTestRun}
+                      onClick={handleTestRun}
+                      data-testid="button-test-run"
+                    >
+                      <TestTube2 className="w-4 h-4 mr-2" />
+                      {content.trainPage.testButton}
+                    </Button>
                   </div>
 
-                  <div className="p-4 glass-panel rounded-xl">
-                    <div className="flex items-center space-x-2 mb-2">
-                      <Clock className="w-4 h-4 text-primary" />
-                      <span className="text-sm font-medium">Time Elapsed</span>
+                  {/* Progress Bar */}
+                  <div className="mb-6">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-medium">
+                        {isTestRun ? 'Test Progress' : 'Training Progress'}
+                      </span>
+                      <span className="text-sm text-foreground/70">{Math.round(trainingProgress)}%</span>
                     </div>
-                    <div className="text-2xl font-bold gradient-text-cyber">
-                      {isTraining ? `${Math.floor(trainingProgress / 10)}:${(Math.floor(trainingProgress % 10) * 6).toString().padStart(2, '0')}` : '0:00'}
-                    </div>
+                    <Progress value={trainingProgress} className="h-3" />
                   </div>
-                </div>
 
-                {/* Training Logs */}
-                <div className="glass-panel p-4 rounded-xl border border-primary/10">
-                  <h6 className="text-sm font-medium mb-3">Training Logs</h6>
-                  <div className="text-xs font-mono text-foreground/70 space-y-1" data-testid="training-logs">
-                    {trainingProgress > 0 && (
-                      <>
-                        <div>Initializing neural network...</div>
-                        <div>Loading dataset: {mockDatasets.find(d => d.id === selectedDataset)?.name}</div>
-                      </>
-                    )}
-                    {trainingProgress > 20 && <div>Epoch 1/10 - Loss: 0.8243, Accuracy: 0.3241</div>}
-                    {trainingProgress > 40 && <div>Epoch 3/10 - Loss: 0.4521, Accuracy: 0.6784</div>}
-                    {trainingProgress > 60 && <div>Epoch 5/10 - Loss: 0.2156, Accuracy: 0.7892</div>}
-                    {trainingProgress > 80 && <div>Epoch 8/10 - Loss: 0.1243, Accuracy: 0.8567</div>}
-                    {trainingProgress >= 100 && (
-                      <>
-                        <div className="text-green-400">Training completed successfully!</div>
-                        <div className="text-green-400">Final accuracy: {accuracy.toFixed(1)}%</div>
-                      </>
-                    )}
-                  </div>
-                </div>
-
-                {/* Model Performance */}
-                {accuracy > 0 && (
-                  <div className="glass-panel p-4 rounded-xl border border-primary/10">
-                    <h6 className="text-sm font-medium mb-3 flex items-center">
-                      <Zap className="w-4 h-4 mr-2 text-primary" />
-                      Model Performance
-                    </h6>
-                    <div className="grid grid-cols-2 gap-4 text-sm">
-                      <div>
-                        <span className="text-foreground/70">Precision:</span>
-                        <span className="ml-2 font-medium">{(accuracy - 2.3).toFixed(1)}%</span>
+                  {/* Training Stats */}
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="p-4 glass-panel rounded-xl">
+                      <div className="flex items-center space-x-2 mb-2">
+                        <TrendingUp className="w-4 h-4 text-primary" />
+                        <span className="text-sm font-medium">Accuracy</span>
                       </div>
-                      <div>
-                        <span className="text-foreground/70">Recall:</span>
-                        <span className="ml-2 font-medium">{(accuracy - 1.8).toFixed(1)}%</span>
+                      <div className="text-2xl font-bold gradient-text-cyber" data-testid="accuracy-value">
+                        {accuracy > 0 ? `${accuracy.toFixed(1)}%` : '--'}
                       </div>
-                      <div>
-                        <span className="text-foreground/70">F1-Score:</span>
-                        <span className="ml-2 font-medium">{(accuracy - 1.1).toFixed(1)}%</span>
+                    </div>
+
+                    <div className="p-4 glass-panel rounded-xl">
+                      <div className="flex items-center space-x-2 mb-2">
+                        <Clock className="w-4 h-4 text-secondary" />
+                        <span className="text-sm font-medium">Time</span>
                       </div>
-                      <div>
-                        <span className="text-foreground/70">Loss:</span>
-                        <span className="ml-2 font-medium">{(0.15 - accuracy/1000).toFixed(4)}</span>
+                      <div className="text-2xl font-bold text-secondary">
+                        {(isTraining || isTestRun) ? `${Math.floor(trainingProgress / 10)}:${(Math.floor(trainingProgress % 10) * 6).toString().padStart(2, '0')}` : '0:00'}
+                      </div>
+                    </div>
+
+                    <div className="p-4 glass-panel rounded-xl">
+                      <div className="flex items-center space-x-2 mb-2">
+                        <Zap className="w-4 h-4 text-accent" />
+                        <span className="text-sm font-medium">Loss</span>
+                      </div>
+                      <div className="text-2xl font-bold text-accent">
+                        {accuracy > 0 ? (0.15 - accuracy/1000).toFixed(4) : '--'}
+                      </div>
+                    </div>
+
+                    <div className="p-4 glass-panel rounded-xl">
+                      <div className="flex items-center space-x-2 mb-2">
+                        <LinkIcon className="w-4 h-4 text-primary" />
+                        <span className="text-sm font-medium">Linked</span>
+                      </div>
+                      <div className="text-2xl font-bold gradient-text-cyber">
+                        {selectedModel && selectedDataset ? '✓' : '–'}
                       </div>
                     </div>
                   </div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
+                </CardContent>
+              </Card>
+
+              {/* Training Logs */}
+              <Card className="glass-cyber hover-cyber" data-testid="card-training-logs">
+                <CardHeader>
+                  <CardTitle className="text-lg font-display gradient-text-cyber">
+                    Training Logs
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="glass-panel p-4 rounded-xl border border-primary/10 h-64 overflow-y-auto">
+                    <div className="text-xs font-mono text-foreground/70 space-y-1" data-testid="training-logs">
+                      {trainingProgress > 0 && (
+                        <>
+                          <div className="text-accent">→ Initializing training session...</div>
+                          <div className="text-foreground/60">Model: {mockModels.find(m => m.id === selectedModel)?.name}</div>
+                          <div className="text-foreground/60">Dataset: {mockDatasets.find(d => d.id === selectedDataset)?.name}</div>
+                          <div className="text-accent">→ {isTestRun ? 'Starting test run...' : 'Starting full training...'}</div>
+                        </>
+                      )}
+                      {trainingProgress > 10 && <div>Loading data... [{Math.round(trainingProgress/5)}%]</div>}
+                      {trainingProgress > 20 && <div>Epoch 1/{isTestRun ? '3' : '10'} - Loss: 0.8243, Accuracy: 0.3241</div>}
+                      {trainingProgress > 40 && <div>Epoch 2/{isTestRun ? '3' : '10'} - Loss: 0.4521, Accuracy: 0.6784</div>}
+                      {trainingProgress > 60 && !isTestRun && <div>Epoch 5/10 - Loss: 0.2156, Accuracy: 0.7892</div>}
+                      {trainingProgress > 80 && !isTestRun && <div>Epoch 8/10 - Loss: 0.1243, Accuracy: 0.8567</div>}
+                      {trainingProgress >= 100 && (
+                        <>
+                          <div className="text-primary">✓ {isTestRun ? 'Test run' : 'Training'} completed successfully!</div>
+                          <div className="text-primary">✓ Final accuracy: {accuracy.toFixed(1)}%</div>
+                          <div className="text-accent">→ Model ready for {isTestRun ? 'full training or tokenization' : 'tokenization'}</div>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Model Performance Details */}
+              {accuracy > 0 && (
+                <Card className="glass-cyber hover-cyber" data-testid="card-model-performance">
+                  <CardHeader>
+                    <CardTitle className="text-lg font-display gradient-text-cyber flex items-center">
+                      <FlaskConical className="w-5 h-5 mr-2 text-primary" />
+                      Model Performance Metrics
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                      <div className="p-3 glass-panel rounded-xl text-center">
+                        <span className="block text-foreground/70 mb-1">Precision</span>
+                        <span className="text-lg font-bold text-primary">{(accuracy - 2.3).toFixed(1)}%</span>
+                      </div>
+                      <div className="p-3 glass-panel rounded-xl text-center">
+                        <span className="block text-foreground/70 mb-1">Recall</span>
+                        <span className="text-lg font-bold text-secondary">{(accuracy - 1.8).toFixed(1)}%</span>
+                      </div>
+                      <div className="p-3 glass-panel rounded-xl text-center">
+                        <span className="block text-foreground/70 mb-1">F1-Score</span>
+                        <span className="text-lg font-bold text-accent">{(accuracy - 1.1).toFixed(1)}%</span>
+                      </div>
+                      <div className="p-3 glass-panel rounded-xl text-center">
+                        <span className="block text-foreground/70 mb-1">Loss</span>
+                        <span className="text-lg font-bold text-primary">{(0.15 - accuracy/1000).toFixed(4)}</span>
+                      </div>
+                    </div>
+
+                    <Separator className="my-4" />
+
+                    <div className="text-center">
+                      <Badge className="bg-primary/10 text-primary border-primary/20">
+                        Next Step: Tokenize Your AI →
+                      </Badge>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </div>
