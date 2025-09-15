@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 export default function Navigation() {
-  const [location] = useLocation();
+  const [location, setLocation] = useLocation();
   const { address } = useAccount();
   const [scrolled, setScrolled] = useState(false);
 
@@ -89,7 +89,7 @@ export default function Navigation() {
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
-                    className="glass-panel px-4 py-2 rounded-xl font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="glass-panel px-4 py-2 rounded-xl font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary hover:bg-muted/20 hover:text-foreground"
                     data-testid="nav-menu"
                     aria-label="Navigation menu"
                   >
@@ -122,7 +122,7 @@ export default function Navigation() {
                             e.preventDefault();
                             connected ? openAccountModal() : openConnectModal();
                           }}
-                          className="cursor-pointer"
+                          className="cursor-pointer hover:bg-muted/20 hover:text-foreground focus:bg-muted/20 focus:text-foreground transition-colors"
                           data-testid="nav-wallet"
                         >
                           {connected
@@ -141,7 +141,7 @@ export default function Navigation() {
                     <DropdownMenuItem key={item.path} asChild>
                       <Link
                         href={item.path}
-                        className={`w-full cursor-pointer focus:bg-muted/20 focus:text-foreground transition-colors ${
+                        className={`w-full cursor-pointer hover:bg-muted/20 hover:text-foreground focus:bg-muted/20 focus:text-foreground transition-colors ${
                           isActivePath(item.path) ? 'bg-primary/10 text-primary' : ''
                         }`}
                         data-testid={item.testId}
@@ -156,23 +156,22 @@ export default function Navigation() {
 
                   {/* AI Tools Submenu */}
                   <DropdownMenuSub>
-                    <DropdownMenuSubTrigger className="focus:bg-muted/20 focus:text-foreground transition-colors">
+                    <DropdownMenuSubTrigger className="hover:bg-muted/20 hover:text-foreground focus:bg-muted/20 focus:text-foreground transition-colors">
                       AI Tools
                     </DropdownMenuSubTrigger>
                     <DropdownMenuPortal>
                       <DropdownMenuSubContent className="glass-cyber border-primary/20">
                         {aiItems.map((item) => (
-                          <DropdownMenuItem key={item.path} asChild>
-                            <Link
-                              href={item.path}
-                              className={`w-full cursor-pointer focus:bg-muted/20 focus:text-foreground transition-colors ${
-                                isActivePath(item.path) ? 'bg-primary/10 text-primary' : ''
-                              }`}
-                              data-testid={item.testId}
-                              aria-current={isActivePath(item.path) ? 'page' : undefined}
-                            >
-                              {item.label}
-                            </Link>
+                          <DropdownMenuItem 
+                            key={item.path}
+                            onSelect={() => setLocation(item.path)}
+                            className={`cursor-pointer hover:bg-muted/20 hover:text-foreground focus:bg-muted/20 focus:text-foreground transition-colors ${
+                              isActivePath(item.path) ? 'bg-primary/10 text-primary' : ''
+                            }`}
+                            data-testid={item.testId}
+                            aria-current={isActivePath(item.path) ? 'page' : undefined}
+                          >
+                            {item.label}
                           </DropdownMenuItem>
                         ))}
                       </DropdownMenuSubContent>
