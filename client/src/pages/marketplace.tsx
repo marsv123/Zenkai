@@ -541,7 +541,7 @@ function PlatformOverviewHero({ onExploreClick }: { onExploreClick: () => void }
           {/* Main Content */}
           <div className="space-y-8">
             <div className="space-y-6">
-              <div className="space-y-4">
+              <div className="space-y-6">
                 <h1 className="text-4xl lg:text-6xl font-display font-bold gradient-text-cyber leading-tight">
                   Intelligence <span className="text-accent">Marketplace</span>
                 </h1>
