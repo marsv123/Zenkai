@@ -565,39 +565,7 @@ function PlatformOverviewHero({ onExploreClick }: { onExploreClick: () => void }
               </div>
             </div>
             
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <ConnectButton.Custom>
-                {({ account, chain, openConnectModal, mounted }) => {
-                  const connected = mounted && account && chain;
-                  return (
-                    <button
-                      onClick={openConnectModal}
-                      className="btn-primary hover-cyber text-lg px-8 py-4 group"
-                      data-testid="button-connect-wallet"
-                    >
-                      <Wallet className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
-                      Connect Wallet
-                    </button>
-                  );
-                }}
-              </ConnectButton.Custom>
-              
-              <button 
-                className="btn-secondary hover-cyber text-lg px-8 py-4 group" 
-                data-testid="button-explore-datasets"
-                onClick={onExploreClick}
-              >
-                <Search className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
-                Explore Datasets
-              </button>
-              
-              <Button asChild variant="secondary" className="hover-cyber text-lg px-8 py-4" data-testid="button-explore-ai-models">
-                <Link href="/tokenize">
-                  <Zap className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
-                  Explore AI Models
-                </Link>
-              </Button>
-            </div>
+            
           </div>
           
         </div>
