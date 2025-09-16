@@ -87,7 +87,6 @@ export default function MonetizePage() {
                 <div className="space-y-4">
                   <div>
                     <Label htmlFor="dataset-select" className="text-lg font-semibold">Select Dataset to Monetize</Label>
-                    <p className="text-sm text-muted-foreground mb-3">Choose which dataset you want to publish and monetize</p>
                   </div>
                   <Select value={selectedDataset} onValueChange={setSelectedDataset} data-testid="select-dataset">
                     <SelectTrigger id="dataset-select" className="w-full h-12 bg-background/50 border-border/50">
