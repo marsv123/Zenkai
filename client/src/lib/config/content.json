@@ -95,8 +95,8 @@
     }
   },
   "trainPage": {
-    "headline": "Train your AI models with datasets and test performance.",
-    "subHeadline": "Link datasets to models and run training experiments with performance monitoring", 
+    "headline": "Train your AI models",
+    "subHeadline": "Link models and datasets, run training sessions, and improve performance.", 
     "button": "Run Training",
     "testButton": "Test Run",
     "sections": {
