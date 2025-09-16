@@ -496,45 +496,6 @@ export default function TokenizePage() {
                 </CardContent>
               </Card>
 
-              {/* Benefits */}
-              <Card className="glass-cyber hover-cyber">
-                <CardHeader>
-                  <CardTitle className="text-lg font-display gradient-text-cyber">Benefits</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-start space-x-3">
-                    <Coins className="w-5 h-5 text-primary mt-0.5" />
-                    <div>
-                      <h5 className="font-medium">Continuous Revenue</h5>
-                      <p className="text-sm text-foreground/70">Earn from every model query</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start space-x-3">
-                    <Users className="w-5 h-5 text-secondary mt-0.5" />
-                    <div>
-                      <h5 className="font-medium">Community Investment</h5>
-                      <p className="text-sm text-foreground/70">Let others invest in your AI's success</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start space-x-3">
-                    <Shield className="w-5 h-5 text-accent mt-0.5" />
-                    <div>
-                      <h5 className="font-medium">Blockchain Security</h5>
-                      <p className="text-sm text-foreground/70">Immutable ownership and transactions</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start space-x-3">
-                    <TrendingUp className="w-5 h-5 text-primary mt-0.5" />
-                    <div>
-                      <h5 className="font-medium">Value Growth</h5>
-                      <p className="text-sm text-foreground/70">Token value increases with usage</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
             </div>
           </div>
         </div>
