@@ -91,8 +91,7 @@ export default function Home() {
   const { address, isConnected } = useAccount();
   const [visibleChars, setVisibleChars] = useState(0);
   const [showCursor, setShowCursor] = useState(true);
-  const [visibleChars2, setVisibleChars2] = useState(0);
-  const [showCursor2, setShowCursor2] = useState(false);
+  const [showSecondText, setShowSecondText] = useState(false);
   const [blinkingCursor, setBlinkingCursor] = useState(false);
   const [secondTextComplete, setSecondTextComplete] = useState(false);
   const [stats, setStats] = useState({
@@ -120,22 +119,11 @@ export default function Home() {
           // Remove blinking cursor - text is complete
           setBlinkingCursor(false);
           
-          // Start second text after 2 seconds
+          // Show second text all at once after 2 seconds
           setTimeout(() => {
-            setShowCursor2(true);
-            let charIndex2 = 0;
-            const typeInterval2 = setInterval(() => {
-              if (charIndex2 <= secondText.length) {
-                setVisibleChars2(charIndex2);
-                charIndex2++;
-              } else {
-                clearInterval(typeInterval2);
-                // Hide second cursor immediately when complete
-                setShowCursor2(false);
-                // Mark second text as complete
-                setSecondTextComplete(true);
-              }
-            }, 40); // Faster for the longer text
+            setShowSecondText(true);
+            // Mark second text as complete immediately since it phases in all at once
+            setSecondTextComplete(true);
           }, 2000); // 2 second pause between texts
         }
       }, 80); // 80ms between each character (machine-like speed)
@@ -219,19 +207,16 @@ export default function Home() {
               )}
             </p>
             
-            {/* Second typewriter text */}
-            <div className="max-w-4xl mx-auto mt-8">
-              <p className="text-base md:text-lg text-foreground/90 leading-relaxed font-body">
-                <span className="animate-text-glow-reveal">
-                  {secondText.slice(0, visibleChars2)}
-                </span>
-                {showCursor2 && (
-                  <span className={`inline-block w-0.5 h-5 md:h-6 bg-primary ml-1 transition-opacity duration-100 ${showCursor2 ? 'opacity-100' : 'opacity-0'}`}>
-                    {/* Matrix-style blinking cursor */}
+            {/* Second text - phases in all at once */}
+            {showSecondText && (
+              <div className="max-w-4xl mx-auto mt-8 animate-in fade-in duration-1000">
+                <p className="text-base md:text-lg text-foreground/90 leading-relaxed font-body">
+                  <span className="animate-text-glow-reveal">
+                    {secondText}
                   </span>
-                )}
-              </p>
-            </div>
+                </p>
+              </div>
+            )}
 
             {/* Patent Pending Notice - only show after second text completes */}
             {secondTextComplete && (
