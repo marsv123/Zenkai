@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import zenkaiLogoUrl from '@assets/Logo11_1757876955560.png';
 import zcashIconUrl from '@assets/zcash-icon-black_1757883096308.webp';
 import content from '@/lib/config/content.json';
+import { ZenkaiBrand } from '@/components/ZenkaiBrand';
 
 // Dataset type definition for frontend
 interface Dataset {
@@ -274,7 +275,7 @@ export default function Home() {
             <div className="glass-cyber hover-cyber p-12 rounded-3xl transition-all duration-500 group">
               
               <p className="text-xl text-accent/90 leading-relaxed text-center max-w-3xl mx-auto mb-10">
-                Powered by 0G's AI-native blockchain, Zenkai fuses data and AI into a decentralized, scalable marketplace of intelligence.
+                Powered by 0G's AI-native blockchain, <ZenkaiBrand colorContext="inherit" /> fuses data and AI into a decentralized, scalable marketplace of intelligence.
                 Participants can rent datasets or build, train, and tokenize AI models within one seamless dApp. Every contribution carries built-in ownership, reputation, and monetization. As data compounds and models evolve, value creation accelerates, fueling continuous growth across the ecosystem.
               </p>
               
@@ -335,7 +336,7 @@ export default function Home() {
               },
               {
                 title: "Tokenize your AI",
-                description: "Tokenize your AI on Zenkai and turn it into an investable asset.",
+                description: "Tokenize your AI and turn it into an investable asset.",
                 icon: Shield,
                 route: "/tokenize"
               }
@@ -448,7 +449,7 @@ export default function Home() {
                 <Github className="w-6 h-6 text-primary-foreground" />
               </div>
               <h4 className="font-medium gradient-text-zen mb-2">GitHub</h4>
-              <p className="text-sm text-foreground/60">Zenkai Repo</p>
+              <p className="text-sm text-foreground/60"><ZenkaiBrand colorContext="inherit" /> Repo</p>
             </a>
 
             <a
