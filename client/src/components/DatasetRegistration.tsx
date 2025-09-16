@@ -504,15 +504,6 @@ export default function DatasetRegistration() {
 
   return (
     <Card className="max-w-4xl mx-auto">
-      <CardHeader>
-        <CardTitle className="flex items-center space-x-3">
-          <Upload className="w-6 h-6 text-primary" />
-          <span>Register Dataset</span>
-        </CardTitle>
-        <CardDescription>
-          Upload your AI dataset to the decentralized marketplace on 0G Network
-        </CardDescription>
-      </CardHeader>
       
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">
