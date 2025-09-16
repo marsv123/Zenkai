@@ -106,8 +106,7 @@ export default function Navigation() {
                 data-testid="nav-zenkai-home"
                 aria-label="Zenkai - Go to homepage"
               >
-                <span>Zenk</span>
-                <span className="text-white !important group-hover:text-[hsl(22_100%_60%)] group-active:text-[hsl(16_100%_55%)]">ai</span>
+                Zenkai
               </Link>
             </div>
 

@@ -518,7 +518,7 @@ export default function Dashboard() {
                         Reputation Score
                       </CardTitle>
                       <CardDescription>
-                        Your standing in the <span>Zenk<span className="text-white !important">ai</span></span> community
+                        Your standing in the Zenkai community
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
