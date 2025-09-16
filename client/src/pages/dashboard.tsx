@@ -29,7 +29,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
 import { Link } from 'wouter';
 import content from '@/lib/config/content.json';
-import { ZenkaiBrand } from '@/components/ZenkaiBrand';
 
 interface Dataset {
   id: string;
@@ -519,7 +518,7 @@ export default function Dashboard() {
                         Reputation Score
                       </CardTitle>
                       <CardDescription>
-                        Your standing in the <ZenkaiBrand colorContext="inherit" /> community
+                        Your standing in the <span>Zenk<span className="text-white !important">ai</span></span> community
                       </CardDescription>
                     </CardHeader>
                     <CardContent>

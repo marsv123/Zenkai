@@ -11,7 +11,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import content from '@/lib/config/content.json';
-import { ZenkaiBrand } from '@/components/ZenkaiBrand';
 
 export default function Navigation() {
   const [location, setLocation] = useLocation();
@@ -107,7 +106,8 @@ export default function Navigation() {
                 data-testid="nav-zenkai-home"
                 aria-label="Zenkai - Go to homepage"
               >
-                <ZenkaiBrand colorContext="white" />
+                <span>Zenk</span>
+                <span className="text-white !important group-hover:text-[hsl(22_100%_60%)] group-active:text-[hsl(16_100%_55%)]">ai</span>
               </Link>
             </div>
 
