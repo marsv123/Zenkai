@@ -7,42 +7,67 @@ interface ZenkaiBrandProps {
    * 'orange' | 'white' | 'inherit' (inherits from parent)
    */
   colorContext?: 'orange' | 'white' | 'inherit';
+  /**
+   * Enable hover color swapping effect - when true, colors swap on hover
+   */
+  enableHover?: boolean;
 }
 
 /**
  * ZenkaiBrand component that renders "Zenkai" with split colorization:
  * - "Zenk" keeps the original/context color
  * - "ai" renders in the opposite color (orange ↔ white)
+ * - With hover enabled, colors swap during hover transitions
  */
-export function ZenkaiBrand({ className, colorContext = 'inherit' }: ZenkaiBrandProps) {
-  // Determine colors based on context
-  const getColors = () => {
+export function ZenkaiBrand({ className, colorContext = 'inherit', enableHover = false }: ZenkaiBrandProps) {
+  // Determine colors based on context and hover state
+  const getClasses = () => {
+    const baseClasses = 'transition-colors duration-500';
+    
     switch (colorContext) {
       case 'orange':
+        if (enableHover) {
+          return {
+            zenkClasses: `${baseClasses} text-[hsl(22_100%_60%)] group-hover:text-white`,
+            aiClasses: `${baseClasses} text-white group-hover:text-[hsl(22_100%_60%)]`,
+          };
+        }
         return {
-          zenkColor: 'text-[hsl(22_100%_60%)]', // Orange for "Zenk"
-          aiColor: 'text-white', // White for "ai"
+          zenkClasses: `${baseClasses} text-[hsl(22_100%_60%)]`,
+          aiClasses: `${baseClasses} text-white`,
         };
       case 'white':
+        if (enableHover) {
+          return {
+            zenkClasses: `${baseClasses} text-white group-hover:text-[hsl(22_100%_60%)]`,
+            aiClasses: `${baseClasses} text-[hsl(22_100%_60%)] group-hover:text-white`,
+          };
+        }
         return {
-          zenkColor: 'text-white', // White for "Zenk"
-          aiColor: 'text-[hsl(22_100%_60%)]', // Orange for "ai"
+          zenkClasses: `${baseClasses} text-white`,
+          aiClasses: `${baseClasses} text-[hsl(22_100%_60%)]`,
         };
       case 'inherit':
       default:
+        if (enableHover) {
+          return {
+            zenkClasses: `${baseClasses} group-hover:text-[hsl(22_100%_60%)]`,
+            aiClasses: `${baseClasses} text-[hsl(22_100%_60%)] group-hover:text-white`,
+          };
+        }
         return {
-          zenkColor: '', // Inherit parent color for "Zenk"
-          aiColor: 'text-[hsl(22_100%_60%)]', // Default to orange for "ai" when inheriting
+          zenkClasses: baseClasses,
+          aiClasses: `${baseClasses} text-[hsl(22_100%_60%)]`,
         };
     }
   };
 
-  const { zenkColor, aiColor } = getColors();
+  const { zenkClasses, aiClasses } = getClasses();
 
   return (
     <span className={cn(className)}>
-      <span className={zenkColor}>Zenk</span>
-      <span className={aiColor}>ai</span>
+      <span className={zenkClasses}>Zenk</span>
+      <span className={aiClasses}>ai</span>
     </span>
   );
 }
