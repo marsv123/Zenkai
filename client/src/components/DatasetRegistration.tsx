@@ -3,12 +3,13 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useAccount, useWriteContract, useWaitForTransactionReceipt, useChainId, useSwitchChain } from 'wagmi';
 import { parseEther, formatEther, BaseError as ViemBaseError } from 'viem';
-import { Link, DollarSign, Upload, ExternalLink, AlertCircle, CheckCircle, Clock, RefreshCw, Info } from 'lucide-react';
+import { Link, Upload, ExternalLink, AlertCircle, CheckCircle, Clock, RefreshCw, Info, Shield, Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { Switch } from '@/components/ui/switch';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
@@ -33,11 +34,11 @@ const OG_GALILEO_CHAIN_ID = 16601; // 0G Galileo testnet
 
 interface FormData {
   uri: string;
-  price: string;
   category: string;
   title: string;
   description: string;
   tags: string;
+  zkPrivacy: boolean;
 }
 
 interface TransactionState {
@@ -145,11 +146,11 @@ export default function DatasetRegistration() {
 
   const [formData, setFormData] = useState<FormData>({
     uri: '',
-    price: '',
     category: 'Machine Learning',
     title: '',
     description: '',
-    tags: ''
+    tags: '',
+    zkPrivacy: false
   });
 
   const [txState, setTxState] = useState<TransactionState>({
@@ -306,7 +307,6 @@ export default function DatasetRegistration() {
           description: formData.description,
           category: formData.category,
           ipfsHash: formData.uri,
-          price: formData.price,
           tags: formData.tags.split(',').map(tag => tag.trim()).filter(Boolean),
           isActive: false // Keep inactive until blockchain confirmation
         })
@@ -326,9 +326,7 @@ export default function DatasetRegistration() {
   const isFormValid = useCallback(() => {
     const isValid = formData.uri.trim() !== '' && 
            formData.uri.startsWith('ipfs://') &&
-           formData.title.trim() !== '' && 
-           formData.price.trim() !== '' && 
-           parseFloat(formData.price) > 0;
+           formData.title.trim() !== '';
     
     // Debug logging for testing
     if (import.meta.env.DEV) {
@@ -337,8 +335,6 @@ export default function DatasetRegistration() {
         uriValid: formData.uri.trim() !== '' && formData.uri.startsWith('ipfs://'),
         title: formData.title,
         titleValid: formData.title.trim() !== '',
-        price: formData.price,
-        priceValid: formData.price.trim() !== '' && parseFloat(formData.price) > 0,
         isValid,
         address
       });
@@ -351,11 +347,11 @@ export default function DatasetRegistration() {
   const resetForm = useCallback(() => {
     setFormData({
       uri: '',
-      price: '',
       category: 'Machine Learning',
       title: '',
       description: '',
-      tags: ''
+      tags: '',
+      zkPrivacy: false
     });
     setTxState({ status: 'idle', retryCount: 0 });
   }, []);
@@ -388,11 +384,11 @@ export default function DatasetRegistration() {
     }
 
     // Validate form
-    if (!formData.uri || !formData.price || !formData.title) {
+    if (!formData.uri || !formData.title) {
       toast({
         variant: "destructive",
         title: "Missing Required Fields",
-        description: "Please fill in URI, price, and title.",
+        description: "Please fill in URI and title.",
       });
       return;
     }
@@ -406,15 +402,6 @@ export default function DatasetRegistration() {
       return;
     }
 
-    const priceValue = parseFloat(formData.price);
-    if (isNaN(priceValue) || priceValue <= 0) {
-      toast({
-        variant: "destructive",
-        title: "Invalid Price",
-        description: "Please enter a valid price greater than 0.",
-      });
-      return;
-    }
 
     try {
       setTxState(prev => ({ ...prev, status: 'preparing' }));
@@ -426,7 +413,7 @@ export default function DatasetRegistration() {
       }
 
       // Phase 2: Create transaction record
-      const transactionId = await createTransactionRecord(datasetId, formData.price);
+      const transactionId = await createTransactionRecord(datasetId, '0');
       
       setTxState(prev => ({ 
         ...prev, 
@@ -435,7 +422,7 @@ export default function DatasetRegistration() {
       }));
 
       // Phase 3: Submit blockchain transaction
-      const priceInWei = parseEther(formData.price);
+      const priceInWei = parseEther('0'); // Default price for upload-only registration
       
       writeContract({
         address: DATASET_REGISTRY_ADDRESS,
@@ -473,9 +460,9 @@ export default function DatasetRegistration() {
   }, []);
 
   const handleInputChange = useCallback((field: keyof FormData) => (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | string
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | string | boolean
   ) => {
-    const value = typeof e === 'string' ? e : e.target.value;
+    const value = typeof e === 'string' ? e : typeof e === 'boolean' ? e : e.target.value;
     setFormData(prev => ({ ...prev, [field]: value }));
   }, []);
 
@@ -538,22 +525,31 @@ export default function DatasetRegistration() {
               </div>
               
               <div>
-                <Label htmlFor="price">Price (IMT) *</Label>
-                <div className="relative">
-                  <Input
-                    id="price"
-                    type="number"
-                    value={formData.price}
-                    onChange={handleInputChange('price')}
-                    className="pl-10"
-                    placeholder="10.50"
-                    step="0.01"
-                    min="0"
-                    required
-                    data-testid="input-price"
-                  />
-                  <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                <Label>Ownership Protection</Label>
+                <div className="flex items-center p-3 bg-muted/50 border rounded-lg">
+                  <Shield className="w-4 h-4 mr-2 text-primary" />
+                  <span className="text-sm text-muted-foreground">Protected by 0G Network (default on-chain)</span>
                 </div>
+              </div>
+
+              <div className="flex items-center justify-between p-3 border rounded-lg">
+                <div className="flex items-center space-x-2">
+                  {formData.zkPrivacy ? (
+                    <EyeOff className="w-4 h-4 text-primary" />
+                  ) : (
+                    <Eye className="w-4 h-4 text-muted-foreground" />
+                  )}
+                  <div>
+                    <Label htmlFor="zkPrivacy" className="text-sm font-medium">Zero-Knowledge Privacy</Label>
+                    <p className="text-xs text-muted-foreground">Optional privacy protection for dataset content</p>
+                  </div>
+                </div>
+                <Switch
+                  id="zkPrivacy"
+                  checked={formData.zkPrivacy}
+                  onCheckedChange={(checked) => handleInputChange('zkPrivacy')(checked)}
+                  data-testid="switch-zk-privacy"
+                />
               </div>
             </div>
             
