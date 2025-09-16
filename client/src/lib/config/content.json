@@ -67,7 +67,7 @@
   },
   "buildPage": {
     "headline": "Build AI models with ease.",
-    "subHeadline": "Build custom AI pipelines with modular components tailored to your needs.",
+    "subHeadline": "Custom AI pipelines with modular components tailored to your needs.",
     "button": "Start Building",
     "sections": {
       "pipeline": {
