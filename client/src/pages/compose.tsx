@@ -267,21 +267,7 @@ export default function ComposePage() {
                 </CardContent>
               </Card>
 
-              {/* Next Step Preview */}
-              <Card className="glass-cyber hover-cyber border-secondary/30">
-                <CardContent className="p-6 text-center">
-                  <div className="mb-4">
-                    <Play className="w-8 h-8 mx-auto text-secondary mb-2" />
-                    <h4 className="font-display font-semibold gradient-text-cyber">Next: Training</h4>
-                    <p className="text-sm text-muted-foreground">
-                      Train your AI model with datasets
-                    </p>
-                  </div>
-                  <Badge className="bg-secondary/10 text-secondary border-secondary/20">
-                    Coming Next →
-                  </Badge>
-                </CardContent>
-              </Card>
+              
             </div>
           </div>
         </div>
