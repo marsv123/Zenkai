@@ -67,7 +67,7 @@
   },
   "buildPage": {
     "headline": "Build AI models with ease.",
-    "subHeadline": "Drag, drop, and connect building blocks to create powerful AI pipelines according to your need.",
+    "subHeadline": "Build custom AI pipelines with modular components tailored to your needs.",
     "button": "Start Building",
     "sections": {
       "pipeline": {
