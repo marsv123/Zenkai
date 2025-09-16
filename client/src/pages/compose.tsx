@@ -193,27 +193,37 @@ export default function ComposePage() {
                     <p className="text-sm text-muted-foreground">{content.buildPage.sections.preview.description}</p>
                   </div>
                   
-                  <div className="grid md:grid-cols-3 gap-4">
-                    <div className="flex items-center justify-between p-3 glass-panel rounded-xl">
-                      <div className="flex items-center">
-                        <Layers className="w-4 h-4 mr-2 text-primary" />
-                        <span className="text-sm font-medium">Blocks</span>
+                  <div className="space-y-4">
+                    <div className="grid md:grid-cols-3 gap-4">
+                      <div className="flex items-center justify-between p-3 glass-panel rounded-xl">
+                        <div className="flex items-center">
+                          <Layers className="w-4 h-4 mr-2 text-primary" />
+                          <span className="text-sm font-medium">Blocks</span>
+                        </div>
+                        <span className="text-lg font-bold gradient-text-cyber">3</span>
                       </div>
-                      <span className="text-lg font-bold gradient-text-cyber">3</span>
+                      <div className="flex items-center justify-between p-3 glass-panel rounded-xl">
+                        <div className="flex items-center">
+                          <Settings className="w-4 h-4 mr-2 text-secondary" />
+                          <span className="text-sm font-medium">Parameters</span>
+                        </div>
+                        <span className="text-lg font-bold text-secondary">2.1M</span>
+                      </div>
+                      <div className="flex items-center justify-between p-3 glass-panel rounded-xl">
+                        <div className="flex items-center">
+                          <Zap className="w-4 h-4 mr-2 text-accent" />
+                          <span className="text-sm font-medium">Est. Time</span>
+                        </div>
+                        <span className="text-lg font-bold text-accent">~5min</span>
+                      </div>
                     </div>
-                    <div className="flex items-center justify-between p-3 glass-panel rounded-xl">
-                      <div className="flex items-center">
-                        <Settings className="w-4 h-4 mr-2 text-secondary" />
-                        <span className="text-sm font-medium">Parameters</span>
-                      </div>
-                      <span className="text-lg font-bold text-secondary">2.1M</span>
-                    </div>
-                    <div className="flex items-center justify-between p-3 glass-panel rounded-xl">
-                      <div className="flex items-center">
-                        <Zap className="w-4 h-4 mr-2 text-accent" />
-                        <span className="text-sm font-medium">Est. Time</span>
-                      </div>
-                      <span className="text-lg font-bold text-accent">~5min</span>
+                    
+                    {/* Start Pipeline Button */}
+                    <div className="text-center">
+                      <Button className="gradient-primary hover-cyber" data-testid="button-start-pipeline">
+                        <Play className="w-4 h-4 mr-2" />
+                        Start Pipeline
+                      </Button>
                     </div>
                   </div>
                 </div>

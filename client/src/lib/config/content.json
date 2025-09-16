@@ -79,7 +79,7 @@
         "description": "Pre-configured AI modules for common tasks, ready to use."
       },
       "preview": {
-        "title": "Pipeline Preview",
+        "title": "Run Pipeline Preview",
         "description": "Real-time visualization of your AI architecture"
       }
     },
