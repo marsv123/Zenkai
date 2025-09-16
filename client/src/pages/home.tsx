@@ -94,6 +94,7 @@ export default function Home() {
   const [visibleChars2, setVisibleChars2] = useState(0);
   const [showCursor2, setShowCursor2] = useState(false);
   const [blinkingCursor, setBlinkingCursor] = useState(false);
+  const [secondTextComplete, setSecondTextComplete] = useState(false);
   const [stats, setStats] = useState({
     datasetCount: 0,
     totalVolume: 0,
@@ -131,6 +132,8 @@ export default function Home() {
                 clearInterval(typeInterval2);
                 // Hide second cursor immediately when complete
                 setShowCursor2(false);
+                // Mark second text as complete
+                setSecondTextComplete(true);
               }
             }, 40); // Faster for the longer text
           }, 2000); // 2 second pause between texts
@@ -230,12 +233,14 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Patent Pending Notice */}
-            <div className="mt-6">
-              <p className="text-left text-sm font-accent text-primary/70">
-                #PatentPending
-              </p>
-            </div>
+            {/* Patent Pending Notice - only show after second text completes */}
+            {secondTextComplete && (
+              <div className="mt-6">
+                <p className="text-center text-sm font-accent text-primary/70">
+                  #PatentPending
+                </p>
+              </div>
+            )}
             
           </div>
           
