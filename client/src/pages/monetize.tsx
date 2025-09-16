@@ -62,7 +62,6 @@ export default function MonetizePage() {
           {/* Header */}
           <div className="text-center mb-12" data-testid="monetize-header">
             <h1 className="text-4xl md:text-5xl font-display font-bold mb-4 gradient-text-cyber">
-              <DollarSign className="w-10 h-10 md:w-12 md:h-12 mr-4 text-primary hover:scale-110 transition-transform duration-300 inline-block" data-testid="icon-monetize" />
               {content.monetizePage.headline}
             </h1>
             <p className="text-xl md:text-2xl text-accent/90 leading-relaxed max-w-3xl mx-auto">
@@ -70,22 +69,28 @@ export default function MonetizePage() {
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-8">
+          <div className="space-y-8">
             
-            {/* Left Column: Dataset Selection & Pricing */}
-            <div className="lg:col-span-2 space-y-8">
-              
-              {/* Dataset Selection */}
-              <Card className="glass-cyber hover-cyber" data-testid="card-dataset-selection">
-                <CardHeader>
-                  <CardTitle className="text-2xl font-display gradient-text-cyber">Select Dataset to Monetize</CardTitle>
-                  <CardDescription className="text-lg text-muted-foreground">
-                    Choose which dataset you want to publish and monetize
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
+            {/* Unified Monetization Form */}
+            <Card className="max-w-4xl mx-auto glass-cyber hover-cyber" data-testid="card-monetization-form">
+              <CardHeader>
+                <CardTitle className="text-2xl font-display gradient-text-cyber">
+                  Dataset Monetization
+                </CardTitle>
+                <CardDescription className="text-lg text-muted-foreground">
+                  Set up pricing and monetization strategy for your dataset
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-8">
+                
+                {/* Dataset Selection */}
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="dataset-select" className="text-lg font-semibold">Select Dataset to Monetize</Label>
+                    <p className="text-sm text-muted-foreground mb-3">Choose which dataset you want to publish and monetize</p>
+                  </div>
                   <Select value={selectedDataset} onValueChange={setSelectedDataset} data-testid="select-dataset">
-                    <SelectTrigger className="w-full h-12 bg-background/50 border-border/50">
+                    <SelectTrigger id="dataset-select" className="w-full h-12 bg-background/50 border-border/50">
                       <SelectValue placeholder="Choose a dataset" />
                     </SelectTrigger>
                     <SelectContent>
@@ -101,23 +106,15 @@ export default function MonetizePage() {
                       ))}
                     </SelectContent>
                   </Select>
-                </CardContent>
-              </Card>
+                </div>
 
-              {/* Pricing Strategy */}
-              <Card className="glass-cyber hover-cyber" data-testid="card-pricing-strategy">
-                <CardHeader>
-                  <CardTitle className="text-2xl font-display gradient-text-cyber flex items-center">
-                    <Target className="w-6 h-6 mr-2 text-primary" />
-                    {content.monetizePage.sections.pricingStrategy.title}
-                  </CardTitle>
-                  <CardDescription className="text-lg text-muted-foreground">
-                    {content.monetizePage.sections.pricingStrategy.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
+                {/* Pricing Strategy Options */}
+                <div className="space-y-4">
+                  <div>
+                    <Label className="text-lg font-semibold">Pricing Strategy</Label>
+                    <p className="text-sm text-muted-foreground mb-4">Choose how you want to monetize your dataset</p>
+                  </div>
                   
-                  {/* Pricing Options */}
                   <div className="grid md:grid-cols-2 gap-4">
                     <Card 
                       className={`cursor-pointer transition-all duration-300 ${
@@ -155,103 +152,98 @@ export default function MonetizePage() {
                       </CardContent>
                     </Card>
                   </div>
+                </div>
 
-                  {/* AI Suggested Pricing */}
-                  <Card className="border-accent/20 bg-accent/5" data-testid="ai-suggested-pricing">
-                    <CardContent className="p-4">
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center">
-                          <Sparkles className="w-5 h-5 mr-2 text-accent" />
-                          <h4 className="font-display font-semibold text-accent">AI-Powered Price Suggestion</h4>
-                        </div>
-                        <Badge className="bg-accent/10 text-accent border-accent/20">
-                          Recommended
-                        </Badge>
+                {/* AI Suggested Pricing */}
+                <Card className="border-accent/20 bg-accent/5" data-testid="ai-suggested-pricing">
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center">
+                        <Sparkles className="w-5 h-5 mr-2 text-accent" />
+                        <h4 className="font-display font-semibold text-accent">AI-Powered Price Suggestion</h4>
                       </div>
-                      <div className="grid md:grid-cols-2 gap-4">
+                      <Badge className="bg-accent/10 text-accent border-accent/20">
+                        Recommended
+                      </Badge>
+                    </div>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div>
+                        <div className="text-2xl font-bold gradient-text-cyber">
+                          {pricingStrategy.suggestedPrice} ZAI
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          {pricingStrategy.type === 'subscription' ? 'per month' : 'one-time purchase'}
+                        </div>
+                      </div>
+                      <div className="space-y-1 text-sm">
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">Similar datasets:</span>
+                          <span>25-45 ZAI</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">Data quality score:</span>
+                          <span className="text-accent">Premium</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">Market demand:</span>
+                          <span className="text-primary">High</span>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Custom Pricing */}
+                <Card 
+                  className={`cursor-pointer transition-all duration-300 ${
+                    pricingStrategy.type === 'custom' 
+                      ? 'border-primary bg-primary/5' 
+                      : 'border-border hover:border-primary/50'
+                  }`}
+                  onClick={() => setPricingStrategy({...pricingStrategy, type: 'custom'})}
+                  data-testid="option-custom"
+                >
+                  <CardContent className="p-4">
+                    <div className="flex items-center mb-4">
+                      <Target className="w-5 h-5 mr-2 text-primary" />
+                      <h4 className="font-display font-semibold">{content.monetizePage.options.custom}</h4>
+                      <Badge className="ml-auto bg-secondary/10 text-secondary border-secondary/20">
+                        Advanced
+                      </Badge>
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-4">{content.monetizePage.options.customDesc}</p>
+                    
+                    {pricingStrategy.type === 'custom' && (
+                      <div className="space-y-4">
                         <div>
-                          <div className="text-2xl font-bold gradient-text-cyber">
-                            {pricingStrategy.suggestedPrice} ZAI
-                          </div>
-                          <div className="text-sm text-muted-foreground">
-                            {pricingStrategy.type === 'subscription' ? 'per month' : 'one-time purchase'}
-                          </div>
-                        </div>
-                        <div className="space-y-1 text-sm">
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">Similar datasets:</span>
-                            <span>25-45 ZAI</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">Data quality score:</span>
-                            <span className="text-accent">Premium</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">Market demand:</span>
-                            <span className="text-primary">High</span>
-                          </div>
+                          <Label htmlFor="custom-price">Custom Price (ZAI)</Label>
+                          <Input
+                            id="custom-price"
+                            type="number"
+                            placeholder="Enter your price"
+                            value={customPrice}
+                            onChange={(e) => setCustomPrice(e.target.value)}
+                            className="mt-1"
+                            data-testid="input-custom-price"
+                          />
                         </div>
                       </div>
-                    </CardContent>
-                  </Card>
+                    )}
+                  </CardContent>
+                </Card>
 
-                  {/* Custom Pricing */}
-                  <Card 
-                    className={`cursor-pointer transition-all duration-300 ${
-                      pricingStrategy.type === 'custom' 
-                        ? 'border-primary bg-primary/5' 
-                        : 'border-border hover:border-primary/50'
-                    }`}
-                    onClick={() => setPricingStrategy({...pricingStrategy, type: 'custom'})}
-                    data-testid="option-custom"
-                  >
-                    <CardContent className="p-4">
-                      <div className="flex items-center mb-4">
-                        <Target className="w-5 h-5 mr-2 text-primary" />
-                        <h4 className="font-display font-semibold">{content.monetizePage.options.custom}</h4>
-                        <Badge className="ml-auto bg-secondary/10 text-secondary border-secondary/20">
-                          Advanced
-                        </Badge>
-                      </div>
-                      <p className="text-sm text-muted-foreground mb-4">{content.monetizePage.options.customDesc}</p>
-                      
-                      {pricingStrategy.type === 'custom' && (
-                        <div className="space-y-4">
-                          <div>
-                            <Label htmlFor="custom-price">Custom Price (ZAI)</Label>
-                            <Input
-                              id="custom-price"
-                              type="number"
-                              placeholder="Enter your price"
-                              value={customPrice}
-                              onChange={(e) => setCustomPrice(e.target.value)}
-                              className="mt-1"
-                              data-testid="input-custom-price"
-                            />
-                          </div>
-                        </div>
-                      )}
-                    </CardContent>
-                  </Card>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Right Column: Earnings Preview */}
-            <div className="space-y-8">
-              
-              {/* Earnings Preview */}
-              <Card className="glass-cyber hover-cyber border-primary/20" data-testid="card-earnings-preview">
-                <CardHeader>
-                  <CardTitle className="text-xl font-display gradient-text-cyber flex items-center">
-                    <BarChart3 className="w-5 h-5 mr-2 text-primary" />
-                    {content.monetizePage.sections.earningsPreview.title}
-                  </CardTitle>
-                  <CardDescription>
-                    {content.monetizePage.sections.earningsPreview.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
+                {/* Earnings Preview */}
+                <div className="space-y-4">
+                  <div>
+                    <Label className="text-lg font-semibold flex items-center">
+                      <BarChart3 className="w-5 h-5 mr-2 text-primary" />
+                      {content.monetizePage.sections.earningsPreview.title}
+                    </Label>
+                    <p className="text-sm text-muted-foreground">
+                      {content.monetizePage.sections.earningsPreview.description}
+                    </p>
+                  </div>
+                  
                   <div className="space-y-3">
                     <div className="flex justify-between items-center p-3 glass-panel rounded-xl">
                       <div className="flex items-center">
@@ -281,15 +273,13 @@ export default function MonetizePage() {
                       </span>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
 
-              {/* Publish Button */}
-              <Card className="glass-cyber hover-cyber border-primary/30">
-                <CardContent className="p-6 text-center">
+                {/* Publish Button */}
+                <div className="text-center pt-4">
                   <Button 
                     size="lg" 
-                    className="w-full gradient-primary hover-cyber font-display font-semibold text-lg py-6"
+                    className="w-full max-w-md mx-auto gradient-primary hover-cyber font-display font-semibold text-lg py-6"
                     disabled={!selectedDataset}
                     data-testid="button-publish"
                   >
@@ -299,9 +289,10 @@ export default function MonetizePage() {
                   <p className="text-xs text-muted-foreground mt-3">
                     Your dataset will be listed on the marketplace once published
                   </p>
-                </CardContent>
-              </Card>
-            </div>
+                </div>
+
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>

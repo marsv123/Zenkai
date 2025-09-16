@@ -39,8 +39,8 @@
     }
   },
   "monetizePage": {
-    "headline": "Set rent or one-time sale prices to monetize your datasets.",
-    "subHeadline": "Choose your monetization strategy and maximize your data's earning potential",
+    "headline": "Monetize Your Dataset",
+    "subHeadline": "Choose your monetization strategy and maximize your dataset's earning potential.",
     "button": "Publish for Rent or Sale",
     "sections": {
       "pricingStrategy": {
@@ -57,7 +57,7 @@
       }
     },
     "options": {
-      "subscription": "Subscription/Rent",
+      "subscription": "Rent",
       "subscriptionDesc": "Recurring revenue from ongoing access",
       "oneTime": "One-time Sale",
       "oneTimeDesc": "Single purchase, full ownership transfer",
