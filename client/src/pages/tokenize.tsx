@@ -156,7 +156,7 @@ export default function TokenizePage() {
                   AI Model Tokenization
                 </CardTitle>
                 <CardDescription className="text-lg text-muted-foreground">
-                  Convert your AI model into tradeable tokens backed by performance and usage
+                  Tradeable AI tokens backed by performance and usage
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-8">
