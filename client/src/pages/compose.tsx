@@ -183,13 +183,7 @@ export default function ComposePage() {
                     </div>
                   </div>
                   
-                  {/* Test Pipeline Button */}
-                  <div className="text-center mt-6">
-                    <Button className="gradient-primary hover-cyber" data-testid="button-test-pipeline">
-                      <Play className="w-4 h-4 mr-2" />
-                      Test Pipeline
-                    </Button>
-                  </div>
+                  
                 </div>
 
                 {/* Pipeline Preview */}
