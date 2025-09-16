@@ -142,15 +142,9 @@ export default function ComposePage() {
 
                 {/* Pipeline Builder */}
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className="text-lg font-semibold">{content.buildPage.sections.pipeline.title}</h3>
-                      <p className="text-sm text-muted-foreground">{content.buildPage.sections.pipeline.description}</p>
-                    </div>
-                    <Button className="gradient-primary hover-cyber" data-testid="button-test-pipeline">
-                      <Play className="w-4 h-4 mr-2" />
-                      Test Pipeline
-                    </Button>
+                  <div>
+                    <h3 className="text-lg font-semibold">{content.buildPage.sections.pipeline.title}</h3>
+                    <p className="text-sm text-muted-foreground">{content.buildPage.sections.pipeline.description}</p>
                   </div>
                   
                   <div className="min-h-64 p-8 bg-background/20 rounded-xl border border-primary/10 relative">
@@ -187,6 +181,14 @@ export default function ComposePage() {
                         <p className="text-sm text-primary/40">Drop blocks here to build your AI</p>
                       </div>
                     </div>
+                  </div>
+                  
+                  {/* Test Pipeline Button */}
+                  <div className="text-center mt-6">
+                    <Button className="gradient-primary hover-cyber" data-testid="button-test-pipeline">
+                      <Play className="w-4 h-4 mr-2" />
+                      Test Pipeline
+                    </Button>
                   </div>
                 </div>
 
