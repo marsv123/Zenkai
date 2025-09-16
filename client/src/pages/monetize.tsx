@@ -225,45 +225,33 @@ export default function MonetizePage() {
                 </Card>
 
                 {/* Earnings Preview */}
-                <div className="space-y-4">
-                  <div>
-                    <Label className="text-lg font-semibold flex items-center">
-                      <BarChart3 className="w-5 h-5 mr-2 text-primary" />
-                      {content.monetizePage.sections.earningsPreview.title}
-                    </Label>
-                    <p className="text-sm text-muted-foreground">
-                      {content.monetizePage.sections.earningsPreview.description}
-                    </p>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center p-3 glass-panel rounded-xl">
+                    <div className="flex items-center">
+                      <TrendingUp className="w-4 h-4 mr-2 text-primary" />
+                      <span className="text-sm font-medium">Monthly Revenue</span>
+                    </div>
+                    <span className="text-lg font-bold gradient-text-cyber">
+                      {projectedEarnings.monthly.toFixed(0)} ZAI
+                    </span>
                   </div>
-                  
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center p-3 glass-panel rounded-xl">
-                      <div className="flex items-center">
-                        <TrendingUp className="w-4 h-4 mr-2 text-primary" />
-                        <span className="text-sm font-medium">Monthly Revenue</span>
-                      </div>
-                      <span className="text-lg font-bold gradient-text-cyber">
-                        {projectedEarnings.monthly.toFixed(0)} ZAI
-                      </span>
+                  <div className="flex justify-between items-center p-3 glass-panel rounded-xl">
+                    <div className="flex items-center">
+                      <Users className="w-4 h-4 mr-2 text-accent" />
+                      <span className="text-sm font-medium">Exposure</span>
                     </div>
-                    <div className="flex justify-between items-center p-3 glass-panel rounded-xl">
-                      <div className="flex items-center">
-                        <Users className="w-4 h-4 mr-2 text-accent" />
-                        <span className="text-sm font-medium">Exposure</span>
-                      </div>
-                      <span className="text-lg font-bold text-accent">
-                        {projectedEarnings.exposure} views
-                      </span>
+                    <span className="text-lg font-bold text-accent">
+                      {projectedEarnings.exposure} views
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center p-3 glass-panel rounded-xl">
+                    <div className="flex items-center">
+                      <ArrowRight className="w-4 h-4 mr-2 text-secondary" />
+                      <span className="text-sm font-medium">Est. Downloads</span>
                     </div>
-                    <div className="flex justify-between items-center p-3 glass-panel rounded-xl">
-                      <div className="flex items-center">
-                        <ArrowRight className="w-4 h-4 mr-2 text-secondary" />
-                        <span className="text-sm font-medium">Est. Downloads</span>
-                      </div>
-                      <span className="text-lg font-bold text-secondary">
-                        {projectedEarnings.downloads}
-                      </span>
-                    </div>
+                    <span className="text-lg font-bold text-secondary">
+                      {projectedEarnings.downloads}
+                    </span>
                   </div>
                 </div>
 
