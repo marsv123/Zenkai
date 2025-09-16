@@ -86,9 +86,7 @@ export default function ComposePage() {
                 <CardTitle className="text-2xl font-display gradient-text-cyber">
                   AI Model Builder
                 </CardTitle>
-                <CardDescription className="text-lg text-muted-foreground">
-                  Build your AI pipeline with drag-and-drop components
-                </CardDescription>
+                
               </CardHeader>
               <CardContent className="space-y-8">
                 
