@@ -207,7 +207,7 @@ export default function TokenizePage() {
                         <h3 className="text-lg font-semibold">
                           Model Details
                         </h3>
-                        <p className="text-sm text-muted-foreground mb-4">Define Model Details</p>
+                        
                       </div>
                       
                       <div className="space-y-6">
