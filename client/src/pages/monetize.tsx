@@ -157,14 +157,9 @@ export default function MonetizePage() {
                 {/* AI Suggested Pricing */}
                 <Card className="border-accent/20 bg-accent/5" data-testid="ai-suggested-pricing">
                   <CardContent className="p-4">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center">
-                        <Sparkles className="w-5 h-5 mr-2 text-accent" />
-                        <h4 className="font-display font-semibold text-accent">AI-Powered Price Suggestion</h4>
-                      </div>
-                      <Badge className="bg-accent/10 text-accent border-accent/20">
-                        Recommended
-                      </Badge>
+                    <div className="flex items-center mb-4">
+                      <Sparkles className="w-5 h-5 mr-2 text-accent" />
+                      <h4 className="font-display font-semibold text-accent">AI-Powered Price Suggestion</h4>
                     </div>
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
@@ -207,9 +202,6 @@ export default function MonetizePage() {
                     <div className="flex items-center mb-4">
                       <Target className="w-5 h-5 mr-2 text-primary" />
                       <h4 className="font-display font-semibold">{content.monetizePage.options.custom}</h4>
-                      <Badge className="ml-auto bg-secondary/10 text-secondary border-secondary/20">
-                        Advanced
-                      </Badge>
                     </div>
                     <p className="text-sm text-muted-foreground mb-4">{content.monetizePage.options.customDesc}</p>
                     
