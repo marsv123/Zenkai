@@ -43,42 +43,6 @@ export default function UploadDataset() {
                 </CardContent>
               </Card>
 
-              {/* Metadata Importance */}
-              <Card className="glass-cyber hover-cyber border-accent/20" data-testid="card-metadata">
-                <CardHeader>
-                  <CardTitle className="text-xl font-display gradient-text-cyber flex items-center">
-                    <BookOpen className="w-5 h-5 mr-2 text-accent" />
-                    {content.uploadPage.sections.metadata.title}
-                  </CardTitle>
-                  <CardDescription className="text-base text-muted-foreground">
-                    {content.uploadPage.sections.metadata.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div className="space-y-3">
-                      <div className="flex items-center p-3 glass-panel rounded-xl">
-                        <Tag className="w-4 h-4 mr-2 text-primary" />
-                        <span className="text-sm font-medium">Proper Categorization</span>
-                      </div>
-                      <div className="flex items-center p-3 glass-panel rounded-xl">
-                        <FileText className="w-4 h-4 mr-2 text-secondary" />
-                        <span className="text-sm font-medium">Rich Descriptions</span>
-                      </div>
-                    </div>
-                    <div className="space-y-3">
-                      <div className="flex items-center p-3 glass-panel rounded-xl">
-                        <BookOpen className="w-4 h-4 mr-2 text-accent" />
-                        <span className="text-sm font-medium">Relevant Tags</span>
-                      </div>
-                      <div className="flex items-center p-3 glass-panel rounded-xl">
-                        <CheckCircle className="w-4 h-4 mr-2 text-primary" />
-                        <span className="text-sm font-medium">Use Cases</span>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
             </div>
           </div>
         </div>
