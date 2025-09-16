@@ -8,13 +8,13 @@
     "dashboard": "My Dashboard"
   },
   "uploadPage": {
-    "headline": "Securely store your datasets on-chain.",
+    "headline": "Secure your datasets on-chain.",
     "subHeadline": "With built-in ownership and zero-knowledge privacy protection, powered by 0G Network.",
     "button": "Upload & Register",
     "sections": {
       "datasetInfo": {
         "title": "Dataset Information",
-        "description": "Provide accurate details about your dataset to maximize credibility and discovery."
+        "description": "Provide rich metadata—descriptions, categories, and tags—to boost credibility and maximize dataset discovery."
       },
       "zeroG": {
         "title": "Powered by 0G Network", 
