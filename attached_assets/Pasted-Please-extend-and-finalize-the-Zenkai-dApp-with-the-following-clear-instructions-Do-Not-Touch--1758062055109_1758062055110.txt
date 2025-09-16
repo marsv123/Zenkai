@@ -1,0 +1,109 @@
+Please extend and finalize the Zenkai dApp with the following clear instructions.
+
+🚫 Do Not Touch
+
+Landing page (home) → must remain unchanged.
+
+Dashboard → must remain exactly as is.
+
+Design system (colors, typography, gradients, hover effects) → unchanged.
+
+✅ Critical – Must Fix (Immediate Priority)
+1. Smart Contract Deployment
+
+Deploy all contracts to 0G Galileo Testnet (Chain ID: 16601):
+
+ZAI Token (ERC20)
+
+DatasetRegistry
+
+ContributorNFT
+
+Update addresses.json in the frontend with the real deployed addresses.
+
+Test Wagmi/RainbowKit integration to confirm end-to-end transactions work.
+
+2. Dataset Monetization Flow
+
+On Monetize Data page:
+
+Add rent pricing (AI-suggested or placeholder).
+
+Custom price option.
+
+One-time sale option.
+
+Integrate with DatasetRegistry contract for publishing.
+
+After publish → dataset must appear in Marketplace and Dashboard.
+
+3. IPFS Integration (Direct Upload)
+
+Replace manual ipfs:// input with direct file upload.
+
+Integrate with a provider (Pinata / Infura / web3.storage).
+
+Auto-generate IPFS hash + auto-pin for reliability.
+
+✅ Important – AI Demo Features
+4. Build AI Page
+
+Keep drag-and-drop pipeline UI.
+
+For demo: when a dataset is selected, run a placeholder AI task (e.g., OpenAI summarization).
+
+Show “Preview Result” in pipeline preview area.
+
+5. Train AI Page
+
+Allow user to link dataset + mock AI model.
+
+Simulate a training session: progress bar + fake metrics (accuracy, loss).
+
+6. Tokenize AI Page
+
+Let user select a trained model (mock).
+
+Configure tokenization:
+
+Name, description, price per query, revenue sharing.
+
+On publish → mint a dummy NFT via ContributorNFT.
+
+✅ Nice to Have (Optional if time allows)
+
+AI Models Marketplace → mirror dataset marketplace but for tokenized AI models.
+
+Add zero-knowledge privacy toggle (0G integration).
+
+Extend Dashboard with staking/revenue sharing view.
+
+✅ Demo Readiness Checklist
+
+Before hackathon demo, confirm this flow:
+
+Wallet connect → redirect to Dashboard.
+
+Upload dataset → IPFS hash auto-generated.
+
+Monetize dataset → publish to blockchain.
+
+Purchase dataset → confirm via smart contract.
+
+Purchased/monetized dataset appears in Dashboard.
+
+(Optional) Build AI → preview dummy pipeline output.
+
+(Optional) Train AI → simulate training with progress + metrics.
+
+(Optional) Tokenize AI → mint NFT + display in Dashboard.
+
+⚡ Summary:
+
+Deploy contracts ASAP → unblock blockchain features.
+
+Focus on end-to-end dataset flow (upload → monetize → buy).
+
+Add lightweight AI demo functionality for credibility.
+
+Keep everything else unchanged (design, landing page, dashboard).

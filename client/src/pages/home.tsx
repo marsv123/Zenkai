@@ -216,6 +216,27 @@ export default function Home() {
               )}
             </p>
             
+            {/* Second typewriter text */}
+            <div className="max-w-4xl mx-auto mt-8">
+              <p className="text-base md:text-lg text-foreground/90 leading-relaxed font-body">
+                <span className="animate-text-glow-reveal">
+                  {secondText.slice(0, visibleChars2)}
+                </span>
+                {showCursor2 && (
+                  <span className={`inline-block w-0.5 h-5 md:h-6 bg-primary ml-1 transition-opacity duration-100 ${showCursor2 ? 'opacity-100' : 'opacity-0'}`}>
+                    {/* Matrix-style blinking cursor */}
+                  </span>
+                )}
+              </p>
+            </div>
+
+            {/* Patent Pending Notice */}
+            <div className="mt-6">
+              <p className="text-left text-sm font-accent text-primary/70">
+                #PatentPending
+              </p>
+            </div>
+            
           </div>
           
           

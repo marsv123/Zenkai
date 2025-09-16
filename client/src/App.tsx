@@ -7,6 +7,7 @@ import { config } from './lib/wagmi';
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
 import Home from "@/pages/home";
 import Marketplace from "@/pages/marketplace";
 import Upload from "@/pages/upload";
@@ -38,6 +39,7 @@ function Router() {
           <Route component={NotFound} />
         </Switch>
       </main>
+      <Footer />
     </div>
   );
 }
