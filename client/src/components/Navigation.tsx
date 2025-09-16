@@ -107,7 +107,7 @@ export default function Navigation() {
                 aria-label="Zenkai - Go to homepage"
               >
                 <span>Zenk</span>
-                <span className="text-white group-hover:text-[hsl(22_100%_60%)] group-active:text-[hsl(16_100%_55%)]">ai</span>
+                <span className="text-white !important group-hover:text-[hsl(22_100%_60%)] group-active:text-[hsl(16_100%_55%)]">ai</span>
               </Link>
             </div>
 
