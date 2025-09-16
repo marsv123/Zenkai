@@ -71,12 +71,12 @@
     "button": "Start Building",
     "sections": {
       "pipeline": {
-        "title": "AI Pipeline Builder",
-        "description": "Visual interface for assembling modular AI components"
+        "title": "Step 2: Build Your AI Pipeline",
+        "description": "Drag and drop your preferred AI models into a visual pipeline."
       },
       "blocks": {
-        "title": "Available Building Blocks", 
-        "description": "Pre-configured modules for common AI tasks"
+        "title": "Step 1: Choose Your AI Building Blocks", 
+        "description": "Pre-configured AI modules for common tasks, ready to use."
       },
       "preview": {
         "title": "Pipeline Preview",
