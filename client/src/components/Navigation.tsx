@@ -10,6 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { ZenkaiBrand } from '@/components/ZenkaiBrand';
 import content from '@/lib/config/content.json';
 
 export default function Navigation() {
@@ -102,12 +103,11 @@ export default function Navigation() {
             <div className="flex-shrink-0">
               <Link
                 href="/"
-                className="cursor-pointer group text-cyber-lg font-display transition-all duration-500 text-white hover:text-[hsl(22_100%_60%)] active:text-[hsl(16_100%_55%)] focus:outline-none focus:ring-2 focus:ring-primary rounded-lg px-2 py-1"
+                className="cursor-pointer text-cyber-lg font-display transition-all duration-500 focus:outline-none focus:ring-2 focus:ring-primary rounded-lg px-2 py-1"
                 data-testid="nav-zenkai-home"
                 aria-label="Zenkai - Go to homepage"
               >
-                <span>Zenk</span>
-                <span className="text-white !important group-hover:text-[hsl(22_100%_60%)] group-active:text-[hsl(16_100%_55%)]">ai</span>
+                <ZenkaiBrand className="text-cyber-lg font-display" inline={true} data-testid="nav-zenkai-brand" />
               </Link>
             </div>
 

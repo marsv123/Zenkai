@@ -6,6 +6,7 @@ import { Wallet, Upload, Store, User, ShoppingCart, Eye, Wand2, Star, TrendingUp
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { ZenkaiBrand } from '@/components/ZenkaiBrand';
 import zenkaiLogoUrl from '@assets/Logo11_1757876955560.png';
 import zcashIconUrl from '@assets/zcash-icon-black_1757883096308.webp';
 import content from '@/lib/config/content.json';
@@ -266,18 +267,7 @@ export default function Home() {
         <div className="container mx-auto max-w-6xl relative z-10">
           <div className="text-center mb-16">
             <h3 className="text-cyber-lg gradient-text-cyber mb-6">
-{content.homePage.about.title.includes('Zenkai') ? (
-                <>
-                  {content.homePage.about.title.split('Zenkai').map((part, i) => (
-                    i === 0 ? part : (
-                      <span key={i}>
-                        <span>Zenk<span className="text-white !important">ai</span></span>
-                        {part}
-                      </span>
-                    )
-                  ))}
-                </>
-              ) : content.homePage.about.title}
+              About <ZenkaiBrand className="text-cyber-lg gradient-text-cyber" inline={true} data-testid="heading-about-zenkai" />
             </h3>
           </div>
           
@@ -285,7 +275,7 @@ export default function Home() {
             <div className="glass-cyber hover-cyber p-12 rounded-3xl transition-all duration-500 group">
               
               <p className="text-xl text-accent/90 leading-relaxed text-center max-w-3xl mx-auto mb-10">
-                Powered by 0G's AI-native blockchain, <span>Zenk<span className="text-white !important">ai</span></span> fuses data and AI into a decentralized, scalable marketplace of intelligence.
+                Powered by 0G's AI-native blockchain, <ZenkaiBrand className="text-accent/90" inline={true} data-testid="text-description-zenkai" /> fuses data and AI into a decentralized, scalable marketplace of intelligence.
                 Participants can rent datasets or build, train, and tokenize AI models within one seamless dApp. Every contribution carries built-in ownership, reputation, and monetization. As data compounds and models evolve, value creation accelerates, fueling continuous growth across the ecosystem.
               </p>
               
@@ -375,7 +365,7 @@ export default function Home() {
                       {step.description.split('Zenkai').map((part, i) => (
                         i === 0 ? part : (
                           <span key={i}>
-                            <span>Zenk<span className="text-white !important">ai</span></span>
+                            <ZenkaiBrand className="text-foreground/80" inline={true} data-testid={`text-step-zenkai-${index}`} />
                             {part}
                           </span>
                         )
@@ -470,7 +460,7 @@ export default function Home() {
                 <Github className="w-6 h-6 text-primary-foreground" />
               </div>
               <h4 className="font-medium gradient-text-zen mb-2">GitHub</h4>
-              <p className="text-sm text-foreground/60"><span>Zenk<span className="text-white !important">ai</span></span> Repo</p>
+              <p className="text-sm text-foreground/60"><ZenkaiBrand className="text-sm text-foreground/60" inline={true} data-testid="text-github-zenkai" /> Repo</p>
             </a>
 
             <a
