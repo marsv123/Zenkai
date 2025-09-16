@@ -101,7 +101,6 @@ export default function TrainPage() {
           {/* Header */}
           <div className="text-center mb-12" data-testid="train-header">
             <h1 className="text-4xl md:text-5xl font-display font-bold mb-4 gradient-text-cyber">
-              <Brain className="w-10 h-10 md:w-12 md:h-12 mr-4 text-primary hover:scale-110 transition-transform duration-300 inline-block" data-testid="icon-train" />
               {content.trainPage.headline}
             </h1>
             <p className="text-xl md:text-2xl text-accent/90 leading-relaxed max-w-3xl mx-auto">
