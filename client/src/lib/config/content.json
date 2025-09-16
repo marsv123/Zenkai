@@ -123,8 +123,8 @@
     }
   },
   "tokenizePage": {
-    "headline": "Turn your AI model into an investable asset via tokenization.",
-    "subHeadline": "Create tradeable tokens backed by your AI model's performance and usage",
+    "headline": "Monetize your AI",
+    "subHeadline": "Turn your AI model into an investable asset via tokenization.",
     "button": "Tokenize Model", 
     "sections": {
       "modelSelection": {

@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Link } from 'wouter';
-import { ArrowLeft, Shield, DollarSign, Globe, Coins, TrendingUp, Users, Clock, Percent, ChartBar, Target, Banknote, Share2, PieChart } from 'lucide-react';
+import { ArrowLeft, Shield, DollarSign, Coins, TrendingUp, Target, Share2, Percent } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -141,7 +141,6 @@ export default function TokenizePage() {
           {/* Header */}
           <div className="text-center mb-12" data-testid="tokenize-header">
             <h1 className="text-4xl md:text-5xl font-display font-bold mb-4 gradient-text-cyber">
-              <Coins className="w-10 h-10 md:w-12 md:h-12 mr-4 text-primary hover:scale-110 transition-transform duration-300 inline-block" data-testid="icon-tokenize" />
               {content.tokenizePage.headline}
             </h1>
             <p className="text-xl md:text-2xl text-accent/90 leading-relaxed max-w-3xl mx-auto">
@@ -149,68 +148,151 @@ export default function TokenizePage() {
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-8">
-            
-            {/* Left Column: Configuration */}
-            <div className="lg:col-span-2 space-y-8">
-              
-              {/* Model Selection */}
-              <Card className="glass-cyber hover-cyber" data-testid="card-model-selection">
-                <CardHeader>
-                  <CardTitle className="text-xl font-display gradient-text-cyber flex items-center">
-                    <Target className="w-6 h-6 mr-2 text-primary" />
-                    {content.tokenizePage.sections.modelSelection.title}
-                  </CardTitle>
-                  <CardDescription className="text-lg text-muted-foreground">
-                    {content.tokenizePage.sections.modelSelection.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid md:grid-cols-3 gap-4">
-                    {trainedModels.map((model) => (
-                      <div
-                        key={model.id}
-                        className={`p-4 rounded-xl border cursor-pointer transition-all duration-300 ${
-                          selectedModel === model.id
-                            ? 'border-primary/50 glass-panel bg-primary/5'
-                            : 'border-primary/20 glass-panel hover:border-primary/30'
-                        }`}
-                        onClick={() => setSelectedModel(model.id)}
-                        data-testid={`model-${model.id}`}
-                      >
-                        <div className="flex items-center justify-between mb-3">
-                          <h4 className="font-medium text-sm">{model.name}</h4>
-                          <Badge className="bg-primary/10 text-primary border-primary/20 text-xs">
-                            {model.status}
-                          </Badge>
-                        </div>
-                        <div className="text-xs text-foreground/70 space-y-1">
-                          <div>Accuracy: {model.accuracy}</div>
-                        </div>
+          <div className="space-y-8">
+            {/* Unified Tokenization Form */}
+            <Card className="max-w-6xl mx-auto glass-cyber hover-cyber" data-testid="card-tokenization-form">
+              <CardHeader>
+                <CardTitle className="text-2xl font-display gradient-text-cyber">
+                  AI Model Tokenization
+                </CardTitle>
+                <CardDescription className="text-lg text-muted-foreground">
+                  Convert your AI model into tradeable tokens backed by performance and usage
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-8">
+                
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+                    
+                    {/* Select AI Model */}
+                    <div className="space-y-4">
+                      <div>
+                        <h3 className="text-lg font-semibold flex items-center">
+                          <Target className="w-5 h-5 mr-2 text-primary" />
+                          Select AI Model
+                        </h3>
+                        <p className="text-sm text-muted-foreground mb-4">Choose a trained model to tokenize</p>
                       </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Tokenomics Configuration */}
-              <Card className="glass-cyber hover-cyber" data-testid="card-tokenomics">
-                <CardHeader>
-                  <CardTitle className="text-xl font-display gradient-text-cyber flex items-center">
-                    <PieChart className="w-6 h-6 mr-2 text-secondary" />
-                    {content.tokenizePage.sections.tokenomics.title}
-                  </CardTitle>
-                  <CardDescription className="text-lg text-muted-foreground">
-                    {content.tokenizePage.sections.tokenomics.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Form {...form}>
-                    <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
                       
-                      {/* Pricing Section */}
-                      <div className="space-y-4">
-                        <h4 className="font-display font-semibold text-lg gradient-text-cyber">Pricing Structure</h4>
+                      <div className="grid md:grid-cols-3 gap-4">
+                        {trainedModels.map((model) => (
+                          <div
+                            key={model.id}
+                            className={`p-4 rounded-xl border cursor-pointer transition-all duration-300 ${
+                              selectedModel === model.id
+                                ? 'border-primary/50 glass-panel bg-primary/5'
+                                : 'border-primary/20 glass-panel hover:border-primary/30'
+                            }`}
+                            onClick={() => setSelectedModel(model.id)}
+                            data-testid={`model-${model.id}`}
+                          >
+                            <div className="flex items-center justify-between mb-3">
+                              <h4 className="font-medium text-sm">{model.name}</h4>
+                              <Badge className="bg-primary/10 text-primary border-primary/20 text-xs">
+                                {model.status}
+                              </Badge>
+                            </div>
+                            <div className="text-xs text-foreground/70">
+                              Accuracy: {model.accuracy}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <Separator />
+
+                    {/* Model Details */}
+                    <div className="space-y-4">
+                      <div>
+                        <h3 className="text-lg font-semibold">
+                          Model Details
+                        </h3>
+                        <p className="text-sm text-muted-foreground mb-4">Token name, description, and API endpoint</p>
+                      </div>
+                      
+                      <div className="space-y-6">
+                        <FormField
+                          control={form.control}
+                          name="modelName"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Token Name</FormLabel>
+                              <FormControl>
+                                <Input 
+                                  placeholder="e.g. Advanced Sentiment Analyzer Token"
+                                  className="glass-panel border-primary/20"
+                                  data-testid="input-model-name"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormDescription>
+                                Public name for your tokenized AI model
+                              </FormDescription>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control}
+                          name="description"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Description</FormLabel>
+                              <FormControl>
+                                <Textarea 
+                                  placeholder="Describe your AI model's capabilities, use cases, and potential for revenue generation..."
+                                  className="glass-panel border-primary/20 min-h-24"
+                                  data-testid="input-description"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormDescription>
+                                Detailed description for potential investors
+                              </FormDescription>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control}
+                          name="endpointUrl"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>API Endpoint</FormLabel>
+                              <FormControl>
+                                <Input 
+                                  placeholder="https://api.yourmodel.com/v1/predict"
+                                  className="glass-panel border-primary/20"
+                                  data-testid="input-endpoint-url"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormDescription>
+                                Public API endpoint for model access
+                              </FormDescription>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    </div>
+
+                    <Separator />
+
+                    {/* Tokenomics Configuration */}
+                    <div className="space-y-4">
+                      <div>
+                        <h3 className="text-lg font-semibold">
+                          Tokenomics Configuration
+                        </h3>
+                        <p className="text-sm text-muted-foreground mb-4">Define pricing and revenue sharing parameters</p>
+                      </div>
+                      
+                      <div className="space-y-6">
+                        {/* Pricing Fields */}
                         <div className="grid md:grid-cols-2 gap-6">
                           <FormField
                             control={form.control}
@@ -262,144 +344,67 @@ export default function TokenizePage() {
                             )}
                           />
                         </div>
-                      </div>
 
-                      <Separator />
-
-                      {/* Revenue Sharing */}
-                      <div className="space-y-4">
-                        <h4 className="font-display font-semibold text-lg gradient-text-cyber">Revenue Sharing</h4>
-                        <div className="space-y-6">
-                          <div>
-                            <FormLabel className="flex items-center mb-4">
-                              <Share2 className="w-4 h-4 mr-1 text-accent" />
-                              {content.tokenizePage.fields.revenueShare}: {revenueShare[0]}%
-                            </FormLabel>
-                            <div className="px-4">
-                              <Slider
-                                value={revenueShare}
-                                onValueChange={(value) => {
-                                  setRevenueShare(value);
-                                  form.setValue('revenueShare', value[0]);
-                                }}
-                                max={50}
-                                min={5}
-                                step={5}
-                                className="w-full"
-                                data-testid="slider-revenue-share"
-                              />
-                              <div className="flex justify-between text-xs text-muted-foreground mt-2">
-                                <span>5% (Min)</span>
-                                <span>25% (Recommended)</span>
-                                <span>50% (Max)</span>
-                              </div>
+                        {/* Revenue Sharing Slider */}
+                        <div>
+                          <FormLabel className="flex items-center mb-4">
+                            <Share2 className="w-4 h-4 mr-1 text-accent" />
+                            {content.tokenizePage.fields.revenueShare}: {revenueShare[0]}%
+                          </FormLabel>
+                          <div className="px-4">
+                            <Slider
+                              value={revenueShare}
+                              onValueChange={(value) => {
+                                setRevenueShare(value);
+                                form.setValue('revenueShare', value[0]);
+                              }}
+                              max={50}
+                              min={5}
+                              step={5}
+                              className="w-full"
+                              data-testid="slider-revenue-share"
+                            />
+                            <div className="flex justify-between text-xs text-muted-foreground mt-2">
+                              <span>5% (Min)</span>
+                              <span>25% (Recommended)</span>
+                              <span>50% (Max)</span>
                             </div>
-                            <FormDescription className="text-sm mt-2">
-                              {content.tokenizePage.fields.revenueShareDesc}
-                            </FormDescription>
                           </div>
-
-                          <FormField
-                            control={form.control}
-                            name="stakingRewards"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="flex items-center">
-                                  <Percent className="w-4 h-4 mr-1 text-primary" />
-                                  {content.tokenizePage.fields.stakingRewards}
-                                </FormLabel>
-                                <FormControl>
-                                  <Input 
-                                    placeholder="2.5"
-                                    className="glass-panel border-primary/20"
-                                    data-testid="input-staking-rewards"
-                                    {...field}
-                                  />
-                                </FormControl>
-                                <FormDescription className="text-sm">
-                                  {content.tokenizePage.fields.stakingRewardsDesc}
-                                </FormDescription>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
+                          <FormDescription className="text-sm mt-2">
+                            {content.tokenizePage.fields.revenueShareDesc}
+                          </FormDescription>
                         </div>
+
+                        {/* Staking Rewards */}
+                        <FormField
+                          control={form.control}
+                          name="stakingRewards"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="flex items-center">
+                                <Percent className="w-4 h-4 mr-1 text-primary" />
+                                {content.tokenizePage.fields.stakingRewards} (Optional)
+                              </FormLabel>
+                              <FormControl>
+                                <Input 
+                                  placeholder="2.5"
+                                  className="glass-panel border-primary/20"
+                                  data-testid="input-staking-rewards"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormDescription className="text-sm">
+                                {content.tokenizePage.fields.stakingRewardsDesc}
+                              </FormDescription>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
                       </div>
+                    </div>
 
-                      <Separator />
-
-                      {/* Model Details */}
-                      <div className="space-y-4">
-                        <h4 className="font-display font-semibold text-lg gradient-text-cyber">Model Details</h4>
-                        <div className="space-y-6">
-                          <FormField
-                            control={form.control}
-                            name="modelName"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Token Name</FormLabel>
-                                <FormControl>
-                                  <Input 
-                                    placeholder="e.g. Advanced Sentiment Analyzer Token"
-                                    className="glass-panel border-primary/20"
-                                    data-testid="input-model-name"
-                                    {...field}
-                                  />
-                                </FormControl>
-                                <FormDescription>
-                                  Public name for your tokenized AI model
-                                </FormDescription>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-
-                          <FormField
-                            control={form.control}
-                            name="description"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Token Description</FormLabel>
-                                <FormControl>
-                                  <Textarea 
-                                    placeholder="Describe your AI model's capabilities, use cases, and potential for revenue generation..."
-                                    className="glass-panel border-primary/20 min-h-24"
-                                    data-testid="input-description"
-                                    {...field}
-                                  />
-                                </FormControl>
-                                <FormDescription>
-                                  Detailed description for potential investors
-                                </FormDescription>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-
-                          <FormField
-                            control={form.control}
-                            name="endpointUrl"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>API Endpoint</FormLabel>
-                                <FormControl>
-                                  <Input 
-                                    placeholder="https://api.yourmodel.com/v1/predict"
-                                    className="glass-panel border-primary/20"
-                                    data-testid="input-endpoint-url"
-                                    {...field}
-                                  />
-                                </FormControl>
-                                <FormDescription>
-                                  Public API endpoint for model access
-                                </FormDescription>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        </div>
-                      </div>
-
+                    {/* Action Button */}
+                    <div className="pt-6">
                       <Button 
                         type="submit" 
                         className="w-full gradient-primary hover-cyber font-display font-semibold text-lg py-6"
@@ -409,94 +414,13 @@ export default function TokenizePage() {
                         <Coins className="w-5 h-5 mr-2" />
                         {isSubmitting ? 'Tokenizing...' : content.tokenizePage.button}
                       </Button>
-                    </form>
-                  </Form>
-                </CardContent>
-              </Card>
-            </div>
+                    </div>
 
-            {/* Right Column: Preview & Stats */}
-            <div className="space-y-6">
-              
-              {/* Revenue Breakdown */}
-              <Card className="glass-cyber hover-cyber border-primary/20" data-testid="card-revenue-breakdown">
-                <CardHeader>
-                  <CardTitle className="text-lg font-display gradient-text-cyber flex items-center">
-                    <ChartBar className="w-5 h-5 mr-2 text-primary" />
-                    Revenue Breakdown
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between p-3 glass-panel rounded-xl">
-                      <div className="flex items-center">
-                        <Banknote className="w-4 h-4 mr-2 text-primary" />
-                        <span className="text-sm font-medium">Your Share</span>
-                      </div>
-                      <span className="text-lg font-bold gradient-text-cyber">
-                        {100 - revenueShare[0]}%
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between p-3 glass-panel rounded-xl">
-                      <div className="flex items-center">
-                        <Share2 className="w-4 h-4 mr-2 text-accent" />
-                        <span className="text-sm font-medium">Token Holders</span>
-                      </div>
-                      <span className="text-lg font-bold text-accent">
-                        {revenueShare[0]}%
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between p-3 glass-panel rounded-xl">
-                      <div className="flex items-center">
-                        <Globe className="w-4 h-4 mr-2 text-secondary" />
-                        <span className="text-sm font-medium">Platform Fee</span>
-                      </div>
-                      <span className="text-lg font-bold text-secondary">4%</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </form>
+                </Form>
 
-              {/* Marketplace Preview */}
-              <Card className="glass-cyber hover-cyber" data-testid="card-marketplace-preview">
-                <CardHeader>
-                  <CardTitle className="text-lg font-display gradient-text-cyber flex items-center">
-                    <TrendingUp className="w-5 h-5 mr-2 text-primary" />
-                    {content.tokenizePage.sections.marketplace.title}
-                  </CardTitle>
-                  <CardDescription>
-                    {content.tokenizePage.sections.marketplace.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-3">
-                    <div className="text-center p-4 glass-panel rounded-xl">
-                      <div className="text-2xl font-bold gradient-text-cyber mb-2">~1.2K</div>
-                      <div className="text-sm text-foreground/70">Est. queries/month</div>
-                    </div>
-                    <div className="text-center p-4 glass-panel rounded-xl">
-                      <div className="text-2xl font-bold gradient-text-cyber mb-2">
-                        {form.watch('pricePerQuery') ? 
-                          (parseFloat(form.watch('pricePerQuery') || '0') * 1200).toFixed(0) : 
-                          '--'
-                        } ZAI
-                      </div>
-                      <div className="text-sm text-foreground/70">Monthly revenue</div>
-                    </div>
-                    <div className="text-center p-4 glass-panel rounded-xl">
-                      <div className="text-2xl font-bold gradient-text-cyber mb-2">
-                        {form.watch('totalTokens') ? 
-                          (parseInt(form.watch('totalTokens') || '0') / 1000000).toFixed(1) + 'M' : 
-                          '--'
-                        }
-                      </div>
-                      <div className="text-sm text-foreground/70">Tokens available</div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-            </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>
