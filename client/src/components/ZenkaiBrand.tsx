@@ -28,36 +28,36 @@ export function ZenkaiBrand({ className, colorContext = 'inherit', enableHover =
       case 'orange':
         if (enableHover) {
           return {
-            zenkClasses: `${baseClasses} text-[hsl(22_100%_60%)] group-hover:text-white`,
-            aiClasses: `${baseClasses} text-white group-hover:text-[hsl(22_100%_60%)]`,
+            zenkClasses: `${baseClasses} text-[hsl(16_100%_55%)] group-hover:text-white`,
+            aiClasses: `${baseClasses} text-white group-hover:text-[hsl(16_100%_55%)]`,
           };
         }
         return {
-          zenkClasses: `${baseClasses} text-[hsl(22_100%_60%)]`,
+          zenkClasses: `${baseClasses} text-[hsl(16_100%_55%)]`,
           aiClasses: `${baseClasses} text-white`,
         };
       case 'white':
         if (enableHover) {
           return {
-            zenkClasses: `${baseClasses} text-white group-hover:text-[hsl(22_100%_60%)]`,
-            aiClasses: `${baseClasses} text-[hsl(22_100%_60%)] group-hover:text-white`,
+            zenkClasses: `${baseClasses} text-white group-hover:text-[hsl(16_100%_55%)]`,
+            aiClasses: `${baseClasses} text-[hsl(16_100%_55%)] group-hover:text-white`,
           };
         }
         return {
           zenkClasses: `${baseClasses} text-white`,
-          aiClasses: `${baseClasses} text-[hsl(22_100%_60%)]`,
+          aiClasses: `${baseClasses} text-[hsl(16_100%_55%)]`,
         };
       case 'inherit':
       default:
         if (enableHover) {
           return {
-            zenkClasses: `${baseClasses} group-hover:text-[hsl(22_100%_60%)]`,
-            aiClasses: `${baseClasses} text-[hsl(22_100%_60%)] group-hover:text-white`,
+            zenkClasses: `${baseClasses} group-hover:text-[hsl(16_100%_55%)]`,
+            aiClasses: `${baseClasses} text-[hsl(16_100%_55%)] group-hover:text-white`,
           };
         }
         return {
           zenkClasses: baseClasses,
-          aiClasses: `${baseClasses} text-[hsl(22_100%_60%)]`,
+          aiClasses: `${baseClasses} text-[hsl(16_100%_55%)]`,
         };
     }
   };
