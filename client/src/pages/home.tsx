@@ -218,9 +218,9 @@ export default function Home() {
               </div>
             )}
 
-            {/* Patent Pending Notice - only show after second text completes */}
-            {secondTextComplete && (
-              <div className="mt-6">
+            {/* Patent Pending Notice - phases in simultaneously with second text */}
+            {showSecondText && (
+              <div className="mt-6 animate-in fade-in duration-1000">
                 <p className="text-center text-sm font-accent text-primary/70">
                   #PatentPending
                 </p>
