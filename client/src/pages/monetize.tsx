@@ -207,7 +207,6 @@ export default function MonetizePage() {
                     
                     <div className="space-y-4">
                       <div>
-                        <Label htmlFor="custom-price">Price (ZAI)</Label>
                         <Input
                           id="custom-price"
                           type="number"
