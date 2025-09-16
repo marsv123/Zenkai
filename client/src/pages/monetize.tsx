@@ -205,22 +205,20 @@ export default function MonetizePage() {
                     </div>
                     <p className="text-sm text-muted-foreground mb-4">{content.monetizePage.options.customDesc}</p>
                     
-                    {pricingStrategy.type === 'custom' && (
-                      <div className="space-y-4">
-                        <div>
-                          <Label htmlFor="custom-price">Custom Price (ZAI)</Label>
-                          <Input
-                            id="custom-price"
-                            type="number"
-                            placeholder="Enter your price"
-                            value={customPrice}
-                            onChange={(e) => setCustomPrice(e.target.value)}
-                            className="mt-1"
-                            data-testid="input-custom-price"
-                          />
-                        </div>
+                    <div className="space-y-4">
+                      <div>
+                        <Label htmlFor="custom-price">Price (ZAI)</Label>
+                        <Input
+                          id="custom-price"
+                          type="number"
+                          placeholder="Enter your price in ZAI tokens"
+                          value={customPrice}
+                          onChange={(e) => setCustomPrice(e.target.value)}
+                          className="mt-1"
+                          data-testid="input-custom-price"
+                        />
                       </div>
-                    )}
+                    </div>
                   </CardContent>
                 </Card>
 
