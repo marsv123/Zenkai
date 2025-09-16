@@ -229,7 +229,7 @@ export default function MonetizePage() {
                   <div className="flex justify-between items-center p-3 glass-panel rounded-xl">
                     <div className="flex items-center">
                       <TrendingUp className="w-4 h-4 mr-2 text-primary" />
-                      <span className="text-sm font-medium">Monthly Revenue</span>
+                      <span className="text-sm font-medium">Est. Monthly Revenue</span>
                     </div>
                     <span className="text-lg font-bold gradient-text-cyber">
                       {projectedEarnings.monthly.toFixed(0)} ZAI
@@ -238,7 +238,7 @@ export default function MonetizePage() {
                   <div className="flex justify-between items-center p-3 glass-panel rounded-xl">
                     <div className="flex items-center">
                       <Users className="w-4 h-4 mr-2 text-accent" />
-                      <span className="text-sm font-medium">Exposure</span>
+                      <span className="text-sm font-medium">Est. Exposure</span>
                     </div>
                     <span className="text-lg font-bold text-accent">
                       {projectedEarnings.exposure} views
