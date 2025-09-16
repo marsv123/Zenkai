@@ -109,156 +109,155 @@ export default function TrainPage() {
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-8">
-            
-            {/* Left Column: Configuration */}
-            <div className="lg:col-span-1 space-y-6">
-              
-              {/* Model Selection */}
-              <Card className="glass-cyber hover-cyber" data-testid="card-model-selection">
-                <CardHeader>
-                  <CardTitle className="text-lg font-display gradient-text-cyber flex items-center">
-                    <Brain className="w-5 h-5 mr-2 text-primary" />
-                    Select AI Model
-                  </CardTitle>
-                  <CardDescription>
-                    Choose your AI model to train with datasets
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  {mockModels.map((model) => (
-                    <div
-                      key={model.id}
-                      className={`p-3 rounded-xl border cursor-pointer transition-all duration-300 ${
-                        selectedModel === model.id
-                          ? 'border-primary/50 glass-panel bg-primary/5'
-                          : 'border-primary/20 glass-panel hover:border-primary/30'
-                      }`}
-                      onClick={() => setSelectedModel(model.id)}
-                      data-testid={`model-${model.id}`}
-                    >
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-medium text-sm">{model.name}</h4>
-                        <Badge className={`text-xs ${
-                          model.status === 'ready' ? 'bg-primary/10 text-primary border-primary/20' :
-                          model.status === 'training' ? 'bg-secondary/10 text-secondary border-secondary/20' :
-                          'bg-muted/10 text-muted-foreground border-muted/20'
-                        }`}>
-                          {model.status}
-                        </Badge>
-                      </div>
-                      <div className="text-xs text-foreground/70 space-y-1">
-                        <div>Architecture: {model.architecture}</div>
-                        <div>Blocks: {model.blocks}</div>
-                      </div>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-
-              {/* Dataset Selection */}
-              <Card className="glass-cyber hover-cyber" data-testid="card-dataset-selection">
-                <CardHeader>
-                  <CardTitle className="text-lg font-display gradient-text-cyber flex items-center">
-                    <Database className="w-5 h-5 mr-2 text-secondary" />
-                    {content.trainPage.sections.datasetSelection.title}
-                  </CardTitle>
-                  <CardDescription>
-                    {content.trainPage.sections.datasetSelection.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  {mockDatasets.map((dataset) => (
-                    <div
-                      key={dataset.id}
-                      className={`p-3 rounded-xl border cursor-pointer transition-all duration-300 ${
-                        selectedDataset === dataset.id
-                          ? 'border-secondary/50 glass-panel bg-secondary/5'
-                          : 'border-border hover:border-secondary/30 glass-panel'
-                      }`}
-                      onClick={() => setSelectedDataset(dataset.id)}
-                      data-testid={`dataset-${dataset.id}`}
-                    >
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-medium text-sm">{dataset.name}</h4>
-                        <Badge className="bg-secondary/10 text-secondary border-secondary/20 text-xs">
-                          {dataset.category}
-                        </Badge>
-                      </div>
-                      <div className="flex items-center justify-between text-xs text-foreground/70">
-                        <span>{dataset.size}</span>
-                        <span className="text-primary font-medium">{dataset.price}</span>
-                      </div>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-
-              {/* Training Configuration */}
-              <Card className="glass-cyber hover-cyber" data-testid="card-training-config">
-                <CardHeader>
-                  <CardTitle className="text-lg font-display gradient-text-cyber flex items-center">
-                    <Settings className="w-5 h-5 mr-2 text-accent" />
-                    {content.trainPage.sections.trainingConfig.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="flex items-center justify-between p-3 glass-panel rounded-xl">
-                    <div className="flex items-center">
-                      <Target className="w-4 h-4 mr-2 text-accent" />
-                      <span className="text-sm font-medium">Epochs</span>
-                    </div>
-                    <span className="text-sm font-bold">10</span>
+          <div className="space-y-8">
+            {/* Unified Training Form */}
+            <Card className="max-w-6xl mx-auto glass-cyber hover-cyber" data-testid="card-training-form">
+              <CardHeader>
+                <CardTitle className="text-2xl font-display gradient-text-cyber">
+                  AI Model Training
+                </CardTitle>
+                <CardDescription className="text-lg text-muted-foreground">
+                  Train your AI models with datasets and monitor performance
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-8">
+                
+                {/* Step 1: Select AI Model */}
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-lg font-semibold flex items-center">
+                      <Brain className="w-5 h-5 mr-2 text-primary" />
+                      Step 1: Select AI Model
+                    </h3>
+                    <p className="text-sm text-muted-foreground mb-4">Choose your AI model to train with datasets</p>
                   </div>
-                  <div className="flex items-center justify-between p-3 glass-panel rounded-xl">
-                    <div className="flex items-center">
-                      <Zap className="w-4 h-4 mr-2 text-primary" />
-                      <span className="text-sm font-medium">Batch Size</span>
-                    </div>
-                    <span className="text-sm font-bold">32</span>
+                  
+                  <div className="grid md:grid-cols-2 gap-4">
+                    {mockModels.map((model) => (
+                      <div
+                        key={model.id}
+                        className={`p-4 rounded-xl border cursor-pointer transition-all duration-300 ${
+                          selectedModel === model.id
+                            ? 'border-primary/50 glass-panel bg-primary/5'
+                            : 'border-primary/20 glass-panel hover:border-primary/30'
+                        }`}
+                        onClick={() => setSelectedModel(model.id)}
+                        data-testid={`model-${model.id}`}
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <h4 className="font-medium text-sm">{model.name}</h4>
+                          <Badge className={`text-xs ${
+                            model.status === 'ready' ? 'bg-primary/10 text-primary border-primary/20' :
+                            model.status === 'training' ? 'bg-secondary/10 text-secondary border-secondary/20' :
+                            'bg-muted/10 text-muted-foreground border-muted/20'
+                          }`}>
+                            {model.status}
+                          </Badge>
+                        </div>
+                        <div className="text-xs text-foreground/70 space-y-1">
+                          <div>Architecture: {model.architecture}</div>
+                          <div>Blocks: {model.blocks}</div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  <div className="flex items-center justify-between p-3 glass-panel rounded-xl">
-                    <div className="flex items-center">
-                      <Activity className="w-4 h-4 mr-2 text-secondary" />
-                      <span className="text-sm font-medium">Learning Rate</span>
-                    </div>
-                    <span className="text-sm font-bold">0.001</span>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+                </div>
 
-            {/* Center Column: Training Progress */}
-            <div className="lg:col-span-2 space-y-6">
-              
-              {/* Status & Actions */}
-              <Card className="glass-cyber hover-cyber" data-testid="card-training-status">
-                <CardHeader>
+                {/* Step 2: Select Dataset */}
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-lg font-semibold flex items-center">
+                      <Database className="w-5 h-5 mr-2 text-secondary" />
+                      Step 2: Select Dataset
+                    </h3>
+                    <p className="text-sm text-muted-foreground mb-4">{content.trainPage.sections.datasetSelection.description}</p>
+                  </div>
+                  
+                  <div className="grid md:grid-cols-2 gap-4">
+                    {mockDatasets.map((dataset) => (
+                      <div
+                        key={dataset.id}
+                        className={`p-4 rounded-xl border cursor-pointer transition-all duration-300 ${
+                          selectedDataset === dataset.id
+                            ? 'border-secondary/50 glass-panel bg-secondary/5'
+                            : 'border-border hover:border-secondary/30 glass-panel'
+                        }`}
+                        onClick={() => setSelectedDataset(dataset.id)}
+                        data-testid={`dataset-${dataset.id}`}
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <h4 className="font-medium text-sm">{dataset.name}</h4>
+                          <Badge className="bg-secondary/10 text-secondary border-secondary/20 text-xs">
+                            {dataset.category}
+                          </Badge>
+                        </div>
+                        <div className="flex items-center justify-between text-xs text-foreground/70">
+                          <span>{dataset.size}</span>
+                          <span className="text-primary font-medium">{dataset.price}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Step 3: Training Configuration */}
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-lg font-semibold flex items-center">
+                      <Settings className="w-5 h-5 mr-2 text-accent" />
+                      Step 3: Training Configuration
+                    </h3>
+                    <p className="text-sm text-muted-foreground mb-4">{content.trainPage.sections.trainingConfig.description}</p>
+                  </div>
+                  
+                  <div className="grid md:grid-cols-3 gap-4">
+                    <div className="flex items-center justify-between p-3 glass-panel rounded-xl">
+                      <div className="flex items-center">
+                        <Target className="w-4 h-4 mr-2 text-accent" />
+                        <span className="text-sm font-medium">Epochs</span>
+                      </div>
+                      <span className="text-sm font-bold">10</span>
+                    </div>
+                    <div className="flex items-center justify-between p-3 glass-panel rounded-xl">
+                      <div className="flex items-center">
+                        <Zap className="w-4 h-4 mr-2 text-primary" />
+                        <span className="text-sm font-medium">Batch Size</span>
+                      </div>
+                      <span className="text-sm font-bold">32</span>
+                    </div>
+                    <div className="flex items-center justify-between p-3 glass-panel rounded-xl">
+                      <div className="flex items-center">
+                        <Activity className="w-4 h-4 mr-2 text-secondary" />
+                        <span className="text-sm font-medium">Learning Rate</span>
+                      </div>
+                      <span className="text-sm font-bold">0.001</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Step 4: Performance Monitoring */}
+                <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <CardTitle className="text-xl font-display gradient-text-cyber flex items-center">
-                        <Activity className="w-6 h-6 mr-2 text-primary" />
-                        {content.trainPage.sections.performance.title}
-                      </CardTitle>
-                      <CardDescription>
-                        {content.trainPage.sections.performance.description}
-                      </CardDescription>
+                      <h3 className="text-lg font-semibold flex items-center">
+                        <Activity className="w-5 h-5 mr-2 text-primary" />
+                        Step 4: Performance Monitoring
+                      </h3>
+                      <p className="text-sm text-muted-foreground">{content.trainPage.sections.performance.description}</p>
                     </div>
-                    <div className="flex items-center space-x-3">
-                      <Badge className={`${
-                        trainingStatus === 'idle' ? 'bg-muted/10 text-muted-foreground border-muted/20' :
-                        trainingStatus === 'preparing' ? 'bg-accent/10 text-accent border-accent/20' :
-                        trainingStatus === 'training' ? 'bg-primary/10 text-primary border-primary/20' :
-                        trainingStatus === 'testing' ? 'bg-secondary/10 text-secondary border-secondary/20' :
-                        trainingStatus === 'completed' ? 'bg-primary/10 text-primary border-primary/20' :
-                        'bg-destructive/10 text-destructive border-destructive/20'
-                      } animate-pulse`}>
-                        {content.trainPage.status[trainingStatus]}
-                      </Badge>
-                    </div>
+                    <Badge className={`${
+                      trainingStatus === 'idle' ? 'bg-muted/10 text-muted-foreground border-muted/20' :
+                      trainingStatus === 'preparing' ? 'bg-accent/10 text-accent border-accent/20' :
+                      trainingStatus === 'training' ? 'bg-primary/10 text-primary border-primary/20' :
+                      trainingStatus === 'testing' ? 'bg-secondary/10 text-secondary border-secondary/20' :
+                      trainingStatus === 'completed' ? 'bg-primary/10 text-primary border-primary/20' :
+                      'bg-destructive/10 text-destructive border-destructive/20'
+                    } animate-pulse`}>
+                      {content.trainPage.status[trainingStatus]}
+                    </Badge>
                   </div>
-                </CardHeader>
-                <CardContent>
+
+                  {/* Training Buttons */}
                   <div className="flex items-center space-x-4 mb-6">
                     <Button 
                       className="gradient-primary hover-cyber flex-1" 
@@ -334,17 +333,51 @@ export default function TrainPage() {
                       </div>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
 
-              {/* Training Logs */}
-              <Card className="glass-cyber hover-cyber" data-testid="card-training-logs">
-                <CardHeader>
-                  <CardTitle className="text-lg font-display gradient-text-cyber">
-                    Training Logs
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
+                  {/* Model Performance Details */}
+                  {accuracy > 0 && (
+                    <div className="mt-6">
+                      <h4 className="text-md font-semibold flex items-center mb-4">
+                        <FlaskConical className="w-4 h-4 mr-2 text-primary" />
+                        Model Performance Metrics
+                      </h4>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                        <div className="p-3 glass-panel rounded-xl text-center">
+                          <span className="block text-foreground/70 mb-1">Precision</span>
+                          <span className="text-lg font-bold text-primary">{(accuracy - 2.3).toFixed(1)}%</span>
+                        </div>
+                        <div className="p-3 glass-panel rounded-xl text-center">
+                          <span className="block text-foreground/70 mb-1">Recall</span>
+                          <span className="text-lg font-bold text-secondary">{(accuracy - 1.8).toFixed(1)}%</span>
+                        </div>
+                        <div className="p-3 glass-panel rounded-xl text-center">
+                          <span className="block text-foreground/70 mb-1">F1-Score</span>
+                          <span className="text-lg font-bold text-accent">{(accuracy - 1.1).toFixed(1)}%</span>
+                        </div>
+                        <div className="p-3 glass-panel rounded-xl text-center">
+                          <span className="block text-foreground/70 mb-1">Loss</span>
+                          <span className="text-lg font-bold text-primary">{(0.15 - accuracy/1000).toFixed(4)}</span>
+                        </div>
+                      </div>
+                      
+                      <div className="text-center mt-4">
+                        <Badge className="bg-primary/10 text-primary border-primary/20">
+                          Next Step: Tokenize Your AI →
+                        </Badge>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Step 5: Training Logs */}
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-lg font-semibold">
+                      Step 5: Training Logs
+                    </h3>
+                    <p className="text-sm text-muted-foreground mb-4">Real-time training process logs and updates</p>
+                  </div>
+                  
                   <div className="glass-panel p-4 rounded-xl border border-primary/10 h-64 overflow-y-auto">
                     <div className="text-xs font-mono text-foreground/70 space-y-1" data-testid="training-logs">
                       {trainingProgress > 0 && (
@@ -369,49 +402,10 @@ export default function TrainPage() {
                       )}
                     </div>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
 
-              {/* Model Performance Details */}
-              {accuracy > 0 && (
-                <Card className="glass-cyber hover-cyber" data-testid="card-model-performance">
-                  <CardHeader>
-                    <CardTitle className="text-lg font-display gradient-text-cyber flex items-center">
-                      <FlaskConical className="w-5 h-5 mr-2 text-primary" />
-                      Model Performance Metrics
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                      <div className="p-3 glass-panel rounded-xl text-center">
-                        <span className="block text-foreground/70 mb-1">Precision</span>
-                        <span className="text-lg font-bold text-primary">{(accuracy - 2.3).toFixed(1)}%</span>
-                      </div>
-                      <div className="p-3 glass-panel rounded-xl text-center">
-                        <span className="block text-foreground/70 mb-1">Recall</span>
-                        <span className="text-lg font-bold text-secondary">{(accuracy - 1.8).toFixed(1)}%</span>
-                      </div>
-                      <div className="p-3 glass-panel rounded-xl text-center">
-                        <span className="block text-foreground/70 mb-1">F1-Score</span>
-                        <span className="text-lg font-bold text-accent">{(accuracy - 1.1).toFixed(1)}%</span>
-                      </div>
-                      <div className="p-3 glass-panel rounded-xl text-center">
-                        <span className="block text-foreground/70 mb-1">Loss</span>
-                        <span className="text-lg font-bold text-primary">{(0.15 - accuracy/1000).toFixed(4)}</span>
-                      </div>
-                    </div>
-
-                    <Separator className="my-4" />
-
-                    <div className="text-center">
-                      <Badge className="bg-primary/10 text-primary border-primary/20">
-                        Next Step: Tokenize Your AI →
-                      </Badge>
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-            </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>
