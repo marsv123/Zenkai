@@ -167,8 +167,7 @@ export default function TokenizePage() {
                     {/* Select AI Model */}
                     <div className="space-y-4">
                       <div>
-                        <h3 className="text-lg font-semibold flex items-center">
-                          <Target className="w-5 h-5 mr-2 text-primary" />
+                        <h3 className="text-lg font-semibold">
                           Select AI Model
                         </h3>
                         <p className="text-sm text-muted-foreground mb-4">Choose a trained model to tokenize</p>
@@ -208,7 +207,7 @@ export default function TokenizePage() {
                         <h3 className="text-lg font-semibold">
                           Model Details
                         </h3>
-                        <p className="text-sm text-muted-foreground mb-4">Token name, description, and API endpoint</p>
+                        <p className="text-sm text-muted-foreground mb-4">Define Model Details</p>
                       </div>
                       
                       <div className="space-y-6">
@@ -286,7 +285,7 @@ export default function TokenizePage() {
                     <div className="space-y-4">
                       <div>
                         <h3 className="text-lg font-semibold">
-                          Tokenomics Configuration
+                          Tokenomics
                         </h3>
                         <p className="text-sm text-muted-foreground mb-4">Define pricing and revenue sharing parameters</p>
                       </div>
