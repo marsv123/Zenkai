@@ -119,17 +119,17 @@ export default function Home() {
           // Remove blinking cursor - text is complete
           setBlinkingCursor(false);
           
-          // Show second text all at once after 2 seconds
+          // Show second text all at once after 1 second
           setTimeout(() => {
             setShowSecondText(true);
             // Mark second text as complete immediately since it phases in all at once
             setSecondTextComplete(true);
-          }, 2000); // 2 second pause between texts
+          }, 1000); // 1 second pause between texts
         }
-      }, 80); // 80ms between each character (machine-like speed)
+      }, 40); // 40ms between each character (faster speed)
       
       return () => clearInterval(typeInterval);
-    }, 800); // Initial delay before starting
+    }, 400); // Initial delay before starting
     
     return () => {
       clearTimeout(startDelay);
