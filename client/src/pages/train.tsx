@@ -116,9 +116,7 @@ export default function TrainPage() {
                 <CardTitle className="text-2xl font-display gradient-text-cyber">
                   AI Model Training
                 </CardTitle>
-                <CardDescription className="text-lg text-muted-foreground">
-                  Train your AI models with datasets and monitor performance
-                </CardDescription>
+                
               </CardHeader>
               <CardContent className="space-y-8">
                 
