@@ -38,6 +38,7 @@ interface FormData {
   title: string;
   description: string;
   tags: string;
+  ownershipProtection: boolean;
   zkPrivacy: boolean;
 }
 
@@ -150,6 +151,7 @@ export default function DatasetRegistration() {
     title: '',
     description: '',
     tags: '',
+    ownershipProtection: true,
     zkPrivacy: false
   });
 
@@ -351,6 +353,7 @@ export default function DatasetRegistration() {
       title: '',
       description: '',
       tags: '',
+      ownershipProtection: true,
       zkPrivacy: false
     });
     setTxState({ status: 'idle', retryCount: 0 });
@@ -524,12 +527,20 @@ export default function DatasetRegistration() {
                 </div>
               </div>
               
-              <div>
-                <Label>Ownership Protection</Label>
-                <div className="flex items-center p-3 bg-muted/50 border rounded-lg">
-                  <Shield className="w-4 h-4 mr-2 text-primary" />
-                  <span className="text-sm text-muted-foreground">Protected by 0G Network (default on-chain)</span>
+              <div className="flex items-center justify-between p-3 border rounded-lg">
+                <div className="flex items-center space-x-2">
+                  <Shield className="w-4 h-4 text-primary" />
+                  <div>
+                    <Label htmlFor="ownershipProtection" className="text-sm font-medium">Ownership Protection</Label>
+                    <p className="text-xs text-muted-foreground">Protected by 0G Network (always enabled)</p>
+                  </div>
                 </div>
+                <Switch
+                  id="ownershipProtection"
+                  checked={formData.ownershipProtection}
+                  disabled={true}
+                  data-testid="switch-ownership-protection"
+                />
               </div>
 
               <div className="flex items-center justify-between p-3 border rounded-lg">
