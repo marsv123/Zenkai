@@ -66,8 +66,8 @@
     }
   },
   "buildPage": {
-    "headline": "Assemble AI models with intuitive modular blocks.",
-    "subHeadline": "Drag, drop, and connect building blocks to create powerful AI pipelines",
+    "headline": "Build AI models with ease.",
+    "subHeadline": "Drag, drop, and connect building blocks to create powerful AI pipelines according to your need.",
     "button": "Start Building",
     "sections": {
       "pipeline": {

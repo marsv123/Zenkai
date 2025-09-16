@@ -72,7 +72,6 @@ export default function ComposePage() {
           {/* Header */}
           <div className="text-center mb-12" data-testid="build-header">
             <h1 className="text-4xl md:text-5xl font-display font-bold mb-4 gradient-text-cyber">
-              <Brain className="w-10 h-10 md:w-12 md:h-12 mr-4 text-primary hover:scale-110 transition-transform duration-300 inline-block" data-testid="icon-build" />
               {content.buildPage.headline}
             </h1>
             <p className="text-xl md:text-2xl text-accent/90 leading-relaxed max-w-3xl mx-auto">
@@ -80,93 +79,83 @@ export default function ComposePage() {
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-4 gap-8">
-            
-            {/* Left Column: Block Library */}
-            <div className="lg:col-span-1 space-y-6">
-              
-              {/* Category Filter */}
-              <Card className="glass-cyber hover-cyber" data-testid="card-categories">
-                <CardHeader>
-                  <CardTitle className="text-lg font-display gradient-text-cyber flex items-center">
-                    <Layers className="w-5 h-5 mr-2 text-primary" />
-                    {content.buildPage.sections.blocks.title}
-                  </CardTitle>
-                  <CardDescription className="text-sm text-muted-foreground">
-                    {content.buildPage.sections.blocks.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-2">
-                  {categories.map((category) => (
-                    <Button
-                      key={category.id}
-                      variant={activeCategory === category.id ? "default" : "ghost"}
-                      className={`w-full justify-start ${
-                        activeCategory === category.id 
-                          ? 'gradient-primary hover-cyber text-primary-foreground' 
-                          : 'hover:bg-muted/20'
-                      }`}
-                      onClick={() => setActiveCategory(category.id)}
-                      data-testid={`category-${category.id}`}
-                    >
-                      <category.icon className="w-4 h-4 mr-2" />
-                      {category.name}
-                    </Button>
-                  ))}
-                </CardContent>
-              </Card>
+          <div className="space-y-8">
+            {/* Unified AI Builder Form */}
+            <Card className="max-w-6xl mx-auto glass-cyber hover-cyber" data-testid="card-ai-builder">
+              <CardHeader>
+                <CardTitle className="text-2xl font-display gradient-text-cyber">
+                  AI Model Builder
+                </CardTitle>
+                <CardDescription className="text-lg text-muted-foreground">
+                  Build your AI pipeline with drag-and-drop components
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-8">
+                
+                {/* Available Building Blocks */}
+                <div className="space-y-6">
+                  <div className="space-y-4">
+                    <div>
+                      <h3 className="text-lg font-semibold">{content.buildPage.sections.blocks.title}</h3>
+                      <p className="text-sm text-muted-foreground mb-4">{content.buildPage.sections.blocks.description}</p>
+                    </div>
+                    
+                    {/* Category Filter */}
+                    <div className="flex flex-wrap gap-2 mb-6">
+                      {categories.map((category) => (
+                        <Button
+                          key={category.id}
+                          variant={activeCategory === category.id ? "default" : "ghost"}
+                          className={`${
+                            activeCategory === category.id 
+                              ? 'gradient-primary hover-cyber text-primary-foreground' 
+                              : 'hover:bg-muted/20'
+                          }`}
+                          onClick={() => setActiveCategory(category.id)}
+                          data-testid={`category-${category.id}`}
+                        >
+                          <category.icon className="w-4 h-4 mr-2" />
+                          {category.name}
+                        </Button>
+                      ))}
+                    </div>
 
-              {/* Available Blocks */}
-              <Card className="glass-cyber hover-cyber" data-testid="card-blocks-library">
-                <CardHeader>
-                  <CardTitle className="text-lg font-display gradient-text-cyber">Available Blocks</CardTitle>
-                  <CardDescription>Drag blocks to the canvas</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    {filteredBlocks.map((block) => (
-                      <div key={block.id} 
-                           className="glass-panel p-3 rounded-xl border border-primary/20 cursor-move hover:border-primary/40 transition-colors group"
-                           data-testid={`available-block-${block.id}`}>
-                        <div className="flex items-start space-x-3">
-                          <div className="w-8 h-8 gradient-primary rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                            <block.icon className="w-4 h-4 text-primary-foreground" />
-                          </div>
-                          <div className="min-w-0">
-                            <h5 className="font-medium text-sm truncate">{block.title}</h5>
-                            <p className="text-xs text-foreground/70 line-clamp-2">{block.description}</p>
-                            <Badge className="mt-1 text-xs" variant="outline">{block.category}</Badge>
+                    {/* Available Blocks Grid */}
+                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                      {filteredBlocks.map((block) => (
+                        <div key={block.id} 
+                             className="glass-panel p-4 rounded-xl border border-primary/20 cursor-move hover:border-primary/40 transition-colors group"
+                             data-testid={`available-block-${block.id}`}>
+                          <div className="text-center space-y-3">
+                            <div className="w-10 h-10 gradient-primary rounded-xl flex items-center justify-center mx-auto group-hover:scale-110 transition-transform">
+                              <block.icon className="w-5 h-5 text-primary-foreground" />
+                            </div>
+                            <div>
+                              <h5 className="font-medium text-sm">{block.title}</h5>
+                              <p className="text-xs text-foreground/70 line-clamp-2 mt-1">{block.description}</p>
+                              <Badge className="mt-2 text-xs" variant="outline">{block.category}</Badge>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
-                </CardContent>
-              </Card>
-            </div>
+                </div>
 
-            {/* Center Column: Pipeline Canvas */}
-            <div className="lg:col-span-2">
-              <Card className="glass-cyber hover-cyber h-full" data-testid="card-pipeline-canvas">
-                <CardHeader>
+                {/* Pipeline Builder */}
+                <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <CardTitle className="text-xl font-display gradient-text-cyber flex items-center">
-                        <Workflow className="w-6 h-6 mr-2 text-primary" />
-                        {content.buildPage.sections.pipeline.title}
-                      </CardTitle>
-                      <CardDescription>
-                        {content.buildPage.sections.pipeline.description}
-                      </CardDescription>
+                      <h3 className="text-lg font-semibold">{content.buildPage.sections.pipeline.title}</h3>
+                      <p className="text-sm text-muted-foreground">{content.buildPage.sections.pipeline.description}</p>
                     </div>
-                    <Button className="gradient-primary hover-cyber" data-testid="button-run-pipeline">
+                    <Button className="gradient-primary hover-cyber" data-testid="button-test-pipeline">
                       <Play className="w-4 h-4 mr-2" />
                       Test Pipeline
                     </Button>
                   </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="min-h-96 p-8 bg-background/20 rounded-xl border border-primary/10 relative">
+                  
+                  <div className="min-h-64 p-8 bg-background/20 rounded-xl border border-primary/10 relative">
                     {/* Pipeline Flow */}
                     <div className="flex flex-col gap-8 items-center justify-center">
                       <div className="flex flex-wrap gap-6 items-center justify-center">
@@ -201,26 +190,16 @@ export default function ComposePage() {
                       </div>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            </div>
+                </div>
 
-            {/* Right Column: Preview & Stats */}
-            <div className="lg:col-span-1 space-y-6">
-              
-              {/* Pipeline Preview */}
-              <Card className="glass-cyber hover-cyber" data-testid="card-pipeline-preview">
-                <CardHeader>
-                  <CardTitle className="text-lg font-display gradient-text-cyber flex items-center">
-                    <Monitor className="w-5 h-5 mr-2 text-primary" />
-                    {content.buildPage.sections.preview.title}
-                  </CardTitle>
-                  <CardDescription>
-                    {content.buildPage.sections.preview.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-3">
+                {/* Pipeline Preview */}
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-lg font-semibold">{content.buildPage.sections.preview.title}</h3>
+                    <p className="text-sm text-muted-foreground">{content.buildPage.sections.preview.description}</p>
+                  </div>
+                  
+                  <div className="grid md:grid-cols-3 gap-4">
                     <div className="flex items-center justify-between p-3 glass-panel rounded-xl">
                       <div className="flex items-center">
                         <Layers className="w-4 h-4 mr-2 text-primary" />
@@ -243,32 +222,10 @@ export default function ComposePage() {
                       <span className="text-lg font-bold text-accent">~5min</span>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
 
-              {/* Actions */}
-              <Card className="glass-cyber hover-cyber">
-                <CardContent className="p-6 space-y-4">
-                  <Button className="w-full gradient-primary hover-cyber font-display font-semibold" 
-                          data-testid="button-start-building">
-                    <Sparkles className="w-4 h-4 mr-2" />
-                    {content.buildPage.button}
-                  </Button>
-                  <Button variant="outline" 
-                          className="w-full border-primary/30 hover:border-primary/50 hover-cyber"
-                          data-testid="button-save-template">
-                    Save as Template
-                  </Button>
-                  <Button variant="ghost" 
-                          className="w-full hover:bg-muted/20"
-                          data-testid="button-load-template">
-                    Load Template
-                  </Button>
-                </CardContent>
-              </Card>
-
-              
-            </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>
