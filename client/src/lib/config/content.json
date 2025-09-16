@@ -8,8 +8,8 @@
     "dashboard": "My Dashboard"
   },
   "uploadPage": {
-    "headline": "Upload datasets securely with built-in ownership protection.",
-    "subHeadline": "Share your data with 0G's decentralized storage and zero-knowledge privacy",
+    "headline": "Securely store your datasets on-chain.",
+    "subHeadline": "With built-in ownership and zero-knowledge privacy protection, powered by 0G Network.",
     "button": "Upload & Register",
     "sections": {
       "datasetInfo": {

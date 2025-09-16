@@ -324,12 +324,28 @@ export default function DatasetRegistration() {
 
   // Form validation helper
   const isFormValid = useCallback(() => {
-    return formData.uri.trim() !== '' && 
+    const isValid = formData.uri.trim() !== '' && 
            formData.uri.startsWith('ipfs://') &&
            formData.title.trim() !== '' && 
            formData.price.trim() !== '' && 
            parseFloat(formData.price) > 0;
-  }, [formData]);
+    
+    // Debug logging for testing
+    if (import.meta.env.DEV) {
+      console.log('Form validation:', {
+        uri: formData.uri,
+        uriValid: formData.uri.trim() !== '' && formData.uri.startsWith('ipfs://'),
+        title: formData.title,
+        titleValid: formData.title.trim() !== '',
+        price: formData.price,
+        priceValid: formData.price.trim() !== '' && parseFloat(formData.price) > 0,
+        isValid,
+        address
+      });
+    }
+    
+    return isValid;
+  }, [formData, address]);
 
   // Reset form to initial state
   const resetForm = useCallback(() => {
@@ -676,27 +692,51 @@ export default function DatasetRegistration() {
             </Alert>
           )}
           
-          {/* Submit Button */}
-          <div className="flex space-x-4">
-            <Button 
-              type="submit"
-              disabled={!address || 
-                       !isFormValid() ||
-                       txState.status === 'preparing' || 
-                       txState.status === 'waiting_for_wallet' || 
-                       txState.status === 'submitting' || 
-                       txState.status === 'confirming' || 
-                       txState.status === 'success'}
-              className="flex-1"
-              data-testid="button-register-dataset"
-            >
-              {txState.status === 'preparing' && 'Preparing...'}
-              {txState.status === 'waiting_for_wallet' && 'Waiting for Wallet...'}
-              {txState.status === 'submitting' && 'Submitting...'}
-              {txState.status === 'confirming' && 'Confirming...'}
-              {txState.status === 'success' && 'Dataset Registered!'}
-              {(txState.status === 'idle' || txState.status === 'error') && 'Register Dataset'}
-            </Button>
+          {/* Submit Button with Status */}
+          <div className="space-y-4">
+            {/* Wallet and Form Validation Status */}
+            {!address && (
+              <Alert>
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Wallet Required</AlertTitle>
+                <AlertDescription>
+                  Please connect your wallet to register datasets on the blockchain.
+                </AlertDescription>
+              </Alert>
+            )}
+            
+            {address && !isFormValid() && (
+              <Alert>
+                <Info className="h-4 w-4" />
+                <AlertTitle>Form Validation</AlertTitle>
+                <AlertDescription>
+                  Please fill all required fields: IPFS URI (starting with ipfs://), Dataset Title, and Price (&gt; 0).
+                </AlertDescription>
+              </Alert>
+            )}
+
+            <div className="flex space-x-4">
+              <Button 
+                type="submit"
+                disabled={!address || 
+                         !isFormValid() ||
+                         txState.status === 'preparing' || 
+                         txState.status === 'waiting_for_wallet' || 
+                         txState.status === 'submitting' || 
+                         txState.status === 'confirming' || 
+                         txState.status === 'success'}
+                className="flex-1"
+                data-testid="button-register-dataset"
+              >
+                {!address && 'Connect Wallet to Register'}
+                {address && !isFormValid() && 'Complete Form to Register'}
+                {address && isFormValid() && txState.status === 'preparing' && 'Preparing...'}
+                {address && isFormValid() && txState.status === 'waiting_for_wallet' && 'Waiting for Wallet...'}
+                {address && isFormValid() && txState.status === 'submitting' && 'Submitting...'}
+                {address && isFormValid() && txState.status === 'confirming' && 'Confirming...'}
+                {address && isFormValid() && txState.status === 'success' && 'Dataset Registered!'}
+                {address && isFormValid() && (txState.status === 'idle' || txState.status === 'error') && 'Register Dataset'}
+              </Button>
             
             {txState.status === 'error' && (
               <Button 
@@ -720,6 +760,7 @@ export default function DatasetRegistration() {
                 New Dataset
               </Button>
             )}
+          </div>
           </div>
         </form>
       </CardContent>

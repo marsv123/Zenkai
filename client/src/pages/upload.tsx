@@ -1,17 +1,10 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { 
   Upload, 
-  Shield, 
-  Database, 
   FileText, 
-  CheckCircle, 
-  Lock, 
-  Network, 
-  Zap,
   BookOpen,
   Tag,
-  DollarSign
+  CheckCircle
 } from 'lucide-react';
 import DatasetRegistration from '@/components/DatasetRegistration';
 import content from '@/lib/config/content.json';
@@ -32,10 +25,8 @@ export default function UploadDataset() {
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-8">
-            
-            {/* Left Column: Form */}
-            <div className="lg:col-span-2 space-y-8">
+          <div className="max-w-4xl mx-auto">
+            <div className="space-y-8">
               
               {/* Upload Form */}
               <Card className="glass-cyber hover-cyber" data-testid="card-dataset-form">
@@ -87,120 +78,6 @@ export default function UploadDataset() {
                       </div>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Right Column: Info & Benefits */}
-            <div className="space-y-8">
-              
-              {/* 0G Network Benefits */}
-              <Card className="glass-cyber hover-cyber border-primary/20" data-testid="card-zeroG">
-                <CardHeader>
-                  <CardTitle className="text-xl font-display gradient-text-cyber flex items-center">
-                    <Network className="w-5 h-5 mr-2 text-primary" />
-                    {content.uploadPage.sections.zeroG.title}
-                  </CardTitle>
-                  <CardDescription>
-                    {content.uploadPage.sections.zeroG.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between p-3 glass-panel rounded-xl">
-                      <div className="flex items-center">
-                        <Shield className="w-4 h-4 mr-2 text-primary" />
-                        <span className="text-sm font-medium">Ownership Protection</span>
-                      </div>
-                      <Badge className="bg-primary/10 text-primary border-primary/20">
-                        Secured
-                      </Badge>
-                    </div>
-                    <div className="flex items-center justify-between p-3 glass-panel rounded-xl">
-                      <div className="flex items-center">
-                        <Lock className="w-4 h-4 mr-2 text-secondary" />
-                        <span className="text-sm font-medium">Zero-Knowledge Privacy</span>
-                      </div>
-                      <Badge className="bg-secondary/10 text-secondary border-secondary/20">
-                        Optional
-                      </Badge>
-                    </div>
-                    <div className="flex items-center justify-between p-3 glass-panel rounded-xl">
-                      <div className="flex items-center">
-                        <Database className="w-4 h-4 mr-2 text-accent" />
-                        <span className="text-sm font-medium">Decentralized Storage</span>
-                      </div>
-                      <Badge className="bg-accent/10 text-accent border-accent/20">
-                        Distributed
-                      </Badge>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Upload Process */}
-              <Card className="glass-cyber hover-cyber" data-testid="card-process">
-                <CardHeader>
-                  <CardTitle className="text-xl font-display gradient-text-cyber flex items-center">
-                    <Zap className="w-5 h-5 mr-2 text-primary" />
-                    Upload Process
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-4">
-                    <div className="flex items-start space-x-3 p-3 glass-panel rounded-xl">
-                      <div className="flex-shrink-0 w-8 h-8 bg-primary/10 text-primary rounded-full flex items-center justify-center text-sm font-bold">
-                        1
-                      </div>
-                      <div>
-                        <div className="font-medium text-sm">Upload to IPFS</div>
-                        <div className="text-xs text-muted-foreground">Store on decentralized network</div>
-                      </div>
-                    </div>
-                    <div className="flex items-start space-x-3 p-3 glass-panel rounded-xl">
-                      <div className="flex-shrink-0 w-8 h-8 bg-secondary/10 text-secondary rounded-full flex items-center justify-center text-sm font-bold">
-                        2
-                      </div>
-                      <div>
-                        <div className="font-medium text-sm">Register Metadata</div>
-                        <div className="text-xs text-muted-foreground">Add rich descriptions</div>
-                      </div>
-                    </div>
-                    <div className="flex items-start space-x-3 p-3 glass-panel rounded-xl">
-                      <div className="flex-shrink-0 w-8 h-8 bg-accent/10 text-accent rounded-full flex items-center justify-center text-sm font-bold">
-                        3
-                      </div>
-                      <div>
-                        <div className="font-medium text-sm">Blockchain Registry</div>
-                        <div className="text-xs text-muted-foreground">Deploy to 0G network</div>
-                      </div>
-                    </div>
-                    <div className="flex items-start space-x-3 p-3 glass-panel rounded-xl">
-                      <div className="flex-shrink-0 w-8 h-8 bg-primary/10 text-primary rounded-full flex items-center justify-center text-sm font-bold">
-                        4
-                      </div>
-                      <div>
-                        <div className="font-medium text-sm">Marketplace Listing</div>
-                        <div className="text-xs text-muted-foreground">Available for purchase</div>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Next Steps Preview */}
-              <Card className="glass-cyber hover-cyber border-primary/30">
-                <CardContent className="p-6 text-center">
-                  <div className="mb-4">
-                    <DollarSign className="w-8 h-8 mx-auto text-primary mb-2" />
-                    <h4 className="font-display font-semibold gradient-text-cyber">Next: Monetization</h4>
-                    <p className="text-sm text-muted-foreground">
-                      After upload, set pricing and monetize your data
-                    </p>
-                  </div>
-                  <Badge className="bg-primary/10 text-primary border-primary/20">
-                    Coming Next →
-                  </Badge>
                 </CardContent>
               </Card>
             </div>
