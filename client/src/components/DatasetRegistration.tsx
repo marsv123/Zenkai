@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useAccount, useWriteContract, useWaitForTransactionReceipt, useChainId, useSwitchChain } from 'wagmi';
 import { parseEther, formatEther, BaseError as ViemBaseError } from 'viem';
-import { Link, Upload, ExternalLink, AlertCircle, CheckCircle, Clock, RefreshCw, Info, Shield, Eye, EyeOff } from 'lucide-react';
+import { Link, Upload, ExternalLink, AlertCircle, CheckCircle, Clock, RefreshCw, Info, Shield, Eye, EyeOff, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -38,7 +38,6 @@ interface FormData {
   title: string;
   description: string;
   tags: string;
-  ownershipProtection: boolean;
   zkPrivacy: boolean;
 }
 
@@ -151,7 +150,6 @@ export default function DatasetRegistration() {
     title: '',
     description: '',
     tags: '',
-    ownershipProtection: true,
     zkPrivacy: false
   });
 
@@ -353,7 +351,6 @@ export default function DatasetRegistration() {
       title: '',
       description: '',
       tags: '',
-      ownershipProtection: true,
       zkPrivacy: false
     });
     setTxState({ status: 'idle', retryCount: 0 });
@@ -497,8 +494,9 @@ export default function DatasetRegistration() {
       
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="space-y-4">
+          <div className="space-y-6">
+            {/* Title & Category - Same Row */}
+            <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <Label htmlFor="title">Dataset Title *</Label>
                 <Input
@@ -510,7 +508,26 @@ export default function DatasetRegistration() {
                   data-testid="input-title"
                 />
               </div>
+              <div>
+                <Label htmlFor="category">Category</Label>
+                <Select value={formData.category} onValueChange={handleInputChange('category')}>
+                  <SelectTrigger data-testid="select-category">
+                    <SelectValue placeholder="Select category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Machine Learning">Machine Learning</SelectItem>
+                    <SelectItem value="Natural Language Processing">Natural Language Processing</SelectItem>
+                    <SelectItem value="Computer Vision">Computer Vision</SelectItem>
+                    <SelectItem value="Audio Processing">Audio Processing</SelectItem>
+                    <SelectItem value="Financial Data">Financial Data</SelectItem>
+                    <SelectItem value="Bioinformatics">Bioinformatics</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
 
+            {/* IPFS URI & Description - Same Row */}
+            <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <Label htmlFor="uri">IPFS URI *</Label>
                 <div className="relative">
@@ -526,23 +543,47 @@ export default function DatasetRegistration() {
                   <Link className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
                 </div>
               </div>
-              
-              <div className="flex items-center justify-between p-3 border rounded-lg">
-                <div className="flex items-center space-x-2">
-                  <Shield className="w-4 h-4 text-primary" />
-                  <div>
-                    <Label htmlFor="ownershipProtection" className="text-sm font-medium">Ownership Protection</Label>
-                    <p className="text-xs text-muted-foreground">Protected by 0G Network (always enabled)</p>
-                  </div>
-                </div>
-                <Switch
-                  id="ownershipProtection"
-                  checked={formData.ownershipProtection}
-                  disabled={true}
-                  data-testid="switch-ownership-protection"
+              <div>
+                <Label htmlFor="description">Description</Label>
+                <Textarea
+                  id="description"
+                  value={formData.description}
+                  onChange={handleInputChange('description')}
+                  rows={3}
+                  placeholder="Brief description of your dataset..."
+                  data-testid="textarea-description"
                 />
               </div>
+            </div>
 
+            {/* Tags - Full Width */}
+            <div>
+              <Label htmlFor="tags">Tags (comma separated)</Label>
+              <Input
+                id="tags"
+                value={formData.tags}
+                onChange={handleInputChange('tags')}
+                placeholder="machine-learning, nlp, classification"
+                data-testid="input-tags"
+              />
+            </div>
+
+            {/* Protection Options */}
+            <div className="space-y-4">
+              {/* Ownership Protection - Static Indicator */}
+              <div className="flex items-center p-3 bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-lg">
+                <div className="flex items-center space-x-2">
+                  <div className="flex items-center justify-center w-5 h-5 bg-green-500 rounded-full">
+                    <Check className="w-3 h-3 text-white" />
+                  </div>
+                  <div>
+                    <span className="text-sm font-medium text-green-700 dark:text-green-300">Ownership Protection</span>
+                    <p className="text-xs text-green-600 dark:text-green-400">Always enabled by 0G Network</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Zero-Knowledge Privacy - Toggle */}
               <div className="flex items-center justify-between p-3 border rounded-lg">
                 <div className="flex items-center space-x-2">
                   {formData.zkPrivacy ? (
@@ -560,48 +601,6 @@ export default function DatasetRegistration() {
                   checked={formData.zkPrivacy}
                   onCheckedChange={(checked) => handleInputChange('zkPrivacy')(checked)}
                   data-testid="switch-zk-privacy"
-                />
-              </div>
-            </div>
-            
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="category">Category</Label>
-                <Select value={formData.category} onValueChange={handleInputChange('category')}>
-                  <SelectTrigger data-testid="select-category">
-                    <SelectValue placeholder="Select category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Machine Learning">Machine Learning</SelectItem>
-                    <SelectItem value="Natural Language Processing">Natural Language Processing</SelectItem>
-                    <SelectItem value="Computer Vision">Computer Vision</SelectItem>
-                    <SelectItem value="Audio Processing">Audio Processing</SelectItem>
-                    <SelectItem value="Financial Data">Financial Data</SelectItem>
-                    <SelectItem value="Bioinformatics">Bioinformatics</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div>
-                <Label htmlFor="description">Description</Label>
-                <Textarea
-                  id="description"
-                  value={formData.description}
-                  onChange={handleInputChange('description')}
-                  rows={3}
-                  placeholder="Brief description of your dataset..."
-                  data-testid="textarea-description"
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="tags">Tags (comma separated)</Label>
-                <Input
-                  id="tags"
-                  value={formData.tags}
-                  onChange={handleInputChange('tags')}
-                  placeholder="machine-learning, nlp, classification"
-                  data-testid="input-tags"
                 />
               </div>
             </div>
