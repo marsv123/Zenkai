@@ -2,18 +2,13 @@ import { useAccount } from 'wagmi';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Link, useLocation } from 'wouter';
 import { useState, useEffect } from 'react';
-import { Menu, ChevronDown } from 'lucide-react';
+import { Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  DropdownMenuSeparator,
-  DropdownMenuSubTrigger,
-  DropdownMenuSubContent,
-  DropdownMenuPortal,
-  DropdownMenuSub,
 } from '@/components/ui/dropdown-menu';
 import content from '@/lib/config/content.json';
 
@@ -62,14 +57,10 @@ export default function Navigation() {
     setPreviousAddress(address);
   }, [address, previousAddress, location, setLocation]);
 
-  // Main navigation items
+  // Main navigation items in specified order (Dashboard is handled separately as first item)
   const mainNavItems = [
     { path: '/', label: 'Home', testId: 'nav-home' },
-    { path: '/marketplace', label: 'Marketplace', testId: 'nav-marketplace' }
-  ];
-
-  // How It Works submenu items
-  const howItWorksItems = [
+    { path: '/marketplace', label: 'Marketplace', testId: 'nav-marketplace' },
     { path: '/upload', label: content.navigation.upload, testId: 'nav-upload' },
     { path: '/monetize', label: content.navigation.monetize, testId: 'nav-monetize' },
     { path: '/build', label: content.navigation.build, testId: 'nav-build' },
@@ -77,7 +68,7 @@ export default function Navigation() {
     { path: '/tokenize', label: content.navigation.tokenize, testId: 'nav-tokenize' }
   ];
 
-  // Dashboard item (only visible when wallet is connected)
+  // Dashboard item (dynamic first item)
   const dashboardItem = { path: '/dashboard', label: content.navigation.dashboard, testId: 'nav-dashboard' };
 
   const isActivePath = (path: string) => {
@@ -134,7 +125,7 @@ export default function Navigation() {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="glass-cyber border-primary/20 w-56" align="end">
-                  {/* Connect Wallet */}
+                  {/* Dashboard/Connect Wallet - Dynamic First Item */}
                   <ConnectButton.Custom>
                     {({
                       account,
@@ -156,21 +147,23 @@ export default function Navigation() {
                         <DropdownMenuItem
                           onSelect={(e) => {
                             e.preventDefault();
-                            connected ? openAccountModal() : openConnectModal();
+                            if (connected) {
+                              setLocation(dashboardItem.path);
+                            } else {
+                              openConnectModal();
+                            }
                           }}
-                          className="cursor-pointer hover:bg-muted/20 hover:text-foreground focus:bg-muted/20 focus:text-foreground transition-colors"
-                          data-testid="nav-wallet"
+                          className={`cursor-pointer hover:bg-muted/20 hover:text-foreground focus:bg-muted/20 focus:text-foreground transition-colors ${
+                            connected && isActivePath(dashboardItem.path) ? 'bg-primary/10 text-primary' : ''
+                          }`}
+                          data-testid={connected ? dashboardItem.testId : 'nav-wallet'}
+                          aria-current={connected && isActivePath(dashboardItem.path) ? 'page' : undefined}
                         >
-                          {connected
-                            ? `${account.address.slice(0, 6)}...${account.address.slice(-4)}`
-                            : 'Connect Wallet'
-                          }
+                          {connected ? dashboardItem.label : 'Connect Wallet'}
                         </DropdownMenuItem>
                       );
                     }}
                   </ConnectButton.Custom>
-                  
-                  <DropdownMenuSeparator />
                   
                   {/* Main Navigation Items */}
                   {mainNavItems.map((item) => (
@@ -186,55 +179,6 @@ export default function Navigation() {
                       {item.label}
                     </DropdownMenuItem>
                   ))}
-
-                  <DropdownMenuSeparator />
-
-                  {/* How It Works Submenu */}
-                  <DropdownMenuSub>
-                    <DropdownMenuSubTrigger 
-                      data-testid="nav-how-it-works"
-                      className="bg-transparent hover:bg-transparent focus:bg-transparent text-foreground hover:text-foreground focus:text-foreground data-[state=open]:text-foreground data-[highlighted]:text-foreground data-[state=open]:bg-transparent [&[data-highlighted]]:text-foreground [&[data-highlighted]]:bg-transparent [&[data-state=open]]:text-foreground [&[data-state=open]]:bg-transparent transition-colors"
-                      style={{ color: 'hsl(var(--foreground))', backgroundColor: 'transparent' }}
-                    >
-                      How It Works
-                    </DropdownMenuSubTrigger>
-                    <DropdownMenuPortal>
-                      <DropdownMenuSubContent 
-                        className="glass-cyber border-primary/20"
-                      >
-                        {howItWorksItems.map((item) => (
-                          <DropdownMenuItem 
-                            key={item.path}
-                            onSelect={() => setLocation(item.path)}
-                            className={`cursor-pointer hover:bg-muted/20 hover:text-foreground focus:bg-muted/20 focus:text-foreground transition-colors ${
-                              isActivePath(item.path) ? 'bg-primary/10 text-primary' : ''
-                            }`}
-                            data-testid={item.testId}
-                            aria-current={isActivePath(item.path) ? 'page' : undefined}
-                          >
-                            {item.label}
-                          </DropdownMenuItem>
-                        ))}
-                      </DropdownMenuSubContent>
-                    </DropdownMenuPortal>
-                  </DropdownMenuSub>
-
-                  {/* Dashboard (only when wallet connected) */}
-                  {address && (
-                    <>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem 
-                        onSelect={() => setLocation(dashboardItem.path)}
-                        className={`cursor-pointer hover:bg-muted/20 hover:text-foreground focus:bg-muted/20 focus:text-foreground transition-colors ${
-                          isActivePath(dashboardItem.path) ? 'bg-primary/10 text-primary' : ''
-                        }`}
-                        data-testid={dashboardItem.testId}
-                        aria-current={isActivePath(dashboardItem.path) ? 'page' : undefined}
-                      >
-                        {dashboardItem.label}
-                      </DropdownMenuItem>
-                    </>
-                  )}
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>

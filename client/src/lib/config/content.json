@@ -1,11 +1,11 @@
 {
   "navigation": {
-    "upload": "Upload Your Data",
-    "monetize": "Monetize Your Data", 
-    "build": "Build Your AI",
-    "train": "Train Your AI",
-    "tokenize": "Tokenize Your AI",
-    "dashboard": "My Dashboard"
+    "upload": "Upload Data",
+    "monetize": "Monetize Data", 
+    "build": "Build AI",
+    "train": "Train AI",
+    "tokenize": "Tokenize AI",
+    "dashboard": "Dashboard"
   },
   "uploadPage": {
     "headline": "Secure your datasets on-chain.",
