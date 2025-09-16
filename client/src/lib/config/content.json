@@ -14,7 +14,7 @@
     "sections": {
       "datasetInfo": {
         "title": "Dataset Information",
-        "description": "Provide rich metadata—descriptions, categories, and tags—to boost credibility and maximize dataset discovery."
+        "description": "Provide rich metadata like descriptions, categories and tags to boost credibility and maximize dataset discovery."
       },
       "zeroG": {
         "title": "Powered by 0G Network", 
