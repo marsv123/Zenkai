@@ -44,12 +44,12 @@ export default function TokenizePage() {
     resolver: zodResolver(tokenizeSchema),
     defaultValues: {
       modelName: '',
-      endpointUrl: '',
-      pricePerQuery: '',
-      description: '',
-      totalTokens: '',
+      endpointUrl: 'https://api.yourmodel.com/v1/predict',
+      pricePerQuery: '0.0025',
+      description: 'Advanced AI model trained on high-quality data with enterprise-grade accuracy and performance. Suitable for production workloads with comprehensive monitoring and analytics.',
+      totalTokens: '1000000',
       revenueShare: 15,
-      stakingRewards: '',
+      stakingRewards: '2.5',
     },
   });
 
@@ -177,12 +177,18 @@ export default function TokenizePage() {
                         {trainedModels.map((model) => (
                           <div
                             key={model.id}
-                            className={`p-4 rounded-xl border cursor-pointer transition-all duration-300 ${
+                            className={`p-4 rounded-xl border cursor-pointer transition-all duration-300 hover-cyber ${
                               selectedModel === model.id
-                                ? 'border-primary/50 glass-panel bg-primary/5'
+                                ? 'border-primary/50 glass-panel bg-primary/5 shadow-md'
                                 : 'border-primary/20 glass-panel hover:border-primary/30'
                             }`}
-                            onClick={() => setSelectedModel(model.id)}
+                            onClick={() => {
+                              setSelectedModel(model.id);
+                              // Auto-populate model name when selected
+                              if (!form.getValues('modelName')) {
+                                form.setValue('modelName', `${model.name} Token`);
+                              }
+                            }}
                             data-testid={`model-${model.id}`}
                           >
                             <div className="flex items-center justify-between mb-3">
@@ -191,12 +197,63 @@ export default function TokenizePage() {
                                 {model.status}
                               </Badge>
                             </div>
-                            <div className="text-xs text-foreground/70">
+                            <div className="text-xs text-foreground/70 mb-2">
                               Accuracy: {model.accuracy}
                             </div>
+                            
+                            {/* Model Details Preview */}
+                            <div className="text-xs space-y-1 pt-2 border-t border-border/20">
+                              <div className="flex justify-between">
+                                <span className="text-muted-foreground">Queries today:</span>
+                                <span className="text-primary font-medium">
+                                  {model.id === 'model-1' ? '1.2K' : model.id === 'model-2' ? '850' : '2.1K'}
+                                </span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-muted-foreground">Revenue potential:</span>
+                                <span className="text-secondary font-medium">High</span>
+                              </div>
+                            </div>
+                            
+                            {selectedModel === model.id && (
+                              <div className="mt-3 text-center">
+                                <Badge className="bg-primary text-primary-foreground text-xs">
+                                  ✓ Selected for Tokenization
+                                </Badge>
+                              </div>
+                            )}
                           </div>
                         ))}
                       </div>
+                      
+                      {/* Selected Model Summary */}
+                      {selectedModel && (
+                        <div className="mt-6 p-4 glass-panel rounded-xl border border-primary/10">
+                          <h4 className="text-sm font-semibold mb-3 flex items-center">
+                            <Target className="w-4 h-4 mr-2 text-primary" />
+                            Selected Model Overview
+                          </h4>
+                          {(() => {
+                            const model = trainedModels.find(m => m.id === selectedModel);
+                            return (
+                              <div className="grid md:grid-cols-3 gap-4 text-sm">
+                                <div className="space-y-1">
+                                  <div className="text-muted-foreground">Model Name:</div>
+                                  <div className="font-medium text-primary">{model?.name}</div>
+                                </div>
+                                <div className="space-y-1">
+                                  <div className="text-muted-foreground">Performance:</div>
+                                  <div className="font-medium text-secondary">{model?.accuracy} accuracy</div>
+                                </div>
+                                <div className="space-y-1">
+                                  <div className="text-muted-foreground">Est. Token Value:</div>
+                                  <div className="font-medium text-accent">0.25 - 0.75 ZAI</div>
+                                </div>
+                              </div>
+                            );
+                          })()}
+                        </div>
+                      )}
                     </div>
 
                     <Separator />
@@ -344,32 +401,76 @@ export default function TokenizePage() {
                           />
                         </div>
 
-                        {/* Revenue Sharing Slider */}
-                        <div>
+                            {/* Enhanced Revenue Sharing Slider with Live Preview */}
+                        <div className="space-y-4">
                           <FormLabel className="flex items-center mb-4">
                             <Share2 className="w-4 h-4 mr-1 text-accent" />
                             {content.tokenizePage.fields.revenueShare}: {revenueShare[0]}%
                           </FormLabel>
-                          <div className="px-4">
-                            <Slider
-                              value={revenueShare}
-                              onValueChange={(value) => {
-                                setRevenueShare(value);
-                                form.setValue('revenueShare', value[0]);
-                              }}
-                              max={50}
-                              min={5}
-                              step={5}
-                              className="w-full"
-                              data-testid="slider-revenue-share"
-                            />
-                            <div className="flex justify-between text-xs text-muted-foreground mt-2">
-                              <span>5% (Min)</span>
-                              <span>25% (Recommended)</span>
-                              <span>50% (Max)</span>
+                          
+                          <div className="glass-panel p-6 rounded-xl border border-accent/20">
+                            <div className="mb-4">
+                              <Slider
+                                value={revenueShare}
+                                onValueChange={(value) => {
+                                  setRevenueShare(value);
+                                  form.setValue('revenueShare', value[0]);
+                                }}
+                                max={50}
+                                min={5}
+                                step={5}
+                                className="w-full"
+                                data-testid="slider-revenue-share"
+                              />
+                              <div className="flex justify-between text-xs text-muted-foreground mt-2">
+                                <span>5% (Min)</span>
+                                <span className="text-accent">25% (Recommended)</span>
+                                <span>50% (Max)</span>
+                              </div>
+                            </div>
+
+                            {/* Revenue Preview */}
+                            <div className="mt-6 p-4 glass-panel rounded-lg border border-primary/10">
+                              <h4 className="text-sm font-semibold mb-3 flex items-center">
+                                <TrendingUp className="w-4 h-4 mr-2 text-primary" />
+                                Revenue Distribution Preview
+                              </h4>
+                              <div className="grid grid-cols-2 gap-4 text-sm">
+                                <div className="space-y-2">
+                                  <div className="flex justify-between">
+                                    <span className="text-foreground/70">Your Share:</span>
+                                    <span className="font-medium text-primary">{100 - revenueShare[0]}%</span>
+                                  </div>
+                                  <div className="flex justify-between">
+                                    <span className="text-foreground/70">Token Holders:</span>
+                                    <span className="font-medium text-accent">{revenueShare[0]}%</span>
+                                  </div>
+                                </div>
+                                <div className="space-y-2">
+                                  <div className="flex justify-between">
+                                    <span className="text-foreground/70">Est. Monthly (1K queries):</span>
+                                    <span className="font-medium text-secondary">
+                                      {form.watch('pricePerQuery') ? 
+                                        `${(parseFloat(form.watch('pricePerQuery') || '0') * 1000 * (100 - revenueShare[0]) / 100).toFixed(2)} ZAI` : 
+                                        '2.1 ZAI'
+                                      }
+                                    </span>
+                                  </div>
+                                  <div className="flex justify-between">
+                                    <span className="text-foreground/70">Holder Rewards:</span>
+                                    <span className="font-medium text-accent">
+                                      {form.watch('pricePerQuery') ? 
+                                        `${(parseFloat(form.watch('pricePerQuery') || '0') * 1000 * revenueShare[0] / 100).toFixed(2)} ZAI` : 
+                                        '0.4 ZAI'
+                                      }
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
                           </div>
-                          <FormDescription className="text-sm mt-2">
+                          
+                          <FormDescription className="text-sm">
                             {content.tokenizePage.fields.revenueShareDesc}
                           </FormDescription>
                         </div>
