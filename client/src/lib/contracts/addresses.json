@@ -2,16 +2,6 @@
   "ZAI": "0x604966d7123963291058c323B19D293335EcC92a",
   "ContributorNFT": "0x2A96200Cdd3195aA9b2B4E6D8a986c942aaa207D",
   "DatasetRegistry": "0xa7502234A9e90172F237075a1872Ec7fF108FE77",
-  "demoWallets": {
-    "walletA": {
-      "address": "0x36EFBA3cC7aa1fd81FaADF1341A045c751B7a9f7",
-      "privateKey": "0x7c1f7edb6a0f5e59b0e772027bb5ffad08eb0199ad4cc591bc94e6c3766bbf5a"
-    },
-    "walletB": {
-      "address": "0x214DAa56aBe03593ed94EaB5d58Dbe3524ca5384",
-      "privateKey": "0x881f45271757d1e1f2890849c78547f466363afe8923798358ce5e031749a335"
-    }
-  },
   "chainId": 16601,
   "deployedAt": "2025-09-14T21:57:43.228Z"
 }
