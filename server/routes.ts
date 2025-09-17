@@ -458,6 +458,211 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Simple rate limiting for IPFS uploads (in-memory storage)
+  const uploadRateLimits = new Map<string, { count: number; resetTime: number }>();
+  const UPLOAD_LIMIT_PER_HOUR = 10;
+  const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour
+
+  // IPFS File Upload endpoint using Pinata - Requires authentication to prevent abuse
+  app.post("/api/upload-to-ipfs", verifyWalletSignature, async (req: AuthenticatedRequest, res) => {
+    try {
+      // Ensure user is authenticated (double-check)
+      if (!req.user || !req.user.walletAddress) {
+        return res.status(401).json({
+          error: 'Authentication required',
+          details: 'Valid wallet signature required for upload',
+          ipfsHash: null
+        });
+      }
+
+      // Rate limiting check
+      const walletAddress = req.user.walletAddress.toLowerCase();
+      const now = Date.now();
+      const userRateLimit = uploadRateLimits.get(walletAddress);
+      
+      if (userRateLimit) {
+        // Reset counter if window has passed
+        if (now > userRateLimit.resetTime) {
+          uploadRateLimits.set(walletAddress, { count: 0, resetTime: now + RATE_LIMIT_WINDOW_MS });
+        } else if (userRateLimit.count >= UPLOAD_LIMIT_PER_HOUR) {
+          const timeUntilReset = Math.ceil((userRateLimit.resetTime - now) / (1000 * 60));
+          return res.status(429).json({
+            error: 'Upload rate limit exceeded',
+            details: `Maximum ${UPLOAD_LIMIT_PER_HOUR} uploads per hour. Try again in ${timeUntilReset} minutes.`,
+            ipfsHash: null
+          });
+        }
+      } else {
+        // First upload for this wallet
+        uploadRateLimits.set(walletAddress, { count: 0, resetTime: now + RATE_LIMIT_WINDOW_MS });
+      }
+      
+      // Validate request body with enhanced security
+      const uploadSchema = z.object({
+        file: z.string()
+          .min(1, 'File data is required')
+          .max(50 * 1024 * 1024, 'File too large - maximum 50MB allowed'), // Base64 limit ~50MB
+        filename: z.string()
+          .min(1, 'Filename is required')
+          .max(255, 'Filename too long')
+          .regex(/^[a-zA-Z0-9._-]+$/, 'Filename contains invalid characters'),
+        contentType: z.string().optional()
+      });
+      
+      const { file, filename, contentType = 'application/octet-stream' } = uploadSchema.parse(req.body);
+      
+      // Define allowed file types for security
+      const allowedTypes = [
+        'application/json',
+        'text/csv', 
+        'text/plain',
+        'application/zip',
+        'application/x-zip-compressed',
+        'application/pdf',
+        'image/jpeg',
+        'image/png',
+        'image/gif',
+        'image/webp'
+      ];
+      
+      // Validate file type
+      if (contentType && !allowedTypes.includes(contentType.toLowerCase())) {
+        return res.status(400).json({
+          error: 'File type not allowed',
+          allowedTypes,
+          ipfsHash: null
+        });
+      }
+
+      const pinataJWT = process.env.PINATA_JWT;
+      if (!pinataJWT) {
+        return res.status(500).json({
+          error: 'IPFS service not configured',
+          ipfsHash: null
+        });
+      }
+
+      // Convert base64 to buffer with size validation
+      let fileBuffer: Buffer;
+      try {
+        // Remove data URL prefix if present
+        const base64Data = file.includes(',') ? file.split(',')[1] : file;
+        fileBuffer = Buffer.from(base64Data, 'base64');
+        
+        // Server-side file size validation (50MB limit)
+        const maxSizeBytes = 50 * 1024 * 1024;
+        if (fileBuffer.length > maxSizeBytes) {
+          return res.status(400).json({
+            error: `File too large. Maximum size allowed is ${Math.round(maxSizeBytes / 1024 / 1024)}MB`,
+            actualSize: `${Math.round(fileBuffer.length / 1024 / 1024)}MB`,
+            ipfsHash: null
+          });
+        }
+        
+        // Validate minimum file size (prevent empty uploads)
+        if (fileBuffer.length < 1) {
+          return res.status(400).json({
+            error: 'File is empty',
+            ipfsHash: null
+          });
+        }
+      } catch (bufferError) {
+        return res.status(400).json({
+          error: 'Invalid file data format',
+          ipfsHash: null
+        });
+      }
+
+      // Upload to Pinata
+      try {
+        const formData = new FormData();
+        const blob = new Blob([fileBuffer], { type: contentType });
+        formData.append('file', blob, filename);
+        
+        // Add metadata
+        const metadata = JSON.stringify({
+          name: filename,
+          keyvalues: {
+            uploadedAt: new Date().toISOString(),
+            originalName: filename,
+            contentType: contentType
+          }
+        });
+        formData.append('pinataMetadata', metadata);
+
+        const pinataOptions = JSON.stringify({
+          cidVersion: 1
+        });
+        formData.append('pinataOptions', pinataOptions);
+
+        const response = await fetch('https://api.pinata.cloud/pinning/pinFileToIPFS', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${pinataJWT}`
+          },
+          body: formData
+        });
+
+        if (!response.ok) {
+          const errorData = await response.text();
+          console.error('Pinata API error:', errorData);
+          return res.status(500).json({
+            error: 'Failed to upload to IPFS',
+            details: errorData,
+            ipfsHash: null
+          });
+        }
+
+        const result = await response.json();
+        const ipfsHash = result.IpfsHash;
+        const ipfsUri = `ipfs://${ipfsHash}`;
+
+        // Test multiple gateways to ensure accessibility
+        const gateways = [
+          `https://gateway.pinata.cloud/ipfs/${ipfsHash}`,
+          `https://ipfs.io/ipfs/${ipfsHash}`,
+          `https://cloudflare-ipfs.com/ipfs/${ipfsHash}`
+        ];
+
+        // Increment rate limit counter after successful upload
+        const currentLimit = uploadRateLimits.get(walletAddress)!;
+        uploadRateLimits.set(walletAddress, { 
+          count: currentLimit.count + 1, 
+          resetTime: currentLimit.resetTime 
+        });
+
+        res.json({
+          success: true,
+          ipfsHash,
+          ipfsUri,
+          gateways,
+          filename,
+          size: fileBuffer.length
+        });
+      } catch (pinataError) {
+        console.error('Pinata upload error:', pinataError);
+        res.status(500).json({
+          error: 'Failed to upload to IPFS',
+          details: pinataError instanceof Error ? pinataError.message : 'Unknown error',
+          ipfsHash: null
+        });
+      }
+    } catch (error) {
+      console.error('IPFS upload error:', error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({
+          error: 'Invalid upload data',
+          details: error.errors,
+          ipfsHash: null
+        });
+      }
+      res.status(500).json({
+        error: 'Internal server error',
+        ipfsHash: null
+      });
+    }
+  });
+
   // OpenAI Dataset Summarization endpoint with real AI integration
   app.post("/api/summarize", async (req, res) => {
     try {

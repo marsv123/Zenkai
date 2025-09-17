@@ -39,6 +39,8 @@ interface FormData {
   description: string;
   tags: string;
   zkPrivacy: boolean;
+  file?: File | null;
+  price: string;
 }
 
 interface TransactionState {
@@ -150,7 +152,9 @@ export default function DatasetRegistration() {
     title: '',
     description: '',
     tags: '',
-    zkPrivacy: false
+    zkPrivacy: false,
+    file: null,
+    price: '0'
   });
 
   const [txState, setTxState] = useState<TransactionState>({
@@ -343,6 +347,81 @@ export default function DatasetRegistration() {
     return isValid;
   }, [formData, address]);
 
+  // Upload file to IPFS
+  const [isUploading, setIsUploading] = useState(false);
+  
+  const uploadFileToIPFS = useCallback(async (file: File): Promise<string | null> => {
+    setIsUploading(true);
+    try {
+      // Convert file to base64
+      const base64 = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+
+      const response = await fetch('/api/upload-to-ipfs', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          file: base64,
+          filename: file.name,
+          contentType: file.type,
+        }),
+      });
+
+      const result = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(result.error || 'Upload failed');
+      }
+
+      toast({
+        title: "File Uploaded Successfully!",
+        description: `File uploaded to IPFS: ${result.ipfsHash}`,
+      });
+
+      return result.ipfsUri;
+    } catch (error) {
+      console.error('Upload error:', error);
+      toast({
+        variant: "destructive",
+        title: "Upload Failed",
+        description: error instanceof Error ? error.message : 'Failed to upload file',
+      });
+      return null;
+    } finally {
+      setIsUploading(false);
+    }
+  }, [toast]);
+
+  // Handle file selection and upload
+  const handleFileUpload = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Validate file size (max 100MB)
+    if (file.size > 100 * 1024 * 1024) {
+      toast({
+        variant: "destructive",
+        title: "File Too Large",
+        description: "Maximum file size is 100MB",
+      });
+      return;
+    }
+
+    setFormData(prev => ({ ...prev, file }));
+
+    // Auto-upload to IPFS
+    const ipfsUri = await uploadFileToIPFS(file);
+    if (ipfsUri) {
+      setFormData(prev => ({ ...prev, uri: ipfsUri }));
+    }
+  }, [uploadFileToIPFS, toast]);
+
   // Reset form to initial state
   const resetForm = useCallback(() => {
     setFormData({
@@ -351,7 +430,9 @@ export default function DatasetRegistration() {
       title: '',
       description: '',
       tags: '',
-      zkPrivacy: false
+      zkPrivacy: false,
+      file: null,
+      price: '0'
     });
     setTxState({ status: 'idle', retryCount: 0 });
   }, []);
@@ -402,6 +483,14 @@ export default function DatasetRegistration() {
       return;
     }
 
+    if (isUploading) {
+      toast({
+        variant: "destructive",
+        title: "Upload in Progress",
+        description: "Please wait for file upload to complete.",
+      });
+      return;
+    }
 
     try {
       setTxState(prev => ({ ...prev, status: 'preparing' }));
@@ -413,7 +502,7 @@ export default function DatasetRegistration() {
       }
 
       // Phase 2: Create transaction record
-      const transactionId = await createTransactionRecord(datasetId, '0');
+      const transactionId = await createTransactionRecord(datasetId, formData.price || '0');
       
       setTxState(prev => ({ 
         ...prev, 
@@ -422,7 +511,7 @@ export default function DatasetRegistration() {
       }));
 
       // Phase 3: Submit blockchain transaction
-      const priceInWei = parseEther('0'); // Default price for upload-only registration
+      const priceInWei = parseEther(formData.price || '0');
       
       writeContract({
         address: DATASET_REGISTRY_ADDRESS,
@@ -447,7 +536,7 @@ export default function DatasetRegistration() {
         description: classifiedError.message,
       });
     }
-  }, [address, chainId, switchChain, formData, toast, createDraftDataset, createTransactionRecord, writeContract]);
+  }, [address, chainId, switchChain, formData, toast, createDraftDataset, createTransactionRecord, writeContract, isUploading]);
 
   // Handle retry
   const handleRetry = useCallback(() => {
@@ -526,6 +615,44 @@ export default function DatasetRegistration() {
               </div>
             </div>
 
+            {/* File Upload Section */}
+            <div>
+              <Label htmlFor="file-upload">Upload Dataset File</Label>
+              <div className="border-2 border-dashed border-primary/30 rounded-lg p-6 text-center transition-colors hover:border-primary/50">
+                <input
+                  id="file-upload"
+                  type="file"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                  accept=".csv,.json,.txt,.parquet,.xlsx,.zip,.tar.gz"
+                  data-testid="input-file-upload"
+                />
+                <label 
+                  htmlFor="file-upload" 
+                  className="cursor-pointer flex flex-col items-center space-y-2"
+                >
+                  <Upload className={`w-8 h-8 ${isUploading ? 'text-primary animate-pulse' : 'text-muted-foreground'}`} />
+                  <div>
+                    {isUploading ? (
+                      <span className="text-sm text-primary">Uploading to IPFS...</span>
+                    ) : formData.file ? (
+                      <div>
+                        <span className="text-sm font-medium text-green-600">✓ {formData.file.name}</span>
+                        <p className="text-xs text-muted-foreground">
+                          {(formData.file.size / 1024 / 1024).toFixed(2)} MB
+                        </p>
+                      </div>
+                    ) : (
+                      <div>
+                        <span className="text-sm font-medium">Click to upload or drag and drop</span>
+                        <p className="text-xs text-muted-foreground">CSV, JSON, TXT, Parquet, Excel, ZIP files up to 100MB</p>
+                      </div>
+                    )}
+                  </div>
+                </label>
+              </div>
+            </div>
+
             {/* IPFS URI & Description - Same Row */}
             <div className="grid md:grid-cols-2 gap-6">
               <div>
@@ -536,12 +663,23 @@ export default function DatasetRegistration() {
                     value={formData.uri}
                     onChange={handleInputChange('uri')}
                     className="pl-10"
-                    placeholder="ipfs://QmExampleHashHere123456789..."
+                    placeholder={formData.file ? "Auto-filled from upload..." : "ipfs://QmExampleHashHere123456789..."}
                     required
                     data-testid="input-uri"
+                    readOnly={isUploading}
                   />
                   <Link className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                  {formData.uri && formData.uri.startsWith('ipfs://') && (
+                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                      <CheckCircle className="w-4 h-4 text-green-500" />
+                    </div>
+                  )}
                 </div>
+                {formData.uri && formData.uri.startsWith('ipfs://') && (
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Hash: {formData.uri.replace('ipfs://', '').substring(0, 20)}...
+                  </p>
+                )}
               </div>
               <div>
                 <Label htmlFor="description">Description</Label>

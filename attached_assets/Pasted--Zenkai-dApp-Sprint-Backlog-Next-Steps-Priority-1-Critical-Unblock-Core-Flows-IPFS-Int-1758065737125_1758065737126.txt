@@ -1,0 +1,77 @@
+📌 Zenkai dApp — Sprint Backlog (Next Steps)
+🔥 Priority 1 — Critical (Unblock Core Flows)
+
+IPFS Integration
+
+Implement actual dataset file upload (Pinata or Web3.Storage).
+
+Pin files to ensure permanence.
+
+Add fallback to multiple gateways.
+✅ Acceptance: File uploaded → returns valid IPFS hash → retrievable from 2+ gateways.
+
+Dataset Purchase Flow
+
+Complete smart contract integration for buy() in DatasetRegistry.
+
+Ensure buyer pays in ZAI token, 4% treasury fee applied.
+
+Confirm dataset access is granted post-purchase.
+✅ Acceptance: Successful purchase → transaction hash visible on Chainscan → dataset accessible in Dashboard.
+
+Update Frontend Config
+
+Replace all hardcoded 0x000... addresses with deployed contract addresses (ERC20, Registry, NFT).
+
+Verify Wagmi/RainbowKit calls execute without errors.
+✅ Acceptance: End-to-end test runs without hardcoded placeholders.
+
+⚡ Priority 2 — Core Features
+
+Monetization Flow
+
+Rent + one-time sale options must connect to smart contracts.
+
+Auto-generated price suggestions reflect blockchain data.
+✅ Acceptance: Dataset owner can publish with rent/one-time sale → earnings preview updates.
+
+Dashboard Earnings Integration
+
+Link earnings/spending metrics to actual contract transactions.
+✅ Acceptance: Dashboard shows real token balances & revenue from DatasetRegistry.
+
+Token Faucet
+
+Deploy simple ZAI faucet for Galileo testnet.
+
+Add button in Dashboard for developers/testers to claim tokens.
+✅ Acceptance: Clicking faucet → wallet receives test ZAI.
+
+🎨 Priority 3 — Enhancements
+
+Error Boundaries & UX
+
+Add global error boundary to React.
+
+Improve user feedback on failed uploads/purchases.
+✅ Acceptance: Friendly error messages replace crashes.
+
+Performance Optimization
+
+Optimize dataset marketplace for large lists (infinite scroll/lazy loading).
+✅ Acceptance: Marketplace smooth at 500+ dataset entries.
+
+Reputation System
+
+Connect ContributorNFT minting to dataset uploads.
+✅ Acceptance: Upload → NFT minted → visible in Dashboard.
+
+✅ Demo Ready Definition
+
+Upload → Monetize → Purchase → Dataset visible in Dashboard.
+
+All transactions visible on Chainscan.
+
+Earnings tracked in Dashboard.
+
+No hardcoded addresses or mock-only flows.
