@@ -12,15 +12,35 @@ build/
 
 # Environment files (use Replit Secrets instead)
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*
+client/.env
+server/.env
+contracts/.env
+
+# Private keys and secrets
+*private*
+*secret*
+*key.json
+wallet.json
 
 # Hardhat
 artifacts/
 cache/
 typechain-types/
+contracts/cache/
+
+# Compiled contracts (can be regenerated)
+contracts/compiled/
+
+# Deployment scripts with sensitive data
+contracts/*-deploy.js
+contracts/fund-*.js
+contracts/test-*.js
+
+# Logs and debug files
+*.log
+logs/
+/tmp/logs/
 
 # IDE
 .vscode/
@@ -30,8 +50,20 @@ typechain-types/
 .DS_Store
 Thumbs.db
 
-# Logs
-*.log
-
 # Coverage
 coverage/
+
+# Replit specific
+.replit
+.upm/
+.config/
+
+# Screenshots and assets (optional - comment out if you want to include them)
+*.png
+*.jpg
+*.jpeg
+*.gif
+
+# Local database
+*.db
+*.sqlite
