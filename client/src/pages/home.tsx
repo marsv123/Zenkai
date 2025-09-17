@@ -101,7 +101,7 @@ export default function Home() {
     avgScore: 0
   });
 
-  const fullText = 'intelligence economy at scale.';
+  const fullText = 'powering the intelligence economy.';
   const secondText = 'Kaizen is a decentralized intelligence economy designed to scale data and AI monetization become liquid, revenue-generating assets. Enabled and built on 0G Participants can securely upload, rent, and monetize datasets, while building, training, and tokenizing AI models in a single seamless dApp. Every contribution carries ownership, reputation, and exit liquidity. As data compounds, models improve, driving usage.';
 
   // Letter-by-letter typewriter effect
