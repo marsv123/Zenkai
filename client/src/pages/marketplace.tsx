@@ -31,6 +31,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import Loading, { SkeletonCard } from '@/components/Loading';
+import DatasetPurchase from '@/components/DatasetPurchase';
 import samuraiLogoUrl from '@assets/samurai-logo.png';
 
 
@@ -130,15 +131,23 @@ function DatasetListItem({ dataset }: { dataset: Dataset }) {
           </div>
           
           <div className="flex gap-2">
-            <button 
-              className="btn-primary px-4 py-2 text-sm group"
-              data-testid={`button-buy-list-${dataset.id}`}
-              aria-label={`Purchase ${dataset.title}`}
+            <DatasetPurchase 
+              dataset={dataset}
+              onPurchaseSuccess={() => {
+                // Optionally handle success (refresh data, show notification, etc.)
+                console.log(`Successfully purchased ${dataset.title}`);
+              }}
             >
-              <ShoppingCart className="w-4 h-4 mr-2" />
-              Acquire
-              <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-            </button>
+              <button 
+                className="btn-primary px-4 py-2 text-sm group"
+                data-testid={`button-buy-list-${dataset.id}`}
+                aria-label={`Purchase ${dataset.title}`}
+              >
+                <ShoppingCart className="w-4 h-4 mr-2" />
+                Acquire
+                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+              </button>
+            </DatasetPurchase>
             <button 
               className="btn-ghost px-3 py-2 border border-accent/30 text-accent hover:border-accent"
               data-testid={`button-view-list-${dataset.id}`}
@@ -257,14 +266,22 @@ function DatasetCard({ dataset }: { dataset: Dataset }) {
         
         {/* Actions */}
         <div className="flex gap-3">
-          <button 
-            className="btn-primary flex-1 text-sm group"
-            data-testid={`button-buy-${dataset.id}`}
+          <DatasetPurchase 
+            dataset={dataset}
+            onPurchaseSuccess={() => {
+              // Optionally handle success (refresh data, show notification, etc.)
+              console.log(`Successfully purchased ${dataset.title}`);
+            }}
           >
-            <ShoppingCart className="w-4 h-4 mr-2" />
-            acquire
-            <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-          </button>
+            <button 
+              className="btn-primary flex-1 text-sm group"
+              data-testid={`button-buy-${dataset.id}`}
+            >
+              <ShoppingCart className="w-4 h-4 mr-2" />
+              acquire
+              <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+            </button>
+          </DatasetPurchase>
           <button 
             className="btn-ghost px-4 py-2 border border-accent/30 text-accent hover:border-accent"
             data-testid={`button-view-${dataset.id}`}
