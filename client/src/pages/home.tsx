@@ -325,35 +325,6 @@ export default function Home() {
         <div className="absolute bottom-1/4 right-0 w-56 h-56 bg-primary/5 rounded-full blur-3xl" />
       </section>
 
-      {/* Featured Datasets */}
-      {featuredDatasets.length > 0 && (
-        <section className="py-16 px-4 border-t border-border">
-          <div className="container mx-auto max-w-6xl">
-            <div className="text-center mb-16">
-              <h3 className="text-cyber-lg gradient-text-cyber mb-3">
-                {content.homePage.featuredDatasets.title}
-              </h3>
-              <p className="text-zen text-accent/80 mb-6">
-                {content.homePage.featuredDatasets.description}
-              </p>
-              <Link 
-                href="/marketplace"
-                className="glass-cyber hover-cyber px-8 py-3 rounded-xl font-medium text-foreground transition-all duration-500 text-base inline-flex items-center space-x-2 group"
-                data-testid="button-view-all-datasets"
-              >
-                <span>View All Datasets</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
-              {featuredDatasets.map((dataset: Dataset) => (
-                <FeaturedDatasetCard key={dataset.id} dataset={dataset} />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* Platform Metrics Section */}
       <section className="py-20 px-4 lg:px-6 border-t border-border relative overflow-hidden">
