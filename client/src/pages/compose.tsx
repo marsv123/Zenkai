@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'wouter';
-import { ArrowLeft, Plus, Brain, Database, Zap, Settings, Play, Layers, Code2, GitBranch, Sparkles, Workflow, Monitor } from 'lucide-react';
+import { ArrowLeft, Plus, Brain, Database, Zap, Settings, Play, Layers, Code2, GitBranch, Sparkles, Workflow, Monitor, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -118,72 +118,148 @@ export default function ComposePage() {
                       ))}
                     </div>
 
-                    {/* Available Blocks Grid */}
-                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                      {filteredBlocks.map((block) => (
-                        <div key={block.id} 
-                             className="glass-panel p-4 rounded-xl border border-primary/20 cursor-move hover:border-primary/40 transition-colors group"
-                             data-testid={`available-block-${block.id}`}>
-                          <div className="text-center space-y-3">
-                            <div className="w-10 h-10 gradient-primary rounded-xl flex items-center justify-center mx-auto group-hover:scale-110 transition-transform">
-                              <block.icon className="w-5 h-5 text-primary-foreground" />
-                            </div>
-                            <div>
-                              <h5 className="font-medium text-sm">{block.title}</h5>
-                              <p className="text-xs text-foreground/70 line-clamp-2 mt-1">{block.description}</p>
-                              <Badge className="mt-2 text-xs" variant="outline">{block.category}</Badge>
+                    {/* Enhanced Available Blocks Grid */}
+                    <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                      {filteredBlocks.length > 0 ? (
+                        filteredBlocks.map((block) => (
+                          <div key={block.id} 
+                               className="glass-panel p-5 rounded-xl border border-primary/20 cursor-move hover:border-primary/40 hover:bg-primary/5 transition-all duration-300 group h-full"
+                               data-testid={`available-block-${block.id}`}>
+                            <div className="text-center space-y-4 h-full flex flex-col">
+                              <div className="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center mx-auto group-hover:scale-110 transition-transform">
+                                <block.icon className="w-6 h-6 text-primary-foreground" />
+                              </div>
+                              <div className="flex-1">
+                                <h5 className="font-semibold text-sm mb-2 line-clamp-1">{block.title}</h5>
+                                <p className="text-xs text-foreground/70 line-clamp-3 leading-relaxed mb-3">{block.description}</p>
+                                <Badge 
+                                  className={`text-xs ${
+                                    block.category === 'input' ? 'bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-900 dark:text-blue-300 dark:border-blue-700' :
+                                    block.category === 'processing' ? 'bg-purple-100 text-purple-700 border-purple-200 dark:bg-purple-900 dark:text-purple-300 dark:border-purple-700' :
+                                    block.category === 'output' ? 'bg-green-100 text-green-700 border-green-200 dark:bg-green-900 dark:text-green-300 dark:border-green-700' :
+                                    'bg-gray-100 text-gray-700 border-gray-200 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700'
+                                  }`}
+                                  variant="outline"
+                                >
+                                  {block.category}
+                                </Badge>
+                              </div>
                             </div>
                           </div>
+                        ))
+                      ) : (
+                        // Coming Soon Placeholders
+                        <div className="col-span-full">
+                          <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                            {[1, 2, 3, 4].map((index) => (
+                              <div key={`placeholder-${index}`} 
+                                   className="glass-panel p-5 rounded-xl border border-border/30 h-full opacity-60"
+                                   data-testid={`placeholder-block-${index}`}>
+                                <div className="text-center space-y-4 h-full flex flex-col">
+                                  <div className="w-12 h-12 bg-muted rounded-xl flex items-center justify-center mx-auto">
+                                    <Sparkles className="w-6 h-6 text-muted-foreground" />
+                                  </div>
+                                  <div className="flex-1">
+                                    <h5 className="font-semibold text-sm mb-2 text-muted-foreground">Coming Soon</h5>
+                                    <p className="text-xs text-muted-foreground/70 line-clamp-3 leading-relaxed mb-3">
+                                      New AI building blocks for {activeCategory !== 'all' ? activeCategory : 'all categories'} are being developed
+                                    </p>
+                                    <Badge className="text-xs bg-muted/50 text-muted-foreground border-muted" variant="outline">
+                                      In Development
+                                    </Badge>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
                         </div>
-                      ))}
+                      )}
                     </div>
                   </div>
                 </div>
 
-                {/* Pipeline Builder */}
-                <div className="space-y-4">
+                {/* Enhanced Pipeline Builder */}
+                <div className="space-y-6">
                   <div>
-                    <h3 className="text-lg font-semibold">{content.buildPage.sections.pipeline.title}</h3>
-                    <p className="text-sm text-muted-foreground">{content.buildPage.sections.pipeline.description}</p>
+                    <h3 className="text-lg font-semibold flex items-center">
+                      <Workflow className="w-5 h-5 mr-2 text-primary" />
+                      {content.buildPage.sections.pipeline.title}
+                    </h3>
+                    <p className="text-sm text-muted-foreground mt-1">{content.buildPage.sections.pipeline.description}</p>
                   </div>
                   
-                  <div className="min-h-64 p-8 bg-background/20 rounded-xl border border-primary/10 relative">
+                  <div className="min-h-80 p-8 bg-gradient-to-br from-background/30 via-primary/5 to-background/30 rounded-xl border border-primary/20 relative overflow-hidden">
                     {/* Pipeline Flow */}
-                    <div className="flex flex-col gap-8 items-center justify-center">
-                      <div className="flex flex-wrap gap-6 items-center justify-center">
-                        <PipelineBlock 
-                          title="Data Input" 
-                          description="Dataset loader"
-                          icon={Database}
-                          category="input"
-                          isConnected={true}
-                        />
-                        <PipelineBlock 
-                          title="Neural Network" 
-                          description="Deep learning model"
-                          icon={Brain}
-                          category="processing"
-                          isConnected={true}
-                        />
-                        <PipelineBlock 
-                          title="API Output" 
-                          description="Model predictions"
-                          icon={Code2}
-                          category="output"
-                        />
+                    <div className="relative z-10">
+                      <div className="flex flex-col gap-8 items-center justify-center min-h-64">
+                        <div className="flex flex-wrap gap-8 items-center justify-center">
+                          <PipelineBlock 
+                            title="Data Input" 
+                            description="Dataset loader"
+                            icon={Database}
+                            category="input"
+                            isConnected={true}
+                          />
+                          <div className="hidden md:flex items-center">
+                            <div className="w-12 h-0.5 bg-gradient-to-r from-primary to-secondary animate-pulse"></div>
+                            <ArrowRight className="w-6 h-6 text-primary mx-2" />
+                            <div className="w-12 h-0.5 bg-gradient-to-r from-secondary to-accent animate-pulse"></div>
+                          </div>
+                          <PipelineBlock 
+                            title="Neural Network" 
+                            description="Deep learning model"
+                            icon={Brain}
+                            category="processing"
+                            isConnected={true}
+                          />
+                          <div className="hidden md:flex items-center">
+                            <div className="w-12 h-0.5 bg-gradient-to-r from-secondary to-accent animate-pulse"></div>
+                            <ArrowRight className="w-6 h-6 text-secondary mx-2" />
+                            <div className="w-12 h-0.5 bg-gradient-to-r from-accent to-primary animate-pulse"></div>
+                          </div>
+                          <PipelineBlock 
+                            title="API Output" 
+                            description="Model predictions"
+                            icon={Code2}
+                            category="output"
+                          />
+                        </div>
+                        
+                        {/* Pipeline Stats */}
+                        <div className="flex items-center space-x-6 mt-6 text-sm">
+                          <div className="flex items-center space-x-2">
+                            <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                            <span className="text-muted-foreground">Data Flow: Active</span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <div className="w-2 h-2 bg-secondary rounded-full animate-pulse" style={{animationDelay: '0.5s'}}></div>
+                            <span className="text-muted-foreground">Processing: Ready</span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <div className="w-2 h-2 bg-accent rounded-full animate-pulse" style={{animationDelay: '1s'}}></div>
+                            <span className="text-muted-foreground">Output: Configured</span>
+                          </div>
+                        </div>
                       </div>
                     </div>
 
-                    {/* Drop Zone Indicator */}
-                    <div className="absolute inset-4 border-2 border-dashed border-primary/20 rounded-xl pointer-events-none opacity-0 transition-opacity duration-300 flex items-center justify-center">
+                    {/* Enhanced Drop Zone Indicator */}
+                    <div className="absolute inset-6 border-2 border-dashed border-primary/20 rounded-xl pointer-events-none opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center bg-primary/5">
                       <div className="text-center">
-                        <Plus className="w-8 h-8 mx-auto text-primary/40 mb-2" />
-                        <p className="text-sm text-primary/40">Drop blocks here to build your AI</p>
+                        <div className="w-16 h-16 gradient-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                          <Plus className="w-8 h-8 text-primary-foreground" />
+                        </div>
+                        <p className="text-primary font-medium mb-2">Drop AI Blocks Here</p>
+                        <p className="text-sm text-primary/70">Drag blocks from above to customize your pipeline</p>
                       </div>
                     </div>
+                    
+                    {/* Background Pattern */}
+                    <div className="absolute inset-0 opacity-10">
+                      <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-primary/20 rounded-full blur-3xl"></div>
+                      <div className="absolute bottom-1/4 right-1/4 w-24 h-24 bg-accent/20 rounded-full blur-2xl"></div>
+                    </div>
                   </div>
-                  
-                  
                 </div>
 
                 {/* Pipeline Preview */}

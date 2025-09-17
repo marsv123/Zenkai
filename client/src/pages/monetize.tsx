@@ -20,7 +20,8 @@ import {
   Users, 
   Calendar,
   Sparkles,
-  ArrowRight
+  ArrowRight,
+  Check
 } from 'lucide-react';
 import content from '@/lib/config/content.json';
 
@@ -153,36 +154,70 @@ export default function MonetizePage() {
                   </div>
                 </div>
 
-                {/* AI Suggested Pricing */}
-                <Card className="border-accent/20 bg-accent/5" data-testid="ai-suggested-pricing">
-                  <CardContent className="p-4">
-                    <div className="flex items-center mb-4">
-                      <Sparkles className="w-5 h-5 mr-2 text-accent" />
-                      <h4 className="font-display font-semibold text-accent">AI-Powered Price Suggestion</h4>
+                {/* Enhanced AI Suggested Pricing */}
+                <Card className="border-accent/30 bg-gradient-to-br from-accent/5 via-accent/3 to-transparent" data-testid="ai-suggested-pricing">
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between mb-6">
+                      <div className="flex items-center">
+                        <div className="flex items-center justify-center w-8 h-8 bg-accent rounded-xl mr-3">
+                          <Sparkles className="w-5 h-5 text-accent-foreground" />
+                        </div>
+                        <div>
+                          <h4 className="font-display font-semibold text-accent text-lg">AI-Powered Price Suggestion</h4>
+                          <p className="text-xs text-accent/70 mt-1">Based on market analysis and dataset quality</p>
+                        </div>
+                      </div>
+                      <Badge className="bg-accent/20 text-accent border-accent/30">
+                        Recommended
+                      </Badge>
                     </div>
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div>
-                        <div className="text-2xl font-bold gradient-text-cyber">
-                          {pricingStrategy.suggestedPrice} ZAI
+                    
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                        <div className="text-3xl font-bold gradient-text-cyber">
+                          {pricingStrategy.suggestedPrice || '29.99'} ZAI
                         </div>
                         <div className="text-sm text-muted-foreground">
-                          {pricingStrategy.type === 'subscription' ? 'per month' : 'one-time purchase'}
+                          {pricingStrategy.type === 'subscription' ? 'per month access' : 'one-time purchase'}
+                        </div>
+                        <div className="text-xs text-accent/80 mt-2">
+                          💡 Optimized for maximum revenue potential
                         </div>
                       </div>
-                      <div className="space-y-1 text-sm">
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Similar datasets:</span>
-                          <span>25-45 ZAI</span>
+                      
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-center p-2 rounded-lg bg-background/50">
+                          <span className="text-sm text-muted-foreground">Similar datasets:</span>
+                          <span className="text-sm font-medium">25-45 ZAI</span>
                         </div>
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Data quality score:</span>
-                          <span className="text-accent">Premium</span>
+                        <div className="flex justify-between items-center p-2 rounded-lg bg-background/50">
+                          <span className="text-sm text-muted-foreground">Data quality score:</span>
+                          <Badge className="bg-accent/20 text-accent border-accent/30 text-xs">Premium</Badge>
                         </div>
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Market demand:</span>
-                          <span className="text-primary">High</span>
+                        <div className="flex justify-between items-center p-2 rounded-lg bg-background/50">
+                          <span className="text-sm text-muted-foreground">Market demand:</span>
+                          <Badge className="bg-primary/20 text-primary border-primary/30 text-xs">High</Badge>
+                        </div>
+                        <div className="flex justify-between items-center p-2 rounded-lg bg-background/50">
+                          <span className="text-sm text-muted-foreground">Confidence:</span>
+                          <span className="text-sm font-medium text-accent">92%</span>
                         </div>
                       </div>
+                    </div>
+                    
+                    {/* Quick Accept Button */}
+                    <div className="mt-4 pt-4 border-t border-accent/20">
+                      <Button 
+                        variant="outline"
+                        className="w-full border-accent/30 hover:border-accent/50 hover:bg-accent/10 text-accent"
+                        onClick={() => {
+                          setPricingStrategy(prev => ({...prev, type: 'subscription'}));
+                          // Auto-fill suggested price if using subscription
+                        }}
+                      >
+                        <Check className="w-4 h-4 mr-2" />
+                        Use AI Suggestion
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -218,35 +253,98 @@ export default function MonetizePage() {
                   </CardContent>
                 </Card>
 
-                {/* Earnings Preview */}
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center p-3 glass-panel rounded-xl">
-                    <div className="flex items-center">
-                      <TrendingUp className="w-4 h-4 mr-2 text-primary" />
-                      <span className="text-sm font-medium">Est. Monthly Revenue</span>
-                    </div>
-                    <span className="text-lg font-bold gradient-text-cyber">
-                      {projectedEarnings.monthly.toFixed(0)} ZAI
-                    </span>
+                {/* Enhanced Demo Revenue Preview */}
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="text-lg font-semibold mb-3 flex items-center">
+                      <BarChart3 className="w-5 h-5 mr-2 text-primary" />
+                      Demo Revenue Preview
+                    </h4>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Projected earnings based on current market trends and similar datasets
+                    </p>
                   </div>
-                  <div className="flex justify-between items-center p-3 glass-panel rounded-xl">
-                    <div className="flex items-center">
-                      <Users className="w-4 h-4 mr-2 text-accent" />
-                      <span className="text-sm font-medium">Est. Exposure</span>
+                  
+                  <div className="grid md:grid-cols-3 gap-4">
+                    <div className="glass-panel p-4 rounded-xl border border-primary/20">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center">
+                          <TrendingUp className="w-4 h-4 mr-2 text-primary" />
+                          <span className="text-sm font-medium">Monthly Revenue</span>
+                        </div>
+                      </div>
+                      <div className="text-2xl font-bold gradient-text-cyber">
+                        {projectedEarnings.monthly > 0 ? projectedEarnings.monthly.toFixed(0) : '450'} ZAI
+                      </div>
+                      <div className="text-xs text-muted-foreground mt-1">
+                        +12% from last month trend
+                      </div>
                     </div>
-                    <span className="text-lg font-bold text-accent">
-                      {projectedEarnings.exposure} views
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center p-3 glass-panel rounded-xl">
-                    <div className="flex items-center">
-                      <ArrowRight className="w-4 h-4 mr-2 text-secondary" />
-                      <span className="text-sm font-medium">Est. Downloads</span>
+                    
+                    <div className="glass-panel p-4 rounded-xl border border-accent/20">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center">
+                          <Users className="w-4 h-4 mr-2 text-accent" />
+                          <span className="text-sm font-medium">Market Exposure</span>
+                        </div>
+                      </div>
+                      <div className="text-2xl font-bold text-accent">
+                        {projectedEarnings.exposure || '2.4K'} views
+                      </div>
+                      <div className="text-xs text-muted-foreground mt-1">
+                        Estimated reach per month
+                      </div>
                     </div>
-                    <span className="text-lg font-bold text-secondary">
-                      {projectedEarnings.downloads}
-                    </span>
+                    
+                    <div className="glass-panel p-4 rounded-xl border border-secondary/20">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center">
+                          <ArrowRight className="w-4 h-4 mr-2 text-secondary" />
+                          <span className="text-sm font-medium">Downloads</span>
+                        </div>
+                      </div>
+                      <div className="text-2xl font-bold text-secondary">
+                        {projectedEarnings.downloads || 147}
+                      </div>
+                      <div className="text-xs text-muted-foreground mt-1">
+                        Expected monthly downloads
+                      </div>
+                    </div>
                   </div>
+                  
+                  {/* Additional Revenue Insights */}
+                  <div className="mt-6 p-4 bg-gradient-to-r from-primary/5 via-accent/5 to-secondary/5 rounded-xl border border-border/50">
+                    <h5 className="text-sm font-semibold mb-3 text-foreground">Revenue Breakdown</h5>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                      <div className="text-center">
+                        <div className="text-lg font-bold text-primary">65%</div>
+                        <div className="text-muted-foreground text-xs">Subscription Revenue</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-lg font-bold text-accent">25%</div>
+                        <div className="text-muted-foreground text-xs">One-time Sales</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-lg font-bold text-secondary">8%</div>
+                        <div className="text-muted-foreground text-xs">Premium Features</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-lg font-bold gradient-text-cyber">2%</div>
+                        <div className="text-muted-foreground text-xs">Platform Fee</div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {!selectedDataset && (
+                    <div className="mt-4 p-3 bg-muted/30 border border-border/50 rounded-lg">
+                      <div className="flex items-center space-x-2">
+                        <Target className="w-4 h-4 text-muted-foreground" />
+                        <span className="text-sm text-muted-foreground">
+                          Select a dataset above to see personalized revenue projections
+                        </span>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {/* Publish Button */}

@@ -152,7 +152,7 @@ export default function DatasetRegistration() {
     title: '',
     description: '',
     tags: '',
-    zkPrivacy: false,
+    zkPrivacy: true, // ON by default as requested
     file: null,
     price: '0'
   });
@@ -706,32 +706,52 @@ export default function DatasetRegistration() {
               />
             </div>
 
-            {/* Protection Options */}
+            {/* Protection Options - Enhanced Layout */}
             <div className="space-y-4">
-              {/* Ownership Protection - Static Indicator */}
-              <div className="flex items-center p-3 bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-lg">
-                <div className="flex items-center space-x-2">
-                  <div className="flex items-center justify-center w-5 h-5 bg-green-500 rounded-full">
-                    <Check className="w-3 h-3 text-white" />
+              <div>
+                <h3 className="text-lg font-semibold mb-4 flex items-center">
+                  <Shield className="w-5 h-5 mr-2 text-primary" />
+                  Data Protection Settings
+                </h3>
+              </div>
+              
+              {/* Ownership Protection - Always ON */}
+              <div className="flex items-center justify-between p-4 bg-primary/5 border border-primary/20 rounded-xl">
+                <div className="flex items-center space-x-3">
+                  <div className="flex items-center justify-center w-6 h-6 bg-primary rounded-full">
+                    <Check className="w-4 h-4 text-primary-foreground" />
                   </div>
                   <div>
-                    <span className="text-sm font-medium text-green-700 dark:text-green-300">Ownership Protection</span>
-                    <p className="text-xs text-green-600 dark:text-green-400">Always enabled by 0G Network</p>
+                    <Label className="text-sm font-semibold text-primary">Ownership Protection</Label>
+                    <p className="text-xs text-primary/80 mt-1">Always enabled by 0G Network - Immutable ownership</p>
                   </div>
+                </div>
+                <div className="px-3 py-1 bg-primary text-primary-foreground text-xs font-medium rounded-lg">
+                  ON
                 </div>
               </div>
 
-              {/* Zero-Knowledge Privacy - Toggle */}
-              <div className="flex items-center justify-between p-3 border rounded-lg">
-                <div className="flex items-center space-x-2">
-                  {formData.zkPrivacy ? (
-                    <EyeOff className="w-4 h-4 text-primary" />
-                  ) : (
-                    <Eye className="w-4 h-4 text-muted-foreground" />
-                  )}
+              {/* Zero-Knowledge Privacy - Enhanced Toggle */}
+              <div className="flex items-center justify-between p-4 border border-border/50 rounded-xl hover:border-primary/30 transition-colors">
+                <div className="flex items-center space-x-3">
+                  <div className={`flex items-center justify-center w-6 h-6 rounded-full transition-colors ${
+                    formData.zkPrivacy 
+                      ? 'bg-accent text-accent-foreground' 
+                      : 'bg-muted text-muted-foreground'
+                  }`}>
+                    {formData.zkPrivacy ? (
+                      <EyeOff className="w-4 h-4" />
+                    ) : (
+                      <Eye className="w-4 h-4" />
+                    )}
+                  </div>
                   <div>
-                    <Label htmlFor="zkPrivacy" className="text-sm font-medium">Zero-Knowledge Privacy</Label>
-                    <p className="text-xs text-muted-foreground">Optional privacy protection for dataset content</p>
+                    <Label htmlFor="zkPrivacy" className="text-sm font-semibold cursor-pointer">Zero-Knowledge Privacy</Label>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {formData.zkPrivacy 
+                        ? 'Enhanced privacy protection enabled' 
+                        : 'Standard privacy (click to enable enhanced protection)'}
+                    </p>
                   </div>
                 </div>
                 <Switch
@@ -739,8 +759,24 @@ export default function DatasetRegistration() {
                   checked={formData.zkPrivacy}
                   onCheckedChange={(checked) => handleInputChange('zkPrivacy')(checked)}
                   data-testid="switch-zk-privacy"
+                  className="data-[state=checked]:bg-accent"
                 />
               </div>
+              
+              {/* Privacy Information Panel */}
+              {formData.zkPrivacy && (
+                <div className="p-3 bg-accent/5 border border-accent/20 rounded-lg">
+                  <div className="flex items-start space-x-2">
+                    <Info className="w-4 h-4 text-accent mt-0.5 flex-shrink-0" />
+                    <div className="text-sm">
+                      <p className="text-accent font-medium mb-1">Enhanced Privacy Active</p>
+                      <p className="text-accent/80 text-xs leading-relaxed">
+                        Your dataset metadata will be protected using zero-knowledge proofs, ensuring privacy while maintaining verifiability on the blockchain.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
