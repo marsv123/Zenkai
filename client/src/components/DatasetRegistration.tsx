@@ -862,6 +862,8 @@ export default function DatasetRegistration() {
                          txState.status === 'success'}
                 className="flex-1"
                 data-testid="button-register-dataset"
+                data-wallet-connected={!!address}
+                aria-disabled={!address || !isFormValid() || ['preparing', 'waiting_for_wallet', 'submitting', 'confirming', 'success'].includes(txState.status)}
               >
                 {!address && 'Connect Wallet to Register'}
                 {address && !isFormValid() && 'Complete Form to Register'}
