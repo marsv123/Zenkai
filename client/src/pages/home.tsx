@@ -214,27 +214,25 @@ export default function Home() {
           </div>
           
           {/* Platform Description - moved from About section */}
-          {showSecondText && (
-            <div className="max-w-4xl mx-auto mt-8 animate-in fade-in duration-1000">
-              <div className="glass-cyber hover-cyber p-12 rounded-3xl transition-all duration-500 group">
-                
-                <p className="text-xl text-accent/90 leading-relaxed text-center max-w-3xl mx-auto mb-10">
-                  Powered by 0G's AI-native blockchain, <ZenkaiBrand colorContext="inherit" /> fuses data and AI into a decentralized, scalable marketplace of intelligence.
-                  Participants can rent datasets or build, train, and tokenize AI models within one seamless dApp. Every contribution carries built-in ownership, reputation, and monetization. As data compounds and models evolve, value creation accelerates, fueling continuous growth across the ecosystem.
-                </p>
-                
-                <div className="text-center">
-                  <Link 
-                    href="/marketplace"
-                    className="gradient-primary hover-cyber px-10 py-4 rounded-xl font-medium text-primary-foreground transition-all duration-500 text-lg inline-flex items-center justify-center group"
-                    data-testid="button-get-started-marketplace"
-                  >
-                    <span>Explore Marketplace</span>
-                  </Link>
-                </div>
+          <div className="max-w-4xl mx-auto mt-8">
+            <div className="glass-cyber hover-cyber p-12 rounded-3xl transition-all duration-500 group">
+              
+              <p className="text-xl text-accent/90 leading-relaxed text-center max-w-3xl mx-auto mb-10">
+                Powered by 0G's AI-native blockchain, <ZenkaiBrand colorContext="inherit" /> fuses data and AI into a decentralized, scalable marketplace of intelligence.
+                Participants can rent datasets or build, train, and tokenize AI models within one seamless dApp. Every contribution carries built-in ownership, reputation, and monetization. As data compounds and models evolve, value creation accelerates, fueling continuous growth across the ecosystem.
+              </p>
+              
+              <div className="text-center">
+                <Link 
+                  href="/marketplace"
+                  className="gradient-primary hover-cyber px-10 py-4 rounded-xl font-medium text-primary-foreground transition-all duration-500 text-lg inline-flex items-center justify-center group"
+                  data-testid="button-get-started-marketplace"
+                >
+                  <span>Explore Marketplace</span>
+                </Link>
               </div>
             </div>
-          )}
+          </div>
           
           
           
