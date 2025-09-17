@@ -73,7 +73,7 @@ export default function MonetizePage() {
           <div className="space-y-8">
             
             {/* Unified Monetization Form */}
-            <Card className="max-w-4xl mx-auto glass-cyber hover-cyber" data-testid="card-monetization-form">
+            <Card className="max-w-6xl mx-auto glass-cyber hover-cyber" data-testid="card-monetization-form">
               <CardHeader>
                 <CardTitle className="text-2xl font-display gradient-text-cyber">
                   Dataset Monetization
