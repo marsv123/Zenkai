@@ -207,16 +207,7 @@ export default function Home() {
               )}
             </p>
             
-            {/* Second text - phases in all at once */}
-            {showSecondText && (
-              <div className="max-w-4xl mx-auto mt-8 animate-in fade-in duration-1000">
-                <p className="text-base md:text-lg text-foreground/90 leading-relaxed font-body">
-                  <span className="animate-text-glow-reveal">
-                    {secondText}
-                  </span>
-                </p>
-              </div>
-            )}
+            
 
             {/* Patent Pending Notice - phases in simultaneously with second text */}
             {showSecondText && (
