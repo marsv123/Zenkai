@@ -241,7 +241,7 @@ export default function Dashboard() {
 
               {/* Recent Activity & Assets Preview */}
               <div className="grid lg:grid-cols-2 gap-8">
-                <Card className="glass-cyber">
+                <Card className="glass-cyber hover-cyber">
                   <CardHeader>
                     <CardTitle className="flex items-center">
                       <Activity className="w-5 h-5 mr-2 text-primary" />
@@ -285,7 +285,7 @@ export default function Dashboard() {
                   </CardContent>
                 </Card>
 
-                <Card className="glass-cyber">
+                <Card className="glass-cyber hover-cyber">
                   <CardHeader>
                     <CardTitle className="flex items-center">
                       <Shield className="w-5 h-5 mr-2 text-secondary" />
@@ -400,7 +400,7 @@ export default function Dashboard() {
             {/* Earnings Tab */}
             <TabsContent value="earnings" className="space-y-6">
               <div className="grid md:grid-cols-3 gap-6">
-                <Card className="glass-cyber">
+                <Card className="glass-cyber hover-cyber">
                   <CardContent className="p-6 text-center">
                     <TrendingUp className="w-8 h-8 mx-auto mb-4 text-green-400" />
                     <div className="text-3xl font-bold gradient-text-cyber mb-2">
@@ -410,7 +410,7 @@ export default function Dashboard() {
                   </CardContent>
                 </Card>
 
-                <Card className="glass-cyber">
+                <Card className="glass-cyber hover-cyber">
                   <CardContent className="p-6 text-center">
                     <ArrowDownRight className="w-8 h-8 mx-auto mb-4 text-orange-400" />
                     <div className="text-3xl font-bold gradient-text-cyber mb-2">
@@ -420,7 +420,7 @@ export default function Dashboard() {
                   </CardContent>
                 </Card>
 
-                <Card className="glass-cyber">
+                <Card className="glass-cyber hover-cyber">
                   <CardContent className="p-6 text-center">
                     <Coins className="w-8 h-8 mx-auto mb-4 text-primary" />
                     <div className="text-3xl font-bold gradient-text-cyber mb-2">
@@ -512,7 +512,7 @@ export default function Dashboard() {
             <TabsContent value="reputation" className="space-y-6">
               <div className="grid lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-2 space-y-6">
-                  <Card className="glass-cyber">
+                  <Card className="glass-cyber hover-cyber">
                     <CardHeader>
                       <CardTitle className="flex items-center">
                         <Trophy className="w-5 h-5 mr-2 text-primary" />
@@ -567,7 +567,7 @@ export default function Dashboard() {
                 </div>
 
                 <div className="space-y-6">
-                  <Card className="glass-cyber">
+                  <Card className="glass-cyber hover-cyber">
                     <CardHeader>
                       <CardTitle className="flex items-center">
                         <Award className="w-5 h-5 mr-2 text-primary" />
