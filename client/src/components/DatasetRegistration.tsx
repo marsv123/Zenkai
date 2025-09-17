@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useAccount, useWriteContract, useWaitForTransactionReceipt, useChainId, useSwitchChain } from 'wagmi';
 import { parseEther, formatEther, BaseError as ViemBaseError } from 'viem';
-import { Link, Upload, ExternalLink, AlertCircle, CheckCircle, Clock, RefreshCw, Info, Shield, Eye, EyeOff, Check } from 'lucide-react';
+import { Link, Upload, ExternalLink, AlertCircle, CheckCircle, Clock, RefreshCw, Info, Shield, Eye, EyeOff, Check, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -12,6 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
 import { queryClient } from '@/lib/queryClient';
 
@@ -578,10 +579,69 @@ export default function DatasetRegistration() {
     );
   };
 
+  // Calculate form completion percentage for progress indicator
+  const calculateFormCompletion = (): { percentage: number; completedFields: number; totalFields: number; status: string } => {
+    const requiredFields = ['title', 'uri']; // Only actually required fields
+    const completedFields = requiredFields.filter(field => {
+      const value = formData[field as keyof FormData];
+      return value && value.toString().trim().length > 0;
+    }).length;
+    
+    // Add file upload progress if applicable
+    const hasFile = formData.file !== null;
+    const adjustedTotal = requiredFields.length + (hasFile ? 1 : 0);
+    const adjustedCompleted = completedFields + (hasFile ? 1 : 0);
+    
+    const percentage = Math.round((adjustedCompleted / adjustedTotal) * 100);
+    const status = percentage === 100 ? 'Ready to submit' : 
+                  percentage >= 75 ? 'Almost complete' : 
+                  percentage >= 50 ? 'Halfway there' : 
+                  percentage >= 25 ? 'Getting started' : 'Just beginning';
+    
+    return { percentage, completedFields: adjustedCompleted, totalFields: adjustedTotal, status };
+  };
+
+  const formProgress = calculateFormCompletion();
+
   return (
     <Card className="max-w-4xl mx-auto">
       
       <CardContent>
+        {/* Form Completion Progress Indicator */}
+        <div 
+          className="mb-8 p-4 glass-panel rounded-xl border border-primary/10"
+          role="region"
+          aria-labelledby="form-progress-label"
+        >
+          <div className="flex items-center justify-between mb-3">
+            <h3 id="form-progress-label" className="text-sm font-semibold flex items-center">
+              <TrendingUp className="w-4 h-4 mr-2 text-primary" />
+              Form Completion Progress
+            </h3>
+            <span className="text-sm text-muted-foreground">
+              {formProgress.completedFields}/{formProgress.totalFields} fields
+            </span>
+          </div>
+          
+          <Progress 
+            value={formProgress.percentage} 
+            className="h-3 mb-2"
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={formProgress.percentage}
+            aria-valuetext={`Form ${formProgress.percentage}% complete - ${formProgress.status}`}
+            data-testid="form-progress"
+          />
+          
+          <div 
+            className="text-xs text-center text-muted-foreground"
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            {formProgress.percentage}% complete - {formProgress.status}
+          </div>
+        </div>
+
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-6">
             {/* Title & Category - Same Row */}
