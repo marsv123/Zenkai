@@ -1,0 +1,121 @@
+Prompt for Replit:
+
+Please provide me with a comprehensive and detailed status update of the entire Zenkai dApp project. The update should cover everything — no omissions, and be structured clearly by category.
+
+🔹 Frontend
+
+Status of all pages/subsites (Home, Marketplace, Upload Data, Monetize Data, Build AI, Train AI, Tokenize AI, Dashboard, How It Works, 404).
+
+Which components are fully functional, which are placeholders/mockups, and which are unfinished or buggy.
+
+Responsiveness across desktop, tablet, mobile.
+
+Accessibility compliance (ARIA labels, keyboard navigation, screen readers).
+
+Styling and theme consistency (colors, typography, hover effects).
+
+Content & design: clarity of text, guided flows, and whether placeholders are used instead of leaving empty sections.
+
+🔹 Backend & API
+
+Status of the Express.js/Node backend.
+
+Implemented API routes (datasets, users, transactions, reviews, analytics, AI).
+
+Database status (PostgreSQL + Drizzle ORM): schemas, relationships, pending migrations.
+
+Authentication/wallet verification status.
+
+Error handling, validation, logging.
+
+🔹 Smart Contracts
+
+Deployment status of:
+
+ZAI Token (ERC-20)
+
+DatasetRegistry
+
+ContributorNFT (ERC-721)
+
+Which functions are tested and working vs. untested or incomplete.
+
+Current contract addresses (testnet/mainnet).
+
+How contracts are integrated with frontend (Wagmi/RainbowKit).
+
+🔹 Integrations
+
+IPFS: File uploads, pinning, retrieval, gateways. Fully working?
+
+0G: Ownership protection and zero-knowledge privacy features — implemented or pending?
+
+Wallet integration: Stability across wallets, chain switching.
+
+Transaction flows: Upload → Monetize → Purchase → Build → Train → Tokenize. Which are fully functional vs. blocked.
+
+AI integrations: OpenAI, Replicate, or others — working vs. placeholders.
+
+🔹 Marketplace
+
+Dataset marketplace: search, filters, sorting, pagination, cards/list, buy/rent flows.
+
+AI model marketplace: status of tokenized model listing and purchasing.
+
+Error handling and UX for failed fetches/loading.
+
+🔹 Dashboard
+
+Which features are fully working (Wallet overview, My Assets, Transactions, Earnings, Reputation).
+
+Which features use mock data vs. real blockchain data.
+
+🔹 User Flows
+
+Data Provider: Upload → Monetize → Dashboard.
+
+AI Builder: Marketplace → Build → Train → Tokenize → Dashboard.
+
+Investor: Marketplace → Purchase → Dashboard.
+
+Which flows are fully functional, partially implemented, or blocked.
+
+🔹 UI/UX & Content
+
+Overall polish of design, clarity, and intuitiveness.
+
+Guided step-by-step flows for users.
+
+Consistency of layout across subsites.
+
+Where placeholders are used instead of empty sections.
+
+Suggestions for improving intuitiveness and user experience.
+
+🔹 Bugs & Technical Debt
+
+Known frontend issues.
+
+Known backend/API issues.
+
+Known smart contract issues.
+
+Technical debt or shortcuts that need cleanup.
+
+🔹 Demo Readiness
+
+What is ready for a live demo today.
+
+What is critical but missing for a complete demo.
+
+Any blockers preventing an end-to-end showcase.
+
+🔹 Recommendations
+
+Priority 1 (Critical for MVP)
+
+Priority 2 (Core Functionality)
+
+Priority 3 (Polish & Future Enhancements)
+
+⚡ Please deliver the update in a structured format with section headings and bullet points (like a project audit), so I can review, share, and plan next steps.
