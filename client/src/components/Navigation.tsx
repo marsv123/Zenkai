@@ -41,7 +41,7 @@ export default function Navigation() {
       location !== '/' &&
       !location.startsWith('/upload') &&
       !location.startsWith('/monetize') &&
-      !location.startsWith('/build') &&
+      !location.startsWith('/compose') &&
       !location.startsWith('/train') &&
       !location.startsWith('/tokenize') &&
       !location.startsWith('/marketplace')
@@ -64,7 +64,7 @@ export default function Navigation() {
     { path: '/marketplace', label: 'Marketplace', testId: 'nav-marketplace' },
     { path: '/upload', label: content.navigation.upload, testId: 'nav-upload' },
     { path: '/monetize', label: content.navigation.monetize, testId: 'nav-monetize' },
-    { path: '/build', label: content.navigation.build, testId: 'nav-build' },
+    { path: '/compose', label: content.navigation.build, testId: 'nav-build' },
     { path: '/train', label: content.navigation.train, testId: 'nav-train' },
     { path: '/tokenize', label: content.navigation.tokenize, testId: 'nav-tokenize' }
   ];

@@ -30,7 +30,7 @@ function Router() {
           <Route path="/marketplace" component={Marketplace} />
           <Route path="/upload" component={Upload} />
           <Route path="/monetize" component={Monetize} />
-          <Route path="/build" component={Compose} />
+          <Route path="/compose" component={Compose} />
           <Route path="/train" component={Train} />
           <Route path="/tokenize" component={Tokenize} />
           <Route path="/dashboard" component={Dashboard} />
