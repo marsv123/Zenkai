@@ -245,18 +245,16 @@ export default function Home() {
       {featuredDatasets.length > 0 && (
         <section className="py-16 px-4 border-t border-border">
           <div className="container mx-auto max-w-6xl">
-            <div className="flex flex-col md:flex-row items-center justify-between mb-16">
-              <div>
-                <h3 className="text-cyber-lg gradient-text-cyber mb-3">
-                  {content.homePage.featuredDatasets.title}
-                </h3>
-                <p className="text-zen text-accent/80">
-                  {content.homePage.featuredDatasets.description}
-                </p>
-              </div>
+            <div className="text-center mb-16">
+              <h3 className="text-cyber-lg gradient-text-cyber mb-3">
+                {content.homePage.featuredDatasets.title}
+              </h3>
+              <p className="text-zen text-accent/80 mb-6">
+                {content.homePage.featuredDatasets.description}
+              </p>
               <Link 
                 href="/marketplace"
-                className="glass-cyber hover-cyber px-8 py-3 rounded-xl font-medium text-foreground transition-all duration-500 text-base mt-6 md:mt-0 flex items-center space-x-2 group"
+                className="glass-cyber hover-cyber px-8 py-3 rounded-xl font-medium text-foreground transition-all duration-500 text-base inline-flex items-center space-x-2 group"
                 data-testid="button-view-all-datasets"
               >
                 <span>View All Datasets</span>
@@ -264,7 +262,7 @@ export default function Home() {
               </Link>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
               {featuredDatasets.map((dataset: Dataset) => (
                 <FeaturedDatasetCard key={dataset.id} dataset={dataset} />
               ))}
