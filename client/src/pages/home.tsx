@@ -249,20 +249,6 @@ export default function Home() {
       
 
 
-      {/* === WHAT IS KAIZEN === */}
-      <section className="py-20 px-4 border-t border-primary/20 relative overflow-hidden">
-        <div className="container mx-auto max-w-6xl relative z-10">
-          <div className="text-center mb-16">
-            <h3 className="text-cyber-lg gradient-text-cyber mb-6">
-              {content.homePage.about.title}
-            </h3>
-          </div>
-          
-        </div>
-        {/* Ambient background effects */}
-        <div className="absolute top-1/4 left-0 w-48 h-48 bg-accent/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-0 w-56 h-56 bg-primary/5 rounded-full blur-3xl" />
-      </section>
 
       {/* === CYBERPUNK HOW IT WORKS === */}
       <section className="py-20 px-4 border-t border-primary/20 relative overflow-hidden">
