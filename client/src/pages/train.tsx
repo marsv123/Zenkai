@@ -135,8 +135,8 @@ export default function TrainPage() {
                         key={model.id}
                         className={`p-4 rounded-xl border cursor-pointer transition-all duration-300 ${
                           selectedModel === model.id
-                            ? 'border-primary/50 glass-panel bg-primary/5'
-                            : 'border-primary/20 glass-panel hover:border-primary/30'
+                            ? 'border-primary/50 glass-cyber bg-primary/5'
+                            : 'border-primary/20 glass-cyber hover:border-primary/30'
                         }`}
                         onClick={() => setSelectedModel(model.id)}
                         data-testid={`model-${model.id}`}
@@ -176,8 +176,8 @@ export default function TrainPage() {
                         key={dataset.id}
                         className={`p-4 rounded-xl border cursor-pointer transition-all duration-300 ${
                           selectedDataset === dataset.id
-                            ? 'border-secondary/50 glass-panel bg-secondary/5'
-                            : 'border-border hover:border-secondary/30 glass-panel'
+                            ? 'border-secondary/50 glass-cyber bg-secondary/5'
+                            : 'border-border hover:border-secondary/30 glass-cyber'
                         }`}
                         onClick={() => setSelectedDataset(dataset.id)}
                         data-testid={`dataset-${dataset.id}`}
@@ -208,21 +208,21 @@ export default function TrainPage() {
                   </div>
                   
                   <div className="grid md:grid-cols-3 gap-4">
-                    <div className="flex items-center justify-between p-3 glass-panel rounded-xl">
+                    <div className="flex items-center justify-between p-3 glass-cyber rounded-xl">
                       <div className="flex items-center">
                         <Target className="w-4 h-4 mr-2 text-accent" />
                         <span className="text-sm font-medium">Epochs</span>
                       </div>
                       <span className="text-sm font-bold">10</span>
                     </div>
-                    <div className="flex items-center justify-between p-3 glass-panel rounded-xl">
+                    <div className="flex items-center justify-between p-3 glass-cyber rounded-xl">
                       <div className="flex items-center">
                         <Zap className="w-4 h-4 mr-2 text-primary" />
                         <span className="text-sm font-medium">Batch Size</span>
                       </div>
                       <span className="text-sm font-bold">32</span>
                     </div>
-                    <div className="flex items-center justify-between p-3 glass-panel rounded-xl">
+                    <div className="flex items-center justify-between p-3 glass-cyber rounded-xl">
                       <div className="flex items-center">
                         <Activity className="w-4 h-4 mr-2 text-secondary" />
                         <span className="text-sm font-medium">Learning Rate</span>
@@ -290,7 +290,7 @@ export default function TrainPage() {
 
                   {/* Enhanced Training Stats - Always Show Values */}
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="p-4 glass-panel rounded-xl">
+                    <div className="p-4 glass-cyber rounded-xl">
                       <div className="flex items-center space-x-2 mb-2">
                         <TrendingUp className="w-4 h-4 text-primary" />
                         <span className="text-sm font-medium">Accuracy</span>
@@ -303,7 +303,7 @@ export default function TrainPage() {
                       )}
                     </div>
 
-                    <div className="p-4 glass-panel rounded-xl">
+                    <div className="p-4 glass-cyber rounded-xl">
                       <div className="flex items-center space-x-2 mb-2">
                         <Clock className="w-4 h-4 text-secondary" />
                         <span className="text-sm font-medium">Time</span>
@@ -316,7 +316,7 @@ export default function TrainPage() {
                       )}
                     </div>
 
-                    <div className="p-4 glass-panel rounded-xl">
+                    <div className="p-4 glass-cyber rounded-xl">
                       <div className="flex items-center space-x-2 mb-2">
                         <Zap className="w-4 h-4 text-accent" />
                         <span className="text-sm font-medium">Loss</span>
@@ -329,7 +329,7 @@ export default function TrainPage() {
                       )}
                     </div>
 
-                    <div className="p-4 glass-panel rounded-xl">
+                    <div className="p-4 glass-cyber rounded-xl">
                       <div className="flex items-center space-x-2 mb-2">
                         <LinkIcon className="w-4 h-4 text-primary" />
                         <span className="text-sm font-medium">Status</span>
@@ -351,19 +351,19 @@ export default function TrainPage() {
                         Model Performance Metrics
                       </h4>
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                        <div className="p-3 glass-panel rounded-xl text-center">
+                        <div className="p-3 glass-cyber rounded-xl text-center">
                           <span className="block text-foreground/70 mb-1">Precision</span>
                           <span className="text-lg font-bold text-primary">{(accuracy - 2.3).toFixed(1)}%</span>
                         </div>
-                        <div className="p-3 glass-panel rounded-xl text-center">
+                        <div className="p-3 glass-cyber rounded-xl text-center">
                           <span className="block text-foreground/70 mb-1">Recall</span>
                           <span className="text-lg font-bold text-secondary">{(accuracy - 1.8).toFixed(1)}%</span>
                         </div>
-                        <div className="p-3 glass-panel rounded-xl text-center">
+                        <div className="p-3 glass-cyber rounded-xl text-center">
                           <span className="block text-foreground/70 mb-1">F1-Score</span>
                           <span className="text-lg font-bold text-accent">{(accuracy - 1.1).toFixed(1)}%</span>
                         </div>
-                        <div className="p-3 glass-panel rounded-xl text-center">
+                        <div className="p-3 glass-cyber rounded-xl text-center">
                           <span className="block text-foreground/70 mb-1">Loss</span>
                           <span className="text-lg font-bold text-primary">{(0.15 - accuracy/1000).toFixed(4)}</span>
                         </div>
@@ -387,7 +387,7 @@ export default function TrainPage() {
                     <p className="text-sm text-muted-foreground mb-4">Real-time training process logs and updates</p>
                   </div>
                   
-                  <div className="glass-panel p-4 rounded-xl border border-primary/10 h-64 overflow-y-auto">
+                  <div className="glass-cyber p-4 rounded-xl border border-primary/10 h-64 overflow-y-auto">
                     <div className="text-xs font-mono text-foreground/70 space-y-1" data-testid="training-logs">
                       {trainingProgress > 0 ? (
                         <>
