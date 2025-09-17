@@ -196,12 +196,17 @@ export default function Home() {
           
           {/* Enhanced Typography with Cyberpunk Styling */}
           <div className="space-y-6 mb-6">
-            <h3 className="text-cyber-lg mb-6">
-              <span className="gradient-text-cyber animate-text-glow-reveal">
+            <h3 className="text-cyber-lg mb-6 relative">
+              {/* Invisible placeholder to reserve space */}
+              <span className="gradient-text-cyber opacity-0 pointer-events-none">
+                {fullText}
+              </span>
+              {/* Visible animated text positioned absolutely */}
+              <span className="gradient-text-cyber animate-text-glow-reveal absolute inset-0">
                 {fullText.slice(0, visibleChars)}
               </span>
               {blinkingCursor && (
-                <span className={`inline-block w-0.5 h-6 md:h-7 lg:h-8 bg-primary ml-1 transition-opacity duration-100 ${showCursor ? 'opacity-100' : 'opacity-0'}`}>
+                <span className={`inline-block w-0.5 h-6 md:h-7 lg:h-8 bg-primary ml-1 transition-opacity duration-100 absolute ${showCursor ? 'opacity-100' : 'opacity-0'}`} style={{left: `${visibleChars * 0.6}ch`}}>
                   {/* Matrix-style blinking cursor */}
                 </span>
               )}
