@@ -196,7 +196,7 @@ export default function Home() {
           
           {/* Enhanced Typography with Cyberpunk Styling */}
           <div className="space-y-6 mb-6">
-            <p className="text-xl text-accent/90 leading-relaxed text-center max-w-3xl mx-auto mb-10">
+            <h3 className="text-cyber-lg gradient-text-cyber mb-6">
               <span className="animate-text-glow-reveal">
                 {fullText.slice(0, visibleChars)}
               </span>
@@ -205,7 +205,7 @@ export default function Home() {
                   {/* Matrix-style blinking cursor */}
                 </span>
               )}
-            </p>
+            </h3>
             
             
 
