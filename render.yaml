@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: zenkai-dapp
+    runtime: node
+    plan: free
+    region: ohio
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: VITE_ZAI_ADDRESS
+        value: 0x23C9593BBaC9207c9E360cbF7A64E0808374B43E
+      - key: VITE_DATASET_REGISTRY_ADDRESS
+        value: 0x521E29d7F8dfC78c017B1E93c8DB5f3ff808425d
+      - key: VITE_CONTRIBUTOR_NFT_ADDRESS
+        value: 0x252Be087B4DBda059226B4A0855574E945Fb8B20
+      - key: VITE_CHAIN_ID
+        value: 16601
+      - key: VITE_NETWORK_NAME
+        value: 0G Galileo Testnet
+      - key: VITE_RPC_URL
+        value: https://evmrpc-testnet.0g.ai
+    healthCheckPath: /
+    autoDeploy: false
