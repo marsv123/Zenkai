@@ -20,8 +20,8 @@ const ZAI_TOKEN_ADDRESS = contractAddresses.ZAI as `0x${string}`;
 const DATASET_REGISTRY_ADDRESS = contractAddresses.DatasetRegistry as `0x${string}`;
 const CHAIN_ID = contractAddresses.chainId;
 
-const ZAI_TOKEN_ABI = contractAbis.ZAI as const;
-const DATASET_REGISTRY_ABI = contractAbis.DatasetRegistry as const;
+const ZAI_TOKEN_ABI = contractAbis.ZAI as any;
+const DATASET_REGISTRY_ABI = contractAbis.DatasetRegistry as any;
 
 interface Dataset {
   id: string;
@@ -217,7 +217,7 @@ export default function DatasetPurchase({ dataset, onPurchaseSuccess, children }
   }, []);
 
   const checkApprovalNeeded = useCallback(async () => {
-    if (!address || !currentAllowance || !dataset.price) return;
+    if (!address || currentAllowance === undefined || !dataset.price) return;
 
     setPurchaseState(prev => ({ ...prev, step: 'checking' }));
 
@@ -233,7 +233,7 @@ export default function DatasetPurchase({ dataset, onPurchaseSuccess, children }
       }
 
       const priceInWei = parseEther(dataset.price);
-      const needsApproval = currentAllowance < priceInWei;
+      const needsApproval = (currentAllowance as bigint) < priceInWei;
       
       setPurchaseState(prev => ({
         ...prev,
@@ -272,6 +272,13 @@ export default function DatasetPurchase({ dataset, onPurchaseSuccess, children }
       checkApprovalNeeded();
     }
   }, [isOpen, address, checkApprovalNeeded]);
+
+  // Re-run approval check when allowance or price changes
+  useEffect(() => {
+    if (isOpen && address && currentAllowance !== undefined && dataset.price) {
+      checkApprovalNeeded();
+    }
+  }, [currentAllowance, dataset.price, isOpen, address, checkApprovalNeeded]);
 
   const handleApprove = useCallback(async () => {
     if (!address || !dataset.price) return;
@@ -343,7 +350,7 @@ export default function DatasetPurchase({ dataset, onPurchaseSuccess, children }
     return null;
   }
 
-  const userBalance = zaiBalance ? formatEther(zaiBalance) : '0';
+  const userBalance = zaiBalance ? formatEther(zaiBalance as bigint) : '0';
   const hasInsufficientBalance = parseFloat(userBalance) < parseFloat(dataset.price);
 
   const getStepIcon = (step: string) => {
