@@ -1,0 +1,61 @@
+Prompt for Replit
+
+Please refine and polish the UI/UX across all Zenkai pages with a focus on clarity, intuitiveness, and professional design consistency.
+
+🔹 UI/UX Improvements
+
+Ensure all pages (Home, Marketplace, Upload Data, Monetize Data, Build AI, Train AI, Tokenize AI, Dashboard) have a consistent single-frame layout with aligned fields, spacing, and margins.
+
+Improve visual hierarchy: titles, subtitles, and call-to-actions must always be clear, centered, and consistent.
+
+Ensure all buttons and toggles are visually aligned, evenly spaced, and sized consistently across sections.
+
+Apply guided flows for complex actions (Upload → Monetize → Build → Train → Tokenize). Each step should clearly indicate what comes next, with tooltips, hints, or progress indicators.
+
+Replace empty/unfinished sections with well-designed placeholders that show “Coming Soon” or simple dummy content instead of leaving blank space.
+
+🔹 Specific Adjustments
+
+Upload Data
+
+Ownership protection should always show as ON by default.
+
+Zero-knowledge privacy toggle should be aligned neatly under ownership protection.
+
+Add placeholder text for dataset preview if none is available.
+
+Monetize Data
+
+Provide guided pricing suggestion placeholder if AI pricing not available.
+
+Show “Demo Revenue Preview” placeholder values to avoid empty states.
+
+Build AI
+
+Ensure all building block tiles are properly aligned and evenly spaced.
+
+If a category has no modules yet, show “Coming Soon” placeholders.
+
+Train AI
+
+Show sample training logs or a “Demo Output Placeholder” when no logs exist.
+
+Performance monitoring should never be empty — add default placeholder values.
+
+Tokenize AI
+
+Revenue sharing slider should be fully functional and adjustable.
+
+Show placeholder token supply, query price, and staking rewards if not set.
+
+🔹 General Design Guidelines
+
+Maintain the cyberpunk theme with deep orange + white contrast.
+
+Keep the hover effects (e.g. Zenkai logo color swap) consistent.
+
+Add micro-interactions (hover highlights, progress bar animations) for a smoother UX.
+
+Ensure responsiveness across mobile, tablet, desktop.
+
+Accessibility: all forms, toggles, and buttons should have clear ARIA labels, tooltips, and error messages.
