@@ -196,8 +196,8 @@ export default function Home() {
           
           {/* Enhanced Typography with Cyberpunk Styling */}
           <div className="space-y-6 mb-6">
-            <p className="text-lg md:text-xl lg:text-2xl font-accent tracking-wider font-mono">
-              <span className="gradient-text-zen animate-text-glow-reveal">
+            <p className="text-xl text-accent/90 leading-relaxed text-center max-w-3xl mx-auto mb-10">
+              <span className="animate-text-glow-reveal">
                 {fullText.slice(0, visibleChars)}
               </span>
               {blinkingCursor && (
