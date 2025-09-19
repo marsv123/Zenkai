@@ -20,13 +20,23 @@ import {
   ArrowDownRight,
   Trophy,
   Crown,
-  Shield
+  Shield,
+  Filter,
+  SortAsc,
+  ExternalLink
 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Link } from 'wouter';
 import content from '@/lib/config/content.json';
 import { ZenkaiBrand } from '@/components/ZenkaiBrand';
@@ -64,6 +74,9 @@ interface UserStats {
 export default function Dashboard() {
   const { address } = useAccount();
   const [activeTab, setActiveTab] = useState('overview');
+  const [timeframe, setTimeframe] = useState<'7D' | '30D' | '90D' | 'All'>('30D');
+  const [activityFilter, setActivityFilter] = useState<'all' | 'confirmed' | 'pending' | 'failed'>('all');
+  const [assetsFilter, setAssetsFilter] = useState<'all' | 'active' | 'inactive'>('all');
 
   // Fetch user's datasets
   const { data: userDatasets = [], isLoading: datasetsLoading } = useQuery<Dataset[]>({
@@ -109,17 +122,44 @@ export default function Dashboard() {
     );
   }
 
-  // Calculate derived data
-  const purchasedDatasets = userTransactions.filter((tx: Transaction) => 
+  // Helper function to filter data by timeframe
+  const filterByTimeframe = (items: any[], dateField: string = 'createdAt') => {
+    if (timeframe === 'All') return items;
+    
+    const now = new Date();
+    const days = parseInt(timeframe);
+    const cutoff = new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
+    
+    return items.filter(item => new Date(item[dateField]) >= cutoff);
+  };
+
+  // Calculate derived data with timeframe filtering
+  const filteredTransactions = filterByTimeframe(userTransactions);
+  
+  const purchasedDatasets = filteredTransactions.filter((tx: Transaction) => 
     tx.status === 'confirmed'
   );
 
-  const totalEarnings = userTransactions
+  const totalEarnings = filteredTransactions
     .filter((tx: Transaction) => tx.status === 'confirmed')
     .reduce((sum: number, tx: Transaction) => sum + parseFloat(tx.amount || '0'), 0);
 
   const totalSpent = purchasedDatasets
     .reduce((sum: number, tx: Transaction) => sum + parseFloat(tx.amount || '0'), 0);
+
+  // Filter Activity and Assets based on filters
+  const filteredActivityTransactions = filteredTransactions.filter(tx => 
+    activityFilter === 'all' || tx.status === activityFilter
+  );
+
+  // Filter assets by timeframe and status
+  const filteredAssetsByTime = filterByTimeframe(userDatasets, 'createdAt');
+  
+  const filteredAssets = filteredAssetsByTime.filter(dataset => 
+    assetsFilter === 'all' || 
+    (assetsFilter === 'active' && dataset.isActive) ||
+    (assetsFilter === 'inactive' && !dataset.isActive)
+  );
 
   const reputationScore = Math.min(100, Math.max(0, 
     (userDatasets.length * 10) + 
@@ -132,22 +172,58 @@ export default function Dashboard() {
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-7xl mx-auto">
           
-          {/* Header */}
-          <div className="flex items-center justify-between mb-8" data-testid="dashboard-header">
-            <div>
-              <h1 className="text-4xl md:text-5xl font-display font-bold mb-4 gradient-text-cyber flex items-center">
-                <User className="w-10 h-10 md:w-12 md:h-12 mr-4 text-primary hover:scale-110 transition-transform duration-300" data-testid="icon-dashboard" />
-                {content.dashboardPage.main.title}
-              </h1>
-              <p className="text-xl md:text-2xl text-accent/90 leading-relaxed">
-                {content.dashboardPage.main.description}
-              </p>
-            </div>
-            
-            <div className="text-right">
-              <div className="text-sm text-muted-foreground mb-2">Connected Wallet</div>
-              <div className="font-mono text-sm glass-panel px-4 py-2 rounded-xl border-primary/20" data-testid="text-wallet-address">
-                {address?.slice(0, 8)}...{address?.slice(-6)}
+          {/* Enhanced Header with Action Bar */}
+          <div className="mb-8" data-testid="dashboard-header">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+              <div>
+                <h1 className="text-4xl md:text-5xl font-display font-bold mb-4 gradient-text-cyber flex items-center">
+                  <User className="w-10 h-10 md:w-12 md:h-12 mr-4 text-primary hover:scale-110 transition-transform duration-300" data-testid="icon-dashboard" />
+                  {content.dashboardPage.main.title}
+                </h1>
+                <p className="text-xl md:text-2xl text-accent/90 leading-relaxed">
+                  {content.dashboardPage.main.description}
+                </p>
+              </div>
+              
+              <div className="flex flex-col sm:flex-row items-center gap-4">
+                {/* Timeframe Filter */}
+                <Select value={timeframe} onValueChange={(value: any) => setTimeframe(value)}>
+                  <SelectTrigger className="w-40 glass-cyber hover-cyber">
+                    <Clock className="w-4 h-4 mr-2" />
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="7D">Last 7 Days</SelectItem>
+                    <SelectItem value="30D">Last 30 Days</SelectItem>
+                    <SelectItem value="90D">Last 90 Days</SelectItem>
+                    <SelectItem value="All">All Time</SelectItem>
+                  </SelectContent>
+                </Select>
+                
+                {/* Action Buttons */}
+                <div className="flex items-center gap-3">
+                  <Button asChild className="gradient-primary hover-cyber" data-testid="button-upload-dataset">
+                    <Link href="/create">
+                      <Upload className="w-4 h-4 mr-2" />
+                      Upload Dataset
+                    </Link>
+                  </Button>
+                  
+                  <Button asChild variant="outline" className="glass-cyber hover-cyber" data-testid="button-marketplace">
+                    <Link href="/marketplace">
+                      <ExternalLink className="w-4 h-4 mr-2" />
+                      Marketplace
+                    </Link>
+                  </Button>
+                </div>
+                
+                {/* Wallet Info */}
+                <div className="text-center sm:text-right">
+                  <div className="text-sm text-muted-foreground mb-2">Connected Wallet</div>
+                  <div className="font-mono text-sm glass-panel px-4 py-2 rounded-xl border-primary/20" data-testid="text-wallet-address">
+                    {address?.slice(0, 8)}...{address?.slice(-6)}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -250,7 +326,7 @@ export default function Dashboard() {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      {userTransactions.slice(0, 5).map((transaction: Transaction) => (
+                      {filteredTransactions.slice(0, 5).map((transaction: Transaction) => (
                         <div key={transaction.id} className="flex items-center justify-between p-3 glass-panel rounded-xl" data-testid={`activity-${transaction.id}`}>
                           <div className="flex items-center space-x-3">
                             <div className={`w-2 h-2 rounded-full ${
@@ -275,7 +351,7 @@ export default function Dashboard() {
                           </div>
                         </div>
                       ))}
-                      {userTransactions.length === 0 && (
+                      {filteredTransactions.length === 0 && (
                         <div className="text-center py-8 text-muted-foreground">
                           <Activity className="mx-auto mb-2 w-8 h-8 opacity-50" />
                           <p>No activity yet</p>
@@ -294,7 +370,7 @@ export default function Dashboard() {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      {userDatasets.slice(0, 5).map((dataset: Dataset) => (
+                      {filteredAssetsByTime.slice(0, 5).map((dataset: Dataset) => (
                         <div key={dataset.id} className="flex items-center justify-between p-3 glass-panel rounded-xl" data-testid={`asset-${dataset.id}`}>
                           <div className="flex items-center space-x-3">
                             <div className="w-10 h-10 gradient-primary rounded-lg flex items-center justify-center">
@@ -313,7 +389,7 @@ export default function Dashboard() {
                           </div>
                         </div>
                       ))}
-                      {userDatasets.length === 0 && (
+                      {filteredAssetsByTime.length === 0 && (
                         <div className="text-center py-8 text-muted-foreground">
                           <Upload className="mx-auto mb-2 w-8 h-8 opacity-50" />
                           <p>No assets yet</p>
@@ -332,13 +408,34 @@ export default function Dashboard() {
             <TabsContent value="activity" className="space-y-6">
               <Card className="glass-cyber">
                 <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Activity className="w-5 h-5 mr-2 text-primary" />
-                    Transaction History
-                  </CardTitle>
-                  <CardDescription>
-                    Complete record of your marketplace transactions
-                  </CardDescription>
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                      <CardTitle className="flex items-center">
+                        <Activity className="w-5 h-5 mr-2 text-primary" />
+                        Transaction History
+                        <Badge className="ml-2 bg-primary/10 text-primary">
+                          {filteredActivityTransactions.length}
+                        </Badge>
+                      </CardTitle>
+                      <CardDescription>
+                        Complete record of your marketplace transactions
+                      </CardDescription>
+                    </div>
+                    
+                    {/* Activity Filter */}
+                    <Select value={activityFilter} onValueChange={(value: any) => setActivityFilter(value)}>
+                      <SelectTrigger className="w-40 glass-cyber hover-cyber">
+                        <Filter className="w-4 h-4 mr-2" />
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All Status</SelectItem>
+                        <SelectItem value="confirmed">Confirmed</SelectItem>
+                        <SelectItem value="pending">Pending</SelectItem>
+                        <SelectItem value="failed">Failed</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4 max-h-96 overflow-y-auto">
@@ -350,8 +447,8 @@ export default function Dashboard() {
                           </div>
                         ))}
                       </div>
-                    ) : userTransactions.length > 0 ? (
-                      userTransactions.map((transaction: Transaction) => (
+                    ) : filteredActivityTransactions.length > 0 ? (
+                      filteredActivityTransactions.map((transaction: Transaction) => (
                         <div key={transaction.id} className="p-4 glass-panel rounded-xl hover:bg-primary/5 transition-colors" data-testid={`transaction-${transaction.id}`}>
                           <div className="flex items-center justify-between">
                             <div className="flex items-center space-x-4">
@@ -436,13 +533,33 @@ export default function Dashboard() {
             <TabsContent value="assets" className="space-y-6">
               <Card className="glass-cyber">
                 <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Upload className="w-5 h-5 mr-2 text-primary" />
-                    Your Published AI Models
-                  </CardTitle>
-                  <CardDescription>
-                    Manage and monitor your AI assets in the marketplace
-                  </CardDescription>
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                      <CardTitle className="flex items-center">
+                        <Upload className="w-5 h-5 mr-2 text-primary" />
+                        Your Published AI Models
+                        <Badge className="ml-2 bg-primary/10 text-primary">
+                          {filteredAssets.length}
+                        </Badge>
+                      </CardTitle>
+                      <CardDescription>
+                        Manage and monitor your AI assets in the marketplace
+                      </CardDescription>
+                    </div>
+                    
+                    {/* Assets Filter */}
+                    <Select value={assetsFilter} onValueChange={(value: any) => setAssetsFilter(value)}>
+                      <SelectTrigger className="w-40 glass-cyber hover-cyber">
+                        <SortAsc className="w-4 h-4 mr-2" />
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All Assets</SelectItem>
+                        <SelectItem value="active">Active Only</SelectItem>
+                        <SelectItem value="inactive">Inactive Only</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4 max-h-96 overflow-y-auto">
@@ -454,8 +571,8 @@ export default function Dashboard() {
                           </div>
                         ))}
                       </div>
-                    ) : userDatasets.length > 0 ? (
-                      userDatasets.map((dataset: Dataset) => (
+                    ) : filteredAssets.length > 0 ? (
+                      filteredAssets.map((dataset: Dataset) => (
                         <div key={dataset.id} className="p-4 glass-panel rounded-xl hover:bg-primary/5 transition-colors" data-testid={`dataset-${dataset.id}`}>
                           <div className="flex items-start justify-between">
                             <div className="flex items-start space-x-4 flex-1">
