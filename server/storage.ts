@@ -6,9 +6,13 @@ import {
   type Transaction,
   type InsertTransaction,
   type Review,
-  type InsertReview
+  type InsertReview,
+  type TrainingJob,
+  type InsertTrainingJob,
+  type InftAsset,
+  type InsertInftAsset
 } from "@shared/schema";
-import { users, datasets, transactions, reviews } from "@shared/schema";
+import { users, datasets, transactions, reviews, trainingJobs, inftAssets } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, or, ilike, avg, count } from "drizzle-orm";
 
@@ -41,6 +45,19 @@ export interface IStorage {
   createReview(review: InsertReview): Promise<Review>;
   updateReview(id: string, updates: Partial<InsertReview>): Promise<Review | undefined>;
   deleteReview(id: string): Promise<boolean>;
+
+  // Training Job operations
+  getTrainingJob(id: string): Promise<TrainingJob | undefined>;
+  getTrainingJobsByUser(userId: string): Promise<TrainingJob[]>;
+  createTrainingJob(trainingJob: InsertTrainingJob): Promise<TrainingJob>;
+  updateTrainingJob(id: string, updates: Partial<InsertTrainingJob>): Promise<TrainingJob | undefined>;
+
+  // INFT Asset operations
+  getInftAsset(id: string): Promise<InftAsset | undefined>;
+  getInftAssetsByOwner(ownerId: string): Promise<InftAsset[]>;
+  getInftAssetByTokenId(tokenId: number, contractAddress: string): Promise<InftAsset | undefined>;
+  createInftAsset(inftAsset: InsertInftAsset): Promise<InftAsset>;
+  updateInftAsset(id: string, updates: Partial<InsertInftAsset>): Promise<InftAsset | undefined>;
 
   // Analytics
   getDatasetStats(datasetId: string): Promise<{ rating: number; reviewCount: number; downloads: number }>;
@@ -271,6 +288,73 @@ export class DatabaseStorage implements IStorage {
       totalSales: salesCount?.count || 0,
       totalPurchases: purchaseCount?.count || 0
     };
+  }
+
+  // Training Job operations
+  async getTrainingJob(id: string): Promise<TrainingJob | undefined> {
+    const [job] = await db.select().from(trainingJobs).where(eq(trainingJobs.id, id));
+    return job || undefined;
+  }
+
+  async getTrainingJobsByUser(userId: string): Promise<TrainingJob[]> {
+    return await db.select().from(trainingJobs)
+      .where(eq(trainingJobs.userId, userId))
+      .orderBy(desc(trainingJobs.createdAt));
+  }
+
+  async createTrainingJob(insertTrainingJob: InsertTrainingJob): Promise<TrainingJob> {
+    const [job] = await db
+      .insert(trainingJobs)
+      .values(insertTrainingJob)
+      .returning();
+    return job;
+  }
+
+  async updateTrainingJob(id: string, updates: Partial<InsertTrainingJob>): Promise<TrainingJob | undefined> {
+    const [job] = await db
+      .update(trainingJobs)
+      .set(updates)
+      .where(eq(trainingJobs.id, id))
+      .returning();
+    return job || undefined;
+  }
+
+  // INFT Asset operations
+  async getInftAsset(id: string): Promise<InftAsset | undefined> {
+    const [asset] = await db.select().from(inftAssets).where(eq(inftAssets.id, id));
+    return asset || undefined;
+  }
+
+  async getInftAssetsByOwner(ownerId: string): Promise<InftAsset[]> {
+    return await db.select().from(inftAssets)
+      .where(and(eq(inftAssets.ownerId, ownerId), eq(inftAssets.isActive, true)))
+      .orderBy(desc(inftAssets.createdAt));
+  }
+
+  async getInftAssetByTokenId(tokenId: number, contractAddress: string): Promise<InftAsset | undefined> {
+    const [asset] = await db.select().from(inftAssets)
+      .where(and(
+        eq(inftAssets.tokenId, tokenId),
+        eq(inftAssets.contractAddress, contractAddress)
+      ));
+    return asset || undefined;
+  }
+
+  async createInftAsset(insertInftAsset: InsertInftAsset): Promise<InftAsset> {
+    const [asset] = await db
+      .insert(inftAssets)
+      .values(insertInftAsset)
+      .returning();
+    return asset;
+  }
+
+  async updateInftAsset(id: string, updates: Partial<InsertInftAsset>): Promise<InftAsset | undefined> {
+    const [asset] = await db
+      .update(inftAssets)
+      .set({ ...updates, updatedAt: new Date() })
+      .where(eq(inftAssets.id, id))
+      .returning();
+    return asset || undefined;
   }
 
   private async updateDatasetStats(datasetId: string): Promise<void> {

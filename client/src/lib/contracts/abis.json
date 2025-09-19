@@ -1497,5 +1497,91 @@
       "stateMutability": "view",
       "type": "function"
     }
+  ],
+  "ZenkaiINFT": [
+    {
+      "inputs": [
+        {"internalType": "string", "name": "name_", "type": "string"},
+        {"internalType": "string", "name": "symbol_", "type": "string"},
+        {"internalType": "address", "name": "admin", "type": "address"},
+        {"internalType": "address", "name": "royaltyReceiver", "type": "address"},
+        {"internalType": "uint96", "name": "royaltyBps", "type": "uint96"}
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [
+        {"internalType": "address", "name": "to", "type": "address"},
+        {"internalType": "string", "name": "tokenURI_", "type": "string"},
+        {"internalType": "string", "name": "datasetURI_", "type": "string"},
+        {"internalType": "string", "name": "modelURI_", "type": "string"},
+        {"internalType": "string", "name": "encryptedMetaURI_", "type": "string"},
+        {"internalType": "bool", "name": "zkProtected_", "type": "bool"}
+      ],
+      "name": "mint",
+      "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {"internalType": "uint256", "name": "tokenId", "type": "uint256"},
+        {"internalType": "string", "name": "datasetURI_", "type": "string"},
+        {"internalType": "string", "name": "modelURI_", "type": "string"},
+        {"internalType": "string", "name": "encryptedMetaURI_", "type": "string"},
+        {"internalType": "bool", "name": "zkProtected_", "type": "bool"}
+      ],
+      "name": "updateAssetURIs",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {"internalType": "uint256", "name": "tokenId", "type": "uint256"},
+        {"internalType": "uint32", "name": "reputation_", "type": "uint32"}
+      ],
+      "name": "setReputation",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+      "name": "assets",
+      "outputs": [
+        {"internalType": "string", "name": "datasetURI", "type": "string"},
+        {"internalType": "string", "name": "modelURI", "type": "string"},
+        {"internalType": "string", "name": "encryptedMetaURI", "type": "string"},
+        {"internalType": "uint32", "name": "reputation", "type": "uint32"},
+        {"internalType": "bool", "name": "zkProtected", "type": "bool"}
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {"indexed": true, "internalType": "uint256", "name": "tokenId", "type": "uint256"},
+        {"indexed": true, "internalType": "address", "name": "to", "type": "address"},
+        {"indexed": false, "internalType": "string", "name": "datasetURI", "type": "string"},
+        {"indexed": false, "internalType": "string", "name": "modelURI", "type": "string"}
+      ],
+      "name": "Minted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {"indexed": true, "internalType": "uint256", "name": "tokenId", "type": "uint256"},
+        {"indexed": false, "internalType": "string", "name": "datasetURI", "type": "string"},
+        {"indexed": false, "internalType": "string", "name": "modelURI", "type": "string"},
+        {"indexed": false, "internalType": "string", "name": "encryptedMetaURI", "type": "string"},
+        {"indexed": false, "internalType": "bool", "name": "zkProtected", "type": "bool"}
+      ],
+      "name": "AssetUpdated",
+      "type": "event"
+    }
   ]
 }

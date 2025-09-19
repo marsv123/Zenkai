@@ -463,7 +463,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   const UPLOAD_LIMIT_PER_HOUR = 10;
   const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour
 
-  // IPFS File Upload endpoint using Pinata - Requires authentication to prevent abuse
+  // IPFS File Upload endpoint using Pinata - Requires authentication to prevent abuse (legacy endpoint)
   app.post("/api/upload-to-ipfs", verifyWalletSignature, async (req: AuthenticatedRequest, res) => {
     try {
       // Ensure user is authenticated (double-check)
@@ -659,6 +659,355 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({
         error: 'Internal server error',
         ipfsHash: null
+      });
+    }
+  });
+
+  // NEW IPFS Upload endpoint (consistent with new naming)
+  app.post("/api/ipfs/upload", verifyWalletSignature, async (req: AuthenticatedRequest, res) => {
+    // For now, redirect to legacy endpoint to maintain compatibility
+    return app._router.handle(
+      { ...req, url: "/api/upload-to-ipfs", method: "POST" }, 
+      res, 
+      () => {}
+    );
+  });
+
+  // 0G Storage Upload endpoint with ZK privacy toggle
+  app.post("/api/og-storage/upload", verifyWalletSignature, async (req: AuthenticatedRequest, res) => {
+    try {
+      // Ensure user is authenticated
+      if (!req.user || !req.user.walletAddress) {
+        return res.status(401).json({
+          error: 'Authentication required',
+          details: 'Valid wallet signature required for upload',
+          ogUri: null
+        });
+      }
+
+      // Rate limiting check (shared with IPFS)
+      const walletAddress = req.user.walletAddress.toLowerCase();
+      const now = Date.now();
+      const userRateLimit = uploadRateLimits.get(walletAddress);
+      
+      if (userRateLimit) {
+        if (now > userRateLimit.resetTime) {
+          uploadRateLimits.set(walletAddress, { count: 0, resetTime: now + RATE_LIMIT_WINDOW_MS });
+        } else if (userRateLimit.count >= UPLOAD_LIMIT_PER_HOUR) {
+          const timeUntilReset = Math.ceil((userRateLimit.resetTime - now) / (1000 * 60));
+          return res.status(429).json({
+            error: 'Upload rate limit exceeded',
+            details: `Maximum ${UPLOAD_LIMIT_PER_HOUR} uploads per hour. Try again in ${timeUntilReset} minutes.`,
+            ogUri: null
+          });
+        }
+      } else {
+        uploadRateLimits.set(walletAddress, { count: 0, resetTime: now + RATE_LIMIT_WINDOW_MS });
+      }
+
+      // Validate request body for 0G Storage (increased limit to 100MB as per spec)
+      const ogUploadSchema = z.object({
+        file: z.string()
+          .min(1, 'File data is required')
+          .max(100 * 1024 * 1024, 'File too large - maximum 100MB allowed'), // 0G Storage allows larger files
+        filename: z.string()
+          .min(1, 'Filename is required')
+          .max(255, 'Filename too long')
+          .regex(/^[a-zA-Z0-9._-]+$/, 'Filename contains invalid characters'),
+        contentType: z.string().optional(),
+        metadataJson: z.string().optional(),
+        useZeroKnowledge: z.boolean().default(false)
+      });
+
+      const { file, filename, contentType = 'application/octet-stream', metadataJson, useZeroKnowledge } = ogUploadSchema.parse(req.body);
+
+      // Validate file type (same as IPFS for consistency)
+      const allowedTypes = [
+        'application/json', 'text/csv', 'text/plain', 'application/zip',
+        'application/x-zip-compressed', 'application/pdf', 'image/jpeg',
+        'image/png', 'image/gif', 'image/webp'
+      ];
+
+      if (contentType && !allowedTypes.includes(contentType.toLowerCase())) {
+        return res.status(400).json({
+          error: 'File type not allowed',
+          allowedTypes,
+          ogUri: null
+        });
+      }
+
+      // Check 0G Storage configuration
+      const ogApiUrl = process.env.OG_API_URL;
+      const ogApiKey = process.env.OG_API_KEY;
+      const ogPrivacyEndpoint = process.env.OG_PRIVACY_ENDPOINT;
+
+      if (!ogApiUrl || !ogApiKey) {
+        return res.status(500).json({
+          error: '0G Storage service not configured',
+          ogUri: null
+        });
+      }
+
+      // Convert base64 to buffer with 100MB validation
+      let fileBuffer: Buffer;
+      try {
+        const base64Data = file.includes(',') ? file.split(',')[1] : file;
+        fileBuffer = Buffer.from(base64Data, 'base64');
+        
+        const maxSizeBytes = 100 * 1024 * 1024; // 100MB for 0G Storage
+        if (fileBuffer.length > maxSizeBytes) {
+          return res.status(400).json({
+            error: `File too large. Maximum size allowed is ${Math.round(maxSizeBytes / 1024 / 1024)}MB`,
+            actualSize: `${Math.round(fileBuffer.length / 1024 / 1024)}MB`,
+            ogUri: null
+          });
+        }
+
+        if (fileBuffer.length < 1) {
+          return res.status(400).json({
+            error: 'File is empty',
+            ogUri: null
+          });
+        }
+      } catch (bufferError) {
+        return res.status(400).json({
+          error: 'Invalid file data format',
+          ogUri: null
+        });
+      }
+
+      // Upload to 0G Storage
+      try {
+        // Prepare form data for 0G Storage API
+        const formData = new FormData();
+        const blob = new Blob([fileBuffer], { type: contentType });
+        formData.append('file', blob, filename);
+        
+        if (metadataJson) {
+          formData.append('metadata', metadataJson);
+        }
+
+        // Determine endpoint based on ZK flag
+        const uploadEndpoint = useZeroKnowledge && ogPrivacyEndpoint 
+          ? ogPrivacyEndpoint 
+          : `${ogApiUrl}/upload`;
+
+        const response = await fetch(uploadEndpoint, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${ogApiKey}`,
+            // Don't set Content-Type for FormData, let browser set it with boundary
+          },
+          body: formData
+        });
+
+        if (!response.ok) {
+          throw new Error(`0G Storage upload failed: ${response.status} ${response.statusText}`);
+        }
+
+        const result = await response.json();
+        
+        // Extract 0G URI from response (format may vary based on 0G Storage API)
+        const ogUri = result.uri || result.og_uri || `og://${result.hash || result.id}`;
+        const publicUrl = result.publicUrl || result.url || null;
+
+        // Increment rate limit counter after successful upload
+        const currentLimit = uploadRateLimits.get(walletAddress)!;
+        uploadRateLimits.set(walletAddress, { 
+          count: currentLimit.count + 1, 
+          resetTime: currentLimit.resetTime 
+        });
+
+        res.json({
+          success: true,
+          ogUri,
+          publicUrl,
+          filename,
+          size: fileBuffer.length,
+          zkProtected: useZeroKnowledge,
+          storageProvider: '0g'
+        });
+
+      } catch (ogError) {
+        console.error('0G Storage upload error:', ogError);
+        res.status(500).json({
+          error: 'Failed to upload to 0G Storage',
+          details: ogError instanceof Error ? ogError.message : 'Unknown error',
+          ogUri: null
+        });
+      }
+
+    } catch (error) {
+      console.error('0G Storage upload error:', error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({
+          error: 'Invalid upload data',
+          details: error.errors,
+          ogUri: null
+        });
+      }
+      res.status(500).json({
+        error: 'Internal server error',
+        ogUri: null
+      });
+    }
+  });
+
+  // 0G Compute Training endpoint
+  app.post("/api/og-compute/train", verifyWalletSignature, async (req: AuthenticatedRequest, res) => {
+    try {
+      // Ensure user is authenticated
+      if (!req.user || !req.user.walletAddress) {
+        return res.status(401).json({
+          error: 'Authentication required',
+          details: 'Valid wallet signature required for training'
+        });
+      }
+
+      // Validate request body
+      const trainSchema = z.object({
+        datasetURI: z.string().min(1, 'Dataset URI is required'),
+        modelConfig: z.object({}).passthrough(), // Accept any model configuration
+        computeParams: z.object({}).passthrough().optional()
+      });
+
+      const { datasetURI, modelConfig, computeParams } = trainSchema.parse(req.body);
+
+      // Check 0G Compute configuration
+      const ogComputeUrl = process.env.OG_COMPUTE_URL;
+      const ogComputeKey = process.env.OG_COMPUTE_KEY;
+
+      if (!ogComputeUrl || !ogComputeKey) {
+        return res.status(500).json({
+          error: '0G Compute service not configured'
+        });
+      }
+
+      // Submit training job to 0G Compute
+      const computeResponse = await fetch(`${ogComputeUrl}/train`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${ogComputeKey}`
+        },
+        body: JSON.stringify({
+          datasetURI,
+          modelConfig,
+          computeParams: computeParams || {}
+        })
+      });
+
+      if (!computeResponse.ok) {
+        throw new Error(`0G Compute training failed: ${computeResponse.status} ${computeResponse.statusText}`);
+      }
+
+      const computeResult = await computeResponse.json();
+      const jobId = computeResult.jobId || computeResult.id;
+
+      // Store training job in database
+      const user = await storage.getUserByWallet(req.user.walletAddress);
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      const trainingJob = await storage.createTrainingJob({
+        jobId,
+        userId: user.id,
+        datasetUri: datasetURI,
+        modelConfig,
+        computeParams: computeParams || {},
+        status: 'submitted'
+      });
+
+      res.json({
+        success: true,
+        jobId,
+        trainingJobId: trainingJob.id,
+        status: 'submitted',
+        message: 'Training job submitted successfully'
+      });
+
+    } catch (error) {
+      console.error('0G Compute training error:', error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({
+          error: 'Invalid training request',
+          details: error.errors
+        });
+      }
+      res.status(500).json({
+        error: 'Internal server error',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
+  // 0G Compute Inference endpoint
+  app.post("/api/og-compute/infer", verifyWalletSignature, async (req: AuthenticatedRequest, res) => {
+    try {
+      // Ensure user is authenticated
+      if (!req.user || !req.user.walletAddress) {
+        return res.status(401).json({
+          error: 'Authentication required',
+          details: 'Valid wallet signature required for inference'
+        });
+      }
+
+      // Validate request body
+      const inferSchema = z.object({
+        modelURI: z.string().min(1, 'Model URI is required'),
+        input: z.any() // Accept any input format
+      });
+
+      const { modelURI, input } = inferSchema.parse(req.body);
+
+      // Check 0G Compute configuration
+      const ogComputeUrl = process.env.OG_COMPUTE_URL;
+      const ogComputeKey = process.env.OG_COMPUTE_KEY;
+
+      if (!ogComputeUrl || !ogComputeKey) {
+        return res.status(500).json({
+          error: '0G Compute service not configured'
+        });
+      }
+
+      // Run inference on 0G Compute
+      const computeResponse = await fetch(`${ogComputeUrl}/infer`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${ogComputeKey}`
+        },
+        body: JSON.stringify({
+          modelURI,
+          input
+        })
+      });
+
+      if (!computeResponse.ok) {
+        throw new Error(`0G Compute inference failed: ${computeResponse.status} ${computeResponse.statusText}`);
+      }
+
+      const result = await computeResponse.json();
+
+      res.json({
+        success: true,
+        result,
+        modelURI,
+        timestamp: new Date().toISOString()
+      });
+
+    } catch (error) {
+      console.error('0G Compute inference error:', error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({
+          error: 'Invalid inference request',
+          details: error.errors
+        });
+      }
+      res.status(500).json({
+        error: 'Internal server error',
+        details: error instanceof Error ? error.message : 'Unknown error'
       });
     }
   });

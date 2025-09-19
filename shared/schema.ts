@@ -27,6 +27,10 @@ export const datasets = pgTable("datasets", {
   tags: text("tags").array(),
   ipfsHash: text("ipfs_hash").notNull(),
   metadataUrl: text("metadata_url"),
+  // 0G Storage support (new fields)
+  ogStorageUri: text("og_storage_uri"), // og://... URI for 0G Storage
+  storageProvider: text("storage_provider").default("ipfs").notNull(), // "ipfs" or "0g"
+  zkProtected: boolean("zk_protected").default(false).notNull(), // Zero-knowledge privacy flag
   price: numeric("price", { precision: 18, scale: 8 }).notNull(), // In IMT tokens
   isActive: boolean("is_active").default(true).notNull(),
   downloads: integer("downloads").default(0).notNull(),
@@ -72,6 +76,41 @@ export const reviews = pgTable("reviews", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+// Training Jobs table for 0G Compute tracking
+export const trainingJobs = pgTable("training_jobs", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  jobId: text("job_id").unique(), // 0G Compute job ID
+  userId: varchar("user_id").notNull().references(() => users.id),
+  datasetUri: text("dataset_uri").notNull(), // og://... or ipfs://...
+  modelConfig: jsonb("model_config").notNull(), // Training configuration
+  computeParams: jsonb("compute_params"), // Additional compute parameters
+  status: text("status").notNull().default("submitted"), // submitted, running, completed, failed
+  resultUri: text("result_uri"), // og://... URI for trained model
+  errorMessage: text("error_message"),
+  progress: integer("progress").default(0).notNull(), // 0-100
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  startedAt: timestamp("started_at"),
+  completedAt: timestamp("completed_at"),
+});
+
+// INFT Assets table for ZenkaiINFT tracking
+export const inftAssets = pgTable("inft_assets", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tokenId: integer("token_id").notNull(), // NFT token ID from contract
+  contractAddress: text("contract_address").notNull(), // ZenkaiINFT contract address
+  ownerId: varchar("owner_id").notNull().references(() => users.id),
+  tokenUri: text("token_uri").notNull(), // Metadata URI for the NFT
+  datasetUri: text("dataset_uri"), // og://... or ipfs://...
+  modelUri: text("model_uri"), // og://... or ipfs://...
+  encryptedMetaUri: text("encrypted_meta_uri"), // og://... or ipfs://...
+  reputation: integer("reputation").default(0).notNull(), // 0-1000000000
+  zkProtected: boolean("zk_protected").default(false).notNull(),
+  royaltyBps: integer("royalty_bps").default(0).notNull(), // Royalty in basis points (e.g., 500 = 5%)
+  isActive: boolean("is_active").default(true).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
 // Relations
 export const usersRelations = relations(users, ({ many }) => ({
   datasets: many(datasets),
@@ -79,6 +118,8 @@ export const usersRelations = relations(users, ({ many }) => ({
   sales: many(transactions, { relationName: "seller" }),
   initiatedTransactions: many(transactions, { relationName: "initiator" }),
   reviews: many(reviews),
+  trainingJobs: many(trainingJobs),
+  inftAssets: many(inftAssets),
 }));
 
 export const datasetsRelations = relations(datasets, ({ one, many }) => ({
@@ -123,6 +164,20 @@ export const reviewsRelations = relations(reviews, ({ one }) => ({
   }),
 }));
 
+export const trainingJobsRelations = relations(trainingJobs, ({ one }) => ({
+  user: one(users, {
+    fields: [trainingJobs.userId],
+    references: [users.id],
+  }),
+}));
+
+export const inftAssetsRelations = relations(inftAssets, ({ one }) => ({
+  owner: one(users, {
+    fields: [inftAssets.ownerId],
+    references: [users.id],
+  }),
+}));
+
 // Insert schemas
 export const insertUserSchema = createInsertSchema(users).omit({
   id: true,
@@ -150,6 +205,19 @@ export const insertReviewSchema = createInsertSchema(reviews).omit({
   createdAt: true,
 });
 
+export const insertTrainingJobSchema = createInsertSchema(trainingJobs).omit({
+  id: true,
+  createdAt: true,
+  startedAt: true,
+  completedAt: true,
+});
+
+export const insertInftAssetSchema = createInsertSchema(inftAssets).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 // Types
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
@@ -162,3 +230,9 @@ export type Transaction = typeof transactions.$inferSelect;
 
 export type InsertReview = z.infer<typeof insertReviewSchema>;
 export type Review = typeof reviews.$inferSelect;
+
+export type InsertTrainingJob = z.infer<typeof insertTrainingJobSchema>;
+export type TrainingJob = typeof trainingJobs.$inferSelect;
+
+export type InsertInftAsset = z.infer<typeof insertInftAssetSchema>;
+export type InftAsset = typeof inftAssets.$inferSelect;
