@@ -18,7 +18,8 @@ import {
   Zap,
   Shield,
   Award,
-  ArrowRight
+  ArrowRight,
+  Wand2
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -30,6 +31,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { 
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@/components/ui/tabs';
 import Loading, { SkeletonCard } from '@/components/Loading';
 import DatasetPurchase from '@/components/DatasetPurchase';
 import samuraiLogoUrl from '@assets/samurai-logo.png';
@@ -162,140 +169,132 @@ function DatasetListItem({ dataset }: { dataset: Dataset }) {
   );
 }
 
-// World-class Dataset Card Component
-function DatasetCard({ dataset }: { dataset: Dataset }) {
-  const [isHovered, setIsHovered] = useState(false);
-
+// Minimal Dataset Card Component
+function MinimalDatasetCard({ dataset }: { dataset: Dataset }) {
   return (
     <div 
-      className="card-interactive h-full group"
+      className="glass-cyber hover-cyber h-full group transition-all duration-300"
       data-testid={`dataset-card-${dataset.id}`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
       <div className="p-6">
-        {/* Header */}
+        {/* Header with Price */}
         <div className="flex items-start justify-between mb-4">
           <div className="flex-1 min-w-0">
-            <h3 className="font-display text-xl font-semibold text-foreground mb-2 line-clamp-2 group-hover:text-glow-primary transition-colors duration-300">
+            <h3 className="text-lg font-semibold text-foreground mb-2 line-clamp-2 group-hover:gradient-text-cyber transition-all duration-300">
               {dataset.title}
             </h3>
-            <div className="flex items-center space-x-2 mb-2">
-              <Badge className="bg-primary/10 text-primary border-primary/20 font-accent text-xs">
+            <Badge className="bg-primary/10 text-primary border-primary/20 text-xs">
+              {dataset.category}
+            </Badge>
+          </div>
+          <div className="text-right ml-4">
+            <div className="text-xl font-bold gradient-text-cyber mb-1">
+              {dataset.price}
+            </div>
+            <div className="text-xs text-muted-foreground">ZAI</div>
+          </div>
+        </div>
+        
+        {/* Quick Stats */}
+        <div className="flex items-center justify-between mb-4 text-sm">
+          <div className="flex items-center space-x-1 text-accent">
+            <Star className="w-3 h-3 fill-current" />
+            <span>{parseFloat(dataset.rating || '0').toFixed(1)}</span>
+          </div>
+          <div className="flex items-center space-x-1 text-muted-foreground">
+            <TrendingUp className="w-3 h-3" />
+            <span>{dataset.downloads}</span>
+          </div>
+          {dataset.aiSummary && (
+            <Badge className="bg-accent/10 text-accent border-accent/20 text-xs">
+              <Zap className="w-3 h-3 mr-1" />
+              AI
+            </Badge>
+          )}
+        </div>
+        
+        {/* Action Button */}
+        <DatasetPurchase 
+          dataset={dataset}
+          onPurchaseSuccess={() => console.log(`Purchased ${dataset.title}`)}
+        >
+          <button 
+            className="w-full btn-primary text-sm group"
+            data-testid={`button-buy-${dataset.id}`}
+          >
+            <ShoppingCart className="w-4 h-4 mr-2" />
+            Acquire
+            <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+          </button>
+        </DatasetPurchase>
+      </div>
+    </div>
+  );
+}
+
+// Minimal INFT Card Component  
+function MinimalINFTCard({ dataset }: { dataset: Dataset }) {
+  return (
+    <div 
+      className="glass-cyber hover-cyber h-full group transition-all duration-300 border-l-4 border-l-accent"
+      data-testid={`inft-card-${dataset.id}`}
+    >
+      <div className="p-6">
+        {/* Header with Price */}
+        <div className="flex items-start justify-between mb-4">
+          <div className="flex-1 min-w-0">
+            <h3 className="text-lg font-semibold text-foreground mb-2 line-clamp-2 group-hover:gradient-text-cyber transition-all duration-300">
+              {dataset.title} INFT
+            </h3>
+            <div className="flex items-center space-x-2">
+              <Badge className="bg-primary/10 text-primary border-primary/20 text-xs">
                 {dataset.category}
               </Badge>
-              {dataset.aiSummary && (
-                <Badge className="bg-accent/10 text-accent border-accent/20 font-accent text-xs">
-                  <Zap className="w-3 h-3 mr-1" />
-                  AI Enhanced
-                </Badge>
-              )}
+              <Badge className="bg-accent/10 text-accent border-accent/20 text-xs">
+                <Wand2 className="w-3 h-3 mr-1" />
+                Intelligence NFT
+              </Badge>
             </div>
           </div>
-          <div className="ml-4 flex flex-col items-end space-y-2">
-            <div className="px-4 py-2 bg-gradient-to-r from-primary to-secondary text-primary-foreground text-sm font-bold rounded-xl shadow-lg">
-              {dataset.price} ZAI
+          <div className="text-right ml-4">
+            <div className="text-xl font-bold gradient-text-cyber mb-1">
+              {(parseFloat(dataset.price.toString()) * 1.5).toFixed(1)}
             </div>
-            {dataset.isActive && (
-              <div className="flex items-center space-x-1 text-xs text-accent">
-                <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
-                <span className="font-medium">Live</span>
-              </div>
-            )}
+            <div className="text-xs text-muted-foreground">ZAI</div>
           </div>
         </div>
         
-        {/* Description */}
-        <p className="text-sm text-muted-foreground mb-6 line-clamp-3 leading-relaxed">
-          {dataset.description}
-        </p>
-        
-        {/* Stats */}
-        <div className="grid grid-cols-3 gap-4 mb-6">
-          <div className="text-center">
-            <div className="flex items-center justify-center space-x-1 mb-1">
-              <Star className="w-4 h-4 text-accent fill-current" />
-              <span className="text-sm font-medium text-foreground">
-                {parseFloat(dataset.rating || '0').toFixed(1)}
-              </span>
-            </div>
-            <span className="text-xs text-muted-foreground">
-              ({dataset.reviewCount} reviews)
-            </span>
+        {/* Quick Stats */}
+        <div className="flex items-center justify-between mb-4 text-sm">
+          <div className="flex items-center space-x-1 text-accent">
+            <Star className="w-3 h-3 fill-current" />
+            <span>{parseFloat(dataset.rating || '0').toFixed(1)}</span>
           </div>
-          
-          <div className="text-center">
-            <div className="flex items-center justify-center space-x-1 mb-1">
-              <TrendingUp className="w-4 h-4 text-secondary" />
-              <span className="text-sm font-medium text-foreground">
-                {dataset.downloads.toLocaleString()}
-              </span>
-            </div>
-            <span className="text-xs text-muted-foreground">downloads</span>
+          <div className="flex items-center space-x-1 text-muted-foreground">
+            <TrendingUp className="w-3 h-3" />
+            <span>{dataset.downloads}</span>
           </div>
-          
-          <div className="text-center">
-            <div className="flex items-center justify-center space-x-1 mb-1">
-              <Shield className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium text-foreground">
-                Verified
-              </span>
-            </div>
-            <span className="text-xs text-muted-foreground">secure</span>
-          </div>
+          <Badge className="bg-accent/10 text-accent border-accent/20 text-xs">
+            <Shield className="w-3 h-3 mr-1" />
+            Tokenized
+          </Badge>
         </div>
         
-        {/* Tags */}
-        {dataset.tags && dataset.tags.length > 0 && (
-          <div className="flex flex-wrap gap-1 mb-6">
-            {dataset.tags.slice(0, 3).map((tag, index) => (
-              <span 
-                key={index}
-                className="px-2 py-1 text-xs bg-muted/50 text-muted-foreground rounded-md"
-              >
-                #{tag}
-              </span>
-            ))}
-            {dataset.tags.length > 3 && (
-              <span className="px-2 py-1 text-xs bg-muted/50 text-muted-foreground rounded-md">
-                +{dataset.tags.length - 3}
-              </span>
-            )}
-          </div>
-        )}
-        
-        {/* Actions */}
-        <div className="flex gap-3">
-          <DatasetPurchase 
-            dataset={dataset}
-            onPurchaseSuccess={() => {
-              // Optionally handle success (refresh data, show notification, etc.)
-              console.log(`Successfully purchased ${dataset.title}`);
-            }}
-          >
-            <button 
-              className="btn-primary flex-1 text-sm group"
-              data-testid={`button-buy-${dataset.id}`}
-            >
-              <ShoppingCart className="w-4 h-4 mr-2" />
-              acquire
-              <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-            </button>
-          </DatasetPurchase>
+        {/* Action Button */}
+        <DatasetPurchase 
+          dataset={{...dataset, price: (parseFloat(dataset.price.toString()) * 1.5).toString()}}
+          onPurchaseSuccess={() => console.log(`Purchased INFT ${dataset.title}`)}
+        >
           <button 
-            className="btn-ghost px-4 py-2 border border-accent/30 text-accent hover:border-accent"
-            data-testid={`button-view-${dataset.id}`}
-            aria-label={`View details for ${dataset.title}`}
+            className="w-full btn-primary text-sm group"
+            data-testid={`button-buy-inft-${dataset.id}`}
           >
-            <Eye className="w-4 h-4" />
+            <Wand2 className="w-4 h-4 mr-2" />
+            Purchase INFT
+            <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
           </button>
-        </div>
+        </DatasetPurchase>
       </div>
-      
-      {/* Hover Gradient Effect */}
-      {isHovered && (
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-secondary/5 rounded-xl pointer-events-none"></div>
-      )}
     </div>
   );
 }
@@ -601,6 +600,7 @@ function PlatformOverviewHero({ onExploreClick }: { onExploreClick: () => void }
 
 export default function Marketplace() {
   const { address } = useAccount();
+  const [activeTab, setActiveTab] = useState<'datasets' | 'infts'>('datasets');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [searchFilters, setSearchFilters] = useState<SearchFilters>({
     search: '',
@@ -756,17 +756,65 @@ export default function Marketplace() {
       
       <div className="container mx-auto px-4 lg:px-6 pb-12">
         
-        {/* Datasets Section */}
+        {/* Unified Intelligence Marketplace */}
         <div id="datasets-section" className="py-8">
 
-          {/* === SEARCH AND FILTERS === */}
-        <SearchAndFilters
-          filters={searchFilters}
-          onFiltersChange={setSearchFilters}
-          datasetCount={filteredDatasets.length}
-          viewMode={viewMode}
-          onViewModeChange={setViewMode}
-        />
+          {/* === TABS SECTION === */}
+          <div className="mb-8">
+            <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'datasets' | 'infts')} className="w-full">
+              <TabsList className="glass-cyber p-2 mb-8 w-full justify-start max-w-md">
+                <TabsTrigger 
+                  value="datasets" 
+                  className="flex items-center space-x-2 data-[state=active]:gradient-primary data-[state=active]:text-primary-foreground"
+                  data-testid="tab-datasets"
+                >
+                  <Database className="w-4 h-4" />
+                  <span>Datasets</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="infts" 
+                  className="flex items-center space-x-2 data-[state=active]:gradient-primary data-[state=active]:text-primary-foreground"
+                  data-testid="tab-infts"
+                >
+                  <Wand2 className="w-4 h-4" />
+                  <span>Intelligence NFTs</span>
+                </TabsTrigger>
+              </TabsList>
+
+              {/* Tab Content */}
+              <TabsContent value="datasets" className="space-y-6">
+                <div className="text-center mb-6">
+                  <h2 className="text-2xl font-bold gradient-text-cyber mb-2">Data Marketplace</h2>
+                  <p className="text-muted-foreground">Discover and acquire high-quality datasets for AI training</p>
+                </div>
+                
+                {/* === SEARCH AND FILTERS === */}
+                <SearchAndFilters
+                  filters={searchFilters}
+                  onFiltersChange={setSearchFilters}
+                  datasetCount={filteredDatasets.length}
+                  viewMode={viewMode}
+                  onViewModeChange={setViewMode}
+                />
+              </TabsContent>
+
+              <TabsContent value="infts" className="space-y-6">
+                <div className="text-center mb-6">
+                  <h2 className="text-2xl font-bold gradient-text-cyber mb-2">Intelligence NFTs</h2>
+                  <p className="text-muted-foreground">Tokenized AI models and trained intelligence assets</p>
+                </div>
+                
+                {/* === SEARCH AND FILTERS === */}
+                <SearchAndFilters
+                  filters={searchFilters}
+                  onFiltersChange={setSearchFilters}
+                  datasetCount={filteredDatasets.filter(d => d.aiSummary).length}
+                  viewMode={viewMode}
+                  onViewModeChange={setViewMode}
+                />
+              </TabsContent>
+            </Tabs>
+          </div>
 
         {/* === DATASETS DISPLAY === */}
         {viewMode === 'list' ? (
@@ -954,7 +1002,11 @@ export default function Marketplace() {
               ))
             ) : filteredDatasets.length > 0 ? (
               filteredDatasets.map((dataset) => (
-                <DatasetCard key={dataset.id} dataset={dataset} />
+                activeTab === 'datasets' ? (
+                  <MinimalDatasetCard key={dataset.id} dataset={dataset} />
+                ) : (
+                  <MinimalINFTCard key={dataset.id} dataset={dataset} />
+                )
               ))
             ) : (
               <div className="col-span-full">
