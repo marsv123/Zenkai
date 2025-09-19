@@ -1,0 +1,357 @@
+Please extend the Zenkai dApp with the features below. Follow the structure exactly. Do not change theme, colors, typography, gradients, or the main landing page/marketplace browsing visuals.
+
+🚫 Do NOT Touch
+
+Main landing page visuals and copy.
+
+Global theme (colors, typography, gradients, hover effects).
+
+Existing ZAI + DatasetRegistry deployments; do not break current flows.
+
+✅ Part A — 0G Native Storage (with ZK toggle)
+Backend
+
+Add route: POST /api/og-storage/upload
+
+Accept: multipart/form-data with { file, metadataJson } and JSON flags { useZeroKnowledge: boolean }.
+
+Upload to 0G Storage using the available SDK/HTTP in this environment.
+
+Return: { ogUri: "og://...", publicUrl?: string }.
+
+Keep current Pinata/IPFS upload as a fallback route: POST /api/ipfs/upload.
+
+Env vars (server):
+
+OG_API_URL=
+OG_API_KEY=
+OG_PRIVACY_ENDPOINT=   # if a separate ZK endpoint/service is needed
+
+
+Security:
+
+Keep rate limits and wallet signature auth.
+
+Validate file size/type (≤ 100MB for demo).
+
+Sanitize/validate metadata.
+
+Frontend (Upload Page)
+
+Add “Storage Provider” choice (radio):
+
+0G Storage (recommended) — default ON
+
+IPFS (fallback)
+
+Add “Privacy” toggle (visible only if 0G selected):
+
+Zero-Knowledge Privacy (default OFF; ON enables ZK flow)
+
+On submit:
+
+If 0G selected → call /api/og-storage/upload, receive og://...
+
+Else → existing IPFS flow, receive ipfs://...
+
+Store the returned URI (og:// or ipfs://) on the dataset record and pass it into DatasetRegistry registration.
+
+✅ Part B — INFT Upgrade (replace ContributorNFT in UI)
+
+Create ZenkaiINFT.sol and retire ContributorNFT in the UI only (keep the old contract deployed for backward compatibility).
+
+Solidity — contracts/ZenkaiINFT.sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+/**
+ * ZenkaiINFT — “INFT-style” ERC-721 with dynamic, linked AI asset metadata.
+ * - ERC721 + ERC2981 (royalties)
+ * - Updatable URIs (dataset/model/encryptedMeta)
+ * - Reputation score + ZK flag
+ * - Owner/Editor roles for controlled updates
+ */
+
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/token/common/ERC2981.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
+import "@openzeppelin/contracts/security/Pausable.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
+
+contract ZenkaiINFT is ERC721URIStorage, ERC2981, AccessControl, Pausable {
+    using Counters for Counters.Counter;
+    Counters.Counter private _ids;
+
+    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
+    bytes32 public constant EDITOR_ROLE = keccak256("EDITOR_ROLE");
+
+    struct Asset {
+        string datasetURI;        // og://... or ipfs://...
+        string modelURI;          // og://... or ipfs://...
+        string encryptedMetaURI;  // og://... or ipfs://...
+        uint32 reputation;        // 0..1e9
+        bool   zkProtected;
+    }
+
+    mapping(uint256 => Asset) public assets;
+
+    event Minted(uint256 indexed tokenId, address indexed to, string datasetURI, string modelURI);
+    event AssetUpdated(uint256 indexed tokenId, string datasetURI, string modelURI, string encryptedMetaURI, bool zkProtected);
+    event ReputationUpdated(uint256 indexed tokenId, uint32 reputation);
+
+    constructor(
+        string memory name_,
+        string memory symbol_,
+        address admin,
+        address royaltyReceiver,
+        uint96 royaltyBps // e.g., 500 = 5%
+    ) ERC721(name_, symbol_) {
+        _grantRole(DEFAULT_ADMIN_ROLE, admin);
+        _grantRole(MINTER_ROLE, admin);
+        _grantRole(EDITOR_ROLE, admin);
+        _setDefaultRoyalty(royaltyReceiver, royaltyBps);
+    }
+
+    function pause() external onlyRole(DEFAULT_ADMIN_ROLE) { _pause(); }
+    function unpause() external onlyRole(DEFAULT_ADMIN_ROLE) { _unpause(); }
+
+    function mint(
+        address to,
+        string calldata tokenURI_,
+        string calldata datasetURI_,
+        string calldata modelURI_,
+        string calldata encryptedMetaURI_,
+        bool zkProtected_
+    ) external onlyRole(MINTER_ROLE) whenNotPaused returns (uint256) {
+        _ids.increment();
+        uint256 tokenId = _ids.current();
+        _safeMint(to, tokenId);
+        _setTokenURI(tokenId, tokenURI_);
+        assets[tokenId] = Asset({
+            datasetURI: datasetURI_,
+            modelURI: modelURI_,
+            encryptedMetaURI: encryptedMetaURI_,
+            reputation: 0,
+            zkProtected: zkProtected_
+        });
+        emit Minted(tokenId, to, datasetURI_, modelURI_);
+        return tokenId;
+    }
+
+    function updateAssetURIs(
+        uint256 tokenId,
+        string calldata datasetURI_,
+        string calldata modelURI_,
+        string calldata encryptedMetaURI_,
+        bool zkProtected_
+    ) external whenNotPaused {
+        require(_isApprovedOrOwner(_msgSender(), tokenId) || hasRole(EDITOR_ROLE, _msgSender()), "Not authorized");
+        Asset storage a = assets[tokenId];
+        a.datasetURI = datasetURI_;
+        a.modelURI = modelURI_;
+        a.encryptedMetaURI = encryptedMetaURI_;
+        a.zkProtected = zkProtected_;
+        emit AssetUpdated(tokenId, datasetURI_, modelURI_, encryptedMetaURI_, zkProtected_);
+    }
+
+    function setTokenURI(uint256 tokenId, string calldata newURI) external whenNotPaused {
+        require(_isApprovedOrOwner(_msgSender(), tokenId) || hasRole(EDITOR_ROLE, _msgSender()), "Not authorized");
+        _setTokenURI(tokenId, newURI);
+    }
+
+    function setReputation(uint256 tokenId, uint32 reputation_) external whenNotPaused onlyRole(EDITOR_ROLE) {
+        assets[tokenId].reputation = reputation_;
+        emit ReputationUpdated(tokenId, reputation_);
+    }
+
+    function setDefaultRoyalty(address receiver, uint96 feeNumerator) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        _setDefaultRoyalty(receiver, feeNumerator);
+    }
+
+    function supportsInterface(bytes4 interfaceId)
+        public view override(ERC721, ERC2981, AccessControl)
+        returns (bool)
+    {
+        return super.supportsInterface(interfaceId);
+    }
+
+    function _beforeTokenTransfer(address from, address to, uint256 tokenId, uint256 batchSize)
+        internal override whenNotPaused
+    {
+        super._beforeTokenTransfer(from, to, tokenId, batchSize);
+    }
+}
+
+Hardhat Deploy — scripts/deploy_inft.ts
+import { ethers, artifacts } from "hardhat";
+import fs from "fs";
+import path from "path";
+
+async function main() {
+  const [deployer] = await ethers.getSigners();
+  console.log("Deployer:", deployer.address);
+
+  const royaltyReceiver = deployer.address;
+  const royaltyBps = 500; // 5%
+
+  const INFT = await ethers.getContractFactory("ZenkaiINFT");
+  const inft = await INFT.deploy("Zenkai INFT", "ZINFT", deployer.address, royaltyReceiver, royaltyBps);
+  await inft.waitForDeployment();
+  const inftAddr = await inft.getAddress();
+  console.log("ZenkaiINFT:", inftAddr);
+
+  const outDir = path.resolve(__dirname, "../../client/src/lib/contracts");
+  if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
+
+  const abisPath = path.join(outDir, "abis.json");
+  const addrPath = path.join(outDir, "addresses.json");
+
+  const inftAbi = (await artifacts.readArtifact("ZenkaiINFT")).abi;
+
+  let abis: any = {};
+  let addrs: any = {};
+  try { abis = JSON.parse(fs.readFileSync(abisPath, "utf8")); } catch {}
+  try { addrs = JSON.parse(fs.readFileSync(addrPath, "utf8")); } catch {}
+
+  abis = { ...abis, ZenkaiINFT: inftAbi };
+  addrs = { ...addrs, ZenkaiINFT: inftAddr };
+
+  fs.writeFileSync(abisPath, JSON.stringify(abis, null, 2));
+  fs.writeFileSync(addrPath, JSON.stringify(addrs, null, 2));
+
+  console.log("Exported INFT ABI/address to frontend.");
+}
+
+main().catch((e) => { console.error(e); process.exit(1); });
+
+
+Note: Keep existing keys in addresses.json (ZAI, DatasetRegistry, etc.); add ZenkaiINFT.
+
+Frontend wiring
+
+Tokenize page → rename UI to “Mint INFT (AI as on-chain asset)”.
+
+Fields: Dataset URI, Model URI, Encrypted Metadata URI (optional), ZK Protected (toggle), Royalty % (slider → bps), Token Name/Description (for tokenURI JSON).
+
+Flow:
+
+Build tokenURI JSON → store on 0G Storage (preferred) or IPFS.
+
+Call ZenkaiINFT.mint(...).
+
+Show success with tokenId + Chainscan link.
+
+Marketplace → add INFTs tab; show INFT cards with badges (ZK, Reputation, Royalty%).
+
+Dashboard → add My INFTs section with owner actions:
+
+Update URIs
+
+Set Reputation
+
+Update token URI
+
+✅ Part C — 0G Compute (Training & Inference)
+Backend
+
+Add routes:
+
+POST /api/og-compute/train
+
+Input: { datasetURI, modelConfig, computeParams }
+
+Submit training job to 0G Compute.
+
+On completion: upload model artifact to 0G Storage → return { modelURI }.
+
+Persist job to training_jobs table: { jobId, user, datasetURI, modelConfig, status, resultURI, ts }.
+
+POST /api/og-compute/infer
+
+Input: { modelURI, input }
+
+Run inference on 0G Compute, return result JSON.
+
+Frontend
+
+Build page: keep drag-drop builder; submitting calls /api/og-compute/train. Show status: Submitted → Running → Completed (with modelURI).
+
+Train page: select dataset + config → trigger /api/og-compute/train. Show logs/progress and “Send to Tokenize”.
+
+Tokenize page: accept modelURI from Train.
+
+Mini inference demo: simple input → /api/og-compute/infer → show output.
+
+Env
+OG_COMPUTE_URL=
+OG_COMPUTE_KEY=
+
+✅ Part D — Dashboard Extensions (non-breaking)
+
+Add My INFTs tab.
+
+Add Training Jobs tab with job list, statuses, resultURI, “Tokenize” action.
+
+Leave all existing visuals/metrics untouched.
+
+✅ Part E — Documentation & DevOps
+
+Update README.md:
+
+0G Storage integration (with ZK toggle).
+
+ZenkaiINFT contract (purpose, fields, royalties).
+
+0G Compute flows (Build/Train/Inference).
+
+End-to-end demo path: Upload → Train → Tokenize (INFT) → Marketplace → Inference.
+
+Add .env.example for server/client (no secrets).
+
+Ensure .gitignore excludes secrets/build artifacts.
+
+✅ Acceptance Tests (must pass)
+
+Upload (0G)
+
+Select 0G + (optional) ZK → upload ≤100MB file.
+
+Receive og://… URI; dataset registered with that URI.
+
+Train
+
+Submit training; upon completion, model artifact stored → modelURI (og://…).
+
+Mint INFT
+
+Use datasetURI + modelURI → mint INFT (royalty set, ZK flag persisted).
+
+See token on Chainscan; visible in Dashboard “My INFTs”.
+
+Update INFT
+
+From Dashboard, update asset URIs or reputation → UI refreshes; events emitted.
+
+Marketplace
+
+INFTs tab shows newly minted INFTs with badges and royalty%.
+
+Backwards Compatibility
+
+IPFS uploads work when selected.
+
+Existing dataset flows remain intact.
+
+✅ Deliverables
+
+Deployed ZenkaiINFT address on 0G Galileo + explorer link.
+
+New backend routes /api/og-storage/* and /api/og-compute/*.
+
+Updated Upload, Tokenize (INFT), Marketplace (INFT tab), Dashboard (My INFTs, Training Jobs).
+
+Updated client/src/lib/contracts/{abis.json,addresses.json}.
+
+Updated README.md.
+
+Confirm end-to-end demo works live on 0G: Upload → Train → Tokenize → Purchase → Inference.
