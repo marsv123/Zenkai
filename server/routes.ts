@@ -1212,6 +1212,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Contract addresses endpoint for testing and external access
+  app.get("/api/contracts/addresses", async (req, res) => {
+    try {
+      const fs = await import("fs");
+      const path = await import("path");
+      const { fileURLToPath } = await import("url");
+      
+      // ES modules compatible way to get current directory
+      const currentFileUrl = import.meta.url;
+      const currentDir = path.dirname(fileURLToPath(currentFileUrl));
+      const addressesPath = path.resolve(currentDir, "../client/src/lib/contracts/addresses.json");
+      
+      if (fs.existsSync(addressesPath)) {
+        const addresses = JSON.parse(fs.readFileSync(addressesPath, "utf8"));
+        res.json(addresses);
+      } else {
+        res.status(404).json({ error: "Contract addresses not found" });
+      }
+    } catch (error) {
+      console.error('Contract addresses fetch error:', error);
+      res.status(500).json({ error: "Failed to fetch contract addresses" });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;
