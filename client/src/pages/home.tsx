@@ -91,18 +91,65 @@ export default function Home() {
   const { address, isConnected } = useAccount();
   const [visibleChars, setVisibleChars] = useState(0);
   const [showCursor, setShowCursor] = useState(true);
-  const [showSecondText, setShowSecondText] = useState(false);
   const [blinkingCursor, setBlinkingCursor] = useState(false);
-  const [secondTextComplete, setSecondTextComplete] = useState(false);
   const [stats, setStats] = useState({
-    datasetCount: 0,
-    totalVolume: 0,
-    contributorCount: 0,
-    avgScore: 0
+    totalDatasets: 0,
+    totalINFTs: 0,
+    totalRevenue: 0,
+    activeUsers: 0
+  });
+  const [animatedStats, setAnimatedStats] = useState({
+    totalDatasets: 0,
+    totalINFTs: 0,
+    totalRevenue: 0,
+    activeUsers: 0
   });
 
   const fullText = 'powering the intelligence economy.';
-  const secondText = 'Kaizen is a decentralized intelligence economy designed to scale data and AI monetization become liquid, revenue-generating assets. Enabled and built on 0G Participants can securely upload, rent, and monetize datasets, while building, training, and tokenizing AI models in a single seamless dApp. Every contribution carries ownership, reputation, and exit liquidity. As data compounds, models improve, driving usage.';
+  
+  // 5-step journey cards
+  const journeySteps = [
+    {
+      step: 1,
+      title: "Upload",
+      description: "Secure datasets on-chain with 0G storage and ZK privacy",
+      icon: Upload,
+      color: "text-blue-400",
+      bgColor: "bg-blue-500/10"
+    },
+    {
+      step: 2, 
+      title: "Train",
+      description: "Build and train AI models using 0G compute infrastructure",
+      icon: Brain,
+      color: "text-purple-400",
+      bgColor: "bg-purple-500/10"
+    },
+    {
+      step: 3,
+      title: "Mint",
+      description: "Tokenize AI assets as Intelligence NFTs with royalties",
+      icon: Wand2,
+      color: "text-orange-400", 
+      bgColor: "bg-orange-500/10"
+    },
+    {
+      step: 4,
+      title: "Trade",
+      description: "List and trade tokenized intelligence in the marketplace",
+      icon: Store,
+      color: "text-green-400",
+      bgColor: "bg-green-500/10"
+    },
+    {
+      step: 5,
+      title: "Earn",
+      description: "Generate revenue from usage, royalties, and staking",
+      icon: TrendingUp,
+      color: "text-yellow-400",
+      bgColor: "bg-yellow-500/10"
+    }
+  ];
 
   // Letter-by-letter typewriter effect
   useEffect(() => {
@@ -119,12 +166,7 @@ export default function Home() {
           // Remove blinking cursor - text is complete
           setBlinkingCursor(false);
           
-          // Show second text all at once after 1 second
-          setTimeout(() => {
-            setShowSecondText(true);
-            // Mark second text as complete immediately since it phases in all at once
-            setSecondTextComplete(true);
-          }, 1000); // 1 second pause between texts
+ // 1 second pause between texts
         }
       }, 40); // 40ms between each character (faster speed)
       
@@ -154,21 +196,46 @@ export default function Home() {
     refetchInterval: 30000,
   }) as { data: Dataset[], isLoading: boolean };
 
-  // Update stats when datasets change
+  // Update stats when datasets change and animate counters
   useEffect(() => {
     if (datasets && datasets.length > 0) {
       const activeDatasets = datasets.filter((d: Dataset) => d.isActive);
       const totalDownloads = activeDatasets.reduce((sum: number, d: Dataset) => sum + d.downloads, 0);
-      const avgRating = activeDatasets.length > 0 
-        ? activeDatasets.reduce((sum: number, d: Dataset) => sum + parseFloat(d.rating || '0'), 0) / activeDatasets.length 
-        : 0;
-
-      setStats({
-        datasetCount: activeDatasets.length,
-        totalVolume: totalDownloads,
-        contributorCount: new Set(activeDatasets.map((d: Dataset) => d.ownerId)).size,
-        avgScore: avgRating
-      });
+      
+      const targetStats = {
+        totalDatasets: activeDatasets.length,
+        totalINFTs: Math.floor(activeDatasets.length * 0.3), // Mock: 30% of datasets have INFTs
+        totalRevenue: Math.round(totalDownloads * 0.15 * 10) / 10, // Mock calculation
+        activeUsers: new Set(activeDatasets.map((d: Dataset) => d.ownerId)).size
+      };
+      
+      setStats(targetStats);
+      
+      // Animate counters
+      const animationDuration = 2000;
+      const steps = 60;
+      const stepTime = animationDuration / steps;
+      
+      let currentStep = 0;
+      const animationInterval = setInterval(() => {
+        currentStep++;
+        const progress = currentStep / steps;
+        const easeOutProgress = 1 - Math.pow(1 - progress, 3); // Ease out cubic
+        
+        setAnimatedStats({
+          totalDatasets: Math.round(targetStats.totalDatasets * easeOutProgress),
+          totalINFTs: Math.round(targetStats.totalINFTs * easeOutProgress),
+          totalRevenue: Math.round(targetStats.totalRevenue * easeOutProgress * 10) / 10,
+          activeUsers: Math.round(targetStats.activeUsers * easeOutProgress)
+        });
+        
+        if (currentStep >= steps) {
+          clearInterval(animationInterval);
+          setAnimatedStats(targetStats);
+        }
+      }, stepTime);
+      
+      return () => clearInterval(animationInterval);
     }
   }, [datasets]);
 
@@ -253,115 +320,136 @@ export default function Home() {
 
 
 
-      {/* === CYBERPUNK HOW IT WORKS === */}
+      {/* === 5-STEP JOURNEY CARDS === */}
       <section className="py-20 px-4 border-t border-primary/20 relative overflow-hidden">
         <div className="container mx-auto max-w-6xl relative z-10">
           <div className="text-center mb-16">
             <h3 className="text-cyber-lg gradient-text-cyber mb-6">
-              How It Works
+              5-Step Intelligence Journey
             </h3>
             <p className="text-zen text-accent/80 max-w-2xl mx-auto">
-              Simple steps to join the decentralized intelligence economy
+              Upload → Train → Mint → Trade → Earn: Your path to AI monetization
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
-            {[
-              {
-                title: "Upload your data",
-                description: "Secure your datasets on-chain, decentralized and with built-in ownership.",
-                icon: Upload,
-                route: "/upload"
-              },
-              {
-                title: "Monetize your data",
-                description: "Offer your datasets for AI training, set a price and earn with every use.",
-                icon: DollarSign,
-                route: "/dashboard?tab=monetize"
-              },
-              {
-                title: "Build your AI",
-                description: "Create AI models tailored to your needs with modular blocks.",
-                icon: Brain,
-                route: "/compose"
-              },
-              {
-                title: "Train your AI",
-                description: "Feed your AI models with datasets to improve performance.",
-                icon: Zap,
-                route: "/train"
-              },
-              {
-                title: "Tokenize your AI",
-                description: "Tokenize your AI and turn it into an investable asset.",
-                icon: Shield,
-                route: "/tokenize"
-              }
-            ].map((step, index) => (
-              <Link
-                key={index}
-                href={step.route}
-                className="text-center glass-cyber hover-cyber p-8 rounded-2xl transition-all duration-500 group cursor-pointer"
-                data-testid={`card-${step.title.toLowerCase().replace(/\s+/g, '-')}`}
+            {journeySteps.map((step, index) => (
+              <div
+                key={step.step}
+                className="text-center glass-cyber hover-cyber p-8 rounded-2xl transition-all duration-500 group cursor-pointer relative"
+                data-testid={`journey-step-${step.step}`}
               >
-                <div className="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                  {step.title === "Monetize your data" ? (
-                    <span className="text-3xl font-bold text-primary-foreground">$</span>
-                  ) : step.title === "Tokenize your AI" ? (
-                    <img src={zcashIconUrl} alt="Token" className="w-8 h-8" />
-                  ) : (
-                    <step.icon className="w-8 h-8 text-primary-foreground" />
-                  )}
+                {/* Step Number Badge */}
+                <div className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-primary text-primary-foreground text-sm font-bold flex items-center justify-center">
+                  {step.step}
                 </div>
+                
+                <div className={`w-16 h-16 ${step.bgColor} rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform`}>
+                  <step.icon className={`w-8 h-8 ${step.color}`} />
+                </div>
+                
                 <h4 className="text-xl font-semibold gradient-text-cyber mb-4">
                   {step.title}
                 </h4>
                 <p className="text-base text-foreground/80 leading-relaxed">
                   {step.description}
                 </p>
-              </Link>
+                
+                {/* Arrow to next step (except for last step) */}
+                {index < journeySteps.length - 1 && (
+                  <div className="hidden lg:block absolute -right-4 top-1/2 transform -translate-y-1/2">
+                    <ArrowRight className="w-6 h-6 text-primary/60" />
+                  </div>
+                )}
+              </div>
             ))}
           </div>
+          
+          {/* CTA Button */}
+          <div className="text-center mt-12">
+            <Link 
+              href="/create"
+              className="gradient-primary hover-cyber px-12 py-4 rounded-xl font-medium text-primary-foreground transition-all duration-500 text-lg inline-flex items-center justify-center group"
+              data-testid="button-start-journey"
+            >
+              <span>Start Your Journey</span>
+              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
         </div>
+        
         {/* Ambient background effects */}
         <div className="absolute top-1/4 left-0 w-48 h-48 bg-accent/5 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 right-0 w-56 h-56 bg-primary/5 rounded-full blur-3xl" />
       </section>
 
 
-      {/* Platform Metrics Section */}
-      <section className="py-20 px-4 lg:px-6 border-t border-border relative overflow-hidden">
+      {/* Animated Stats Section */}
+      <section className="py-20 px-4 lg:px-6 border-t border-primary/20 relative overflow-hidden">
         <div className="container mx-auto max-w-6xl relative z-10">
           <div className="text-center mb-16">
             <h3 className="text-cyber-lg gradient-text-cyber mb-6">
-              Platform Metrics
+              Platform Intelligence
             </h3>
             <p className="text-zen text-accent/80 max-w-2xl mx-auto">
               Real-time insights from the decentralized intelligence marketplace
             </p>
           </div>
           
-          <div className="max-w-4xl mx-auto">
-            <div className="glass-cyber hover-cyber p-8 rounded-2xl">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                <div className="text-center">
-                  <div className="text-3xl lg:text-4xl font-bold gradient-text-cyber mb-2" data-testid="metric-datasets">1,247</div>
-                  <div className="text-sm text-muted-foreground">Datasets Available</div>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+            {[
+              {
+                key: 'totalDatasets',
+                title: 'Datasets',
+                description: 'Registered on-chain',
+                icon: Database,
+                value: animatedStats.totalDatasets,
+                format: (val: number) => val.toLocaleString()
+              },
+              {
+                key: 'totalINFTs',
+                title: 'Intelligence NFTs',
+                description: 'Tokenized AI assets',
+                icon: Wand2,
+                value: animatedStats.totalINFTs,
+                format: (val: number) => val.toLocaleString()
+              },
+              {
+                key: 'totalRevenue',
+                title: 'Revenue (ZAI)',
+                description: 'Platform volume',
+                icon: TrendingUp,
+                value: animatedStats.totalRevenue,
+                format: (val: number) => `${val.toFixed(1)}`
+              },
+              {
+                key: 'activeUsers',
+                title: 'Active Users',
+                description: 'Community members',
+                icon: Network,
+                value: animatedStats.activeUsers,
+                format: (val: number) => val.toLocaleString()
+              }
+            ].map((stat) => (
+              <article
+                key={stat.key}
+                className="glass-cyber hover-cyber p-8 rounded-2xl text-center group transition-all duration-500"
+                data-testid={`stat-${stat.key}`}
+              >
+                <div className="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+                  <stat.icon className="w-8 h-8 text-primary-foreground" />
                 </div>
-                <div className="text-center">
-                  <div className="text-3xl lg:text-4xl font-bold gradient-text-cyber mb-2" data-testid="metric-downloads">23.4K</div>
-                  <div className="text-sm text-muted-foreground">Total Downloads</div>
+                <div className="text-4xl font-bold gradient-text-cyber mb-3">
+                  {stat.format(stat.value)}
                 </div>
-                <div className="text-center">
-                  <div className="text-3xl lg:text-4xl font-bold gradient-text-cyber mb-2" data-testid="metric-providers">567</div>
-                  <div className="text-sm text-muted-foreground">Active Providers</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl lg:text-4xl font-bold gradient-text-cyber mb-2" data-testid="metric-volume">$2.3M</div>
-                  <div className="text-sm text-muted-foreground">Volume Traded</div>
-                </div>
-              </div>
-            </div>
+                <h4 className="text-lg font-semibold text-foreground mb-2">
+                  {stat.title}
+                </h4>
+                <p className="text-base text-muted-foreground">
+                  {stat.description}
+                </p>
+              </article>
+            ))}
           </div>
         </div>
         {/* Ambient background effects */}
