@@ -39,12 +39,9 @@ export default function Navigation() {
       !previousAddress && 
       location !== '/dashboard' && 
       location !== '/' &&
-      !location.startsWith('/upload') &&
-      !location.startsWith('/monetize') &&
-      !location.startsWith('/compose') &&
-      !location.startsWith('/train') &&
-      !location.startsWith('/tokenize') &&
-      !location.startsWith('/marketplace')
+      !location.startsWith('/create') &&
+      !location.startsWith('/marketplace') &&
+      !location.startsWith('/how-it-works')
     ) {
       // Small delay to ensure wallet connection is fully established
       const redirectTimer = setTimeout(() => {
@@ -58,15 +55,12 @@ export default function Navigation() {
     setPreviousAddress(address);
   }, [address, previousAddress, location, setLocation]);
 
-  // Main navigation items in specified order (Dashboard is handled separately as first item)
+  // Main navigation items in new minimal order (Dashboard is handled separately as first item)
   const mainNavItems = [
-    { path: '/', label: 'Home', testId: 'nav-home' },
-    { path: '/marketplace', label: 'Marketplace', testId: 'nav-marketplace' },
-    { path: '/upload', label: content.navigation.upload, testId: 'nav-upload' },
-    { path: '/monetize', label: content.navigation.monetize, testId: 'nav-monetize' },
-    { path: '/compose', label: content.navigation.build, testId: 'nav-build' },
-    { path: '/train', label: content.navigation.train, testId: 'nav-train' },
-    { path: '/tokenize', label: content.navigation.tokenize, testId: 'nav-tokenize' }
+    { path: '/', label: content.navigation.home, testId: 'nav-home' },
+    { path: '/marketplace', label: content.navigation.marketplace, testId: 'nav-marketplace' },
+    { path: '/create', label: content.navigation.create, testId: 'nav-create' },
+    { path: '/how-it-works', label: content.navigation.howItWorks, testId: 'nav-how-it-works' }
   ];
 
   // Dashboard item (dynamic first item)

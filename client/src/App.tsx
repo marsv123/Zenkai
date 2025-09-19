@@ -10,6 +10,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import Home from "@/pages/home";
 import Marketplace from "@/pages/marketplace";
+import Create from "@/pages/create";
 import Upload from "@/pages/upload";
 import Monetize from "@/pages/monetize";
 import Dashboard from "@/pages/dashboard";
@@ -28,6 +29,7 @@ function Router() {
         <Switch>
           <Route path="/" component={Home} />
           <Route path="/marketplace" component={Marketplace} />
+          <Route path="/create" component={Create} />
           <Route path="/upload" component={Upload} />
           <Route path="/monetize" component={Monetize} />
           <Route path="/compose" component={Compose} />

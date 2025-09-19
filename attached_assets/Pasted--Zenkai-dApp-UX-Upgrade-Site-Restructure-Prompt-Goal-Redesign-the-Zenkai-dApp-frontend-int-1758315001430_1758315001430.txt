@@ -1,0 +1,101 @@
+🟠 Zenkai dApp — UX Upgrade & Site Restructure Prompt
+🎯 Goal
+
+Redesign the Zenkai dApp frontend into a minimal, cyberpunk-styled, intuitive interface that appeals at first glance, avoids clutter, and guides users through clear workflows.
+
+The new site structure should merge redundant subsites while ensuring all current functionality is preserved and live features remain connected to contracts/APIs.
+
+🌐 New Navigation Structure
+
+Home → Hero tagline, 5-step journey, key stats.
+
+Marketplace → Unified browsing with Datasets and INFTs tabs.
+
+Create → Unified workflow (Upload → Train → Mint).
+
+Dashboard → Wallet, assets, activity, earnings, reputation.
+
+How It Works → Optional page for onboarding (visual walkthrough).
+
+🛠 Page Requirements
+🏠 Home
+
+Hero: Samurai/Zenkai logo, tagline: “Powering the Intelligence Economy.”
+
+Typewriter effect tagline + glow hover effect.
+
+5-step card flow: Upload → Train → Mint → Trade → Earn.
+
+Animated stats (datasets, INFTs, revenue).
+
+Footer with GitHub, Docs, Twitter.
+
+🛒 Marketplace
+
+Tabs: Datasets | INFTs.
+
+Filters: Category, Price (ZAI), Ratings, ZK badge toggle.
+
+Sort: Latest, Popular, Price.
+
+Cards: Minimal preview with buy button, badges, royalties, ZK flags.
+
+Marketplace must fetch live data (datasets + INFTs) from contracts/APIs.
+
+🛠 Create (Unified Workflow)
+
+Step-by-step flow (with a progress stepper at the top):
+
+Upload Dataset → form with metadata, price in ZAI, storage (IPFS or 0G), ZK toggle. Returns og:// or ipfs:// URI.
+
+Train → Two tabs:
+
+Inference (live via 0G Compute, wallet signed).
+
+Training (simulated for now, outputs ipfs://mock artifact).
+
+Mint INFT → Form auto-populates dataset URI + model URI. User sets royalties (0–10%), ZK flag, and token metadata. Mint transaction triggers ZenkaiINFT contract.
+
+✨ End state = success screen with Token ID + explorer link.
+
+📊 Dashboard
+
+Overview: Stats (ZAI balance, datasets, INFTs, earnings).
+
+Assets: Grid of user datasets + INFTs with copy buttons.
+
+Activity: Transaction timeline with success/fail states.
+
+Earnings: Charts (revenue, spending).
+
+Reputation: Gamified badges.
+
+📖 How It Works (Optional)
+
+One-page illustration of user journey: Upload → Train → Mint → Trade → Earn.
+
+Kept simple, visual, and minimal.
+
+🎨 Design Guidelines
+
+Minimal, cyberpunk style (glass morphism, neon orange gradients, dark indigo background).
+
+Typography: Orbitron (headings), Inter (body).
+
+Responsive: Mobile-first with collapsible menus.
+
+Keep intuitive clarity: no overwhelming panels, just clean guided steps.
+
+Avoid clutter — every section should breathe.
+
+🚀 Deliverables
+
+Functional, production-ready dApp with new navigation.
+
+All features integrated (no loss of functionality).
+
+Tested end-to-end: dataset upload, inference, training (simulated), INFT mint, marketplace listing, dashboard display.
+
+Retain existing blockchain + API integrations (0G Galileo testnet).
+
+⚡ Final Reminder: The site should feel immediately clear and inviting to first-time users, while still powerful enough for advanced users. Minimalism, guided flows, and intuitive clarity are the priorities.

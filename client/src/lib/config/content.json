@@ -1,11 +1,15 @@
 {
   "navigation": {
+    "home": "Home",
+    "marketplace": "Marketplace",
+    "create": "Create",
+    "dashboard": "Dashboard",
+    "howItWorks": "How It Works",
     "upload": "Upload Data",
     "monetize": "Monetize Data", 
     "build": "Build AI",
     "train": "Train AI",
-    "tokenize": "Tokenize AI",
-    "dashboard": "Dashboard"
+    "tokenize": "Tokenize AI"
   },
   "uploadPage": {
     "headline": "Secure your datasets on-chain.",
