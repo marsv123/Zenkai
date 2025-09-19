@@ -2,7 +2,15 @@ import { useState, useEffect } from 'react';
 import { useAccount } from 'wagmi';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'wouter';
-import { Wallet, Upload, Store, User, ShoppingCart, Eye, Wand2, Star, TrendingUp, Database, ArrowRight, Zap, Brain, Network, Shield, Mail, Github, Twitter, MessageCircle, DollarSign } from 'lucide-react';
+import { 
+  Wallet, Upload, Store, User, ShoppingCart, Eye, Wand2, Star, TrendingUp, Database, ArrowRight, Zap, Brain, Network, Shield, Mail, Github, Twitter, MessageCircle, DollarSign,
+  Server,
+  Code,
+  Database as DatabaseIcon,
+  Lock,
+  Globe,
+  Settings
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -448,6 +456,112 @@ export default function Home() {
                 <p className="text-base text-muted-foreground">
                   {stat.description}
                 </p>
+              </article>
+            ))}
+          </div>
+        </div>
+        {/* Ambient background effects */}
+        <div className="absolute top-1/4 left-0 w-48 h-48 bg-accent/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 right-0 w-56 h-56 bg-primary/5 rounded-full blur-3xl" />
+      </section>
+
+      {/* Technical Architecture Section */}
+      <section className="py-20 px-4 lg:px-6 border-t border-primary/20 relative overflow-hidden">
+        <div className="container mx-auto max-w-6xl relative z-10">
+          <div className="text-center mb-16">
+            <h3 className="text-cyber-lg gradient-text-cyber mb-6">
+              Technical Architecture
+            </h3>
+            <p className="text-zen text-accent/80 max-w-2xl mx-auto">
+              Cutting-edge technology stack powering the decentralized intelligence economy
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              {
+                title: 'Frontend Layer',
+                description: 'React with Vite, TypeScript, and RainbowKit for seamless Web3 integration',
+                icon: Code,
+                features: [
+                  'React Query for state management',
+                  'Tailwind CSS with shadcn/ui',
+                  'Wagmi for Ethereum interactions'
+                ]
+              },
+              {
+                title: 'Backend Services',
+                description: 'Express.js server with RESTful API design and TypeScript',
+                icon: Server,
+                features: [
+                  'Comprehensive storage interface',
+                  'Request logging middleware',
+                  'Vite integration with HMR'
+                ]
+              },
+              {
+                title: 'Smart Contracts',
+                description: 'Hardhat development with three core contracts on 0G Galileo testnet',
+                icon: Lock,
+                features: [
+                  'ZAI (ERC20) & ContributorNFT (ERC721)',
+                  'DatasetRegistry with pricing control',
+                  'Contract ABI export system'
+                ]
+              },
+              {
+                title: 'Database Design',
+                description: 'PostgreSQL with Drizzle ORM for type-safe operations',
+                icon: DatabaseIcon,
+                features: [
+                  'User management with wallet linking',
+                  'Dataset metadata storage',
+                  'Transaction tracking & analytics'
+                ]
+              },
+              {
+                title: 'Authentication',
+                description: 'Web3 wallet-based authentication using RainbowKit',
+                icon: Shield,
+                features: [
+                  'Wallet address identification',
+                  'No traditional session management',
+                  'Decentralized user control'
+                ]
+              },
+              {
+                title: 'External Integrations',
+                description: 'IPFS storage and OpenAI API for AI-powered features',
+                icon: Globe,
+                features: [
+                  'Decentralized file storage',
+                  'AI dataset summarization',
+                  '0G testnet blockchain integration'
+                ]
+              }
+            ].map((layer, index) => (
+              <article
+                key={layer.title}
+                className="glass-cyber hover-cyber p-6 rounded-2xl group transition-all duration-500"
+                data-testid={`architecture-${layer.title.toLowerCase().replace(' ', '-')}`}
+              >
+                <div className="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <layer.icon className="w-6 h-6 text-primary-foreground" />
+                </div>
+                <h4 className="text-lg font-semibold gradient-text-cyber mb-3">
+                  {layer.title}
+                </h4>
+                <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                  {layer.description}
+                </p>
+                <ul className="space-y-2">
+                  {layer.features.map((feature, featureIndex) => (
+                    <li key={featureIndex} className="text-xs text-foreground/70 flex items-start">
+                      <div className="w-1 h-1 bg-primary rounded-full mt-2 mr-2 flex-shrink-0" />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
               </article>
             ))}
           </div>
