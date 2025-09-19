@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { useAccount, useWriteContract, useWaitForTransactionReceipt, useChainId, useSwitchChain } from 'wagmi';
+import { useAccount, useWriteContract, useWaitForTransactionReceipt, useChainId, useSwitchChain, useSignMessage } from 'wagmi';
 import { parseEther, formatEther, BaseError as ViemBaseError } from 'viem';
 import { Link, Upload, ExternalLink, AlertCircle, CheckCircle, Clock, RefreshCw, Info, Shield, Eye, EyeOff, Check, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -40,6 +40,7 @@ interface FormData {
   description: string;
   tags: string;
   zkPrivacy: boolean;
+  storageProvider: '0g' | 'ipfs';
   file?: File | null;
   price: string;
 }
@@ -145,6 +146,7 @@ export default function DatasetRegistration() {
   const { address } = useAccount();
   const chainId = useChainId();
   const { switchChain } = useSwitchChain();
+  const { signMessageAsync } = useSignMessage();
   const { toast } = useToast();
 
   const [formData, setFormData] = useState<FormData>({
@@ -154,6 +156,7 @@ export default function DatasetRegistration() {
     description: '',
     tags: '',
     zkPrivacy: true, // ON by default as requested
+    storageProvider: '0g', // Default to 0G Storage
     file: null,
     price: '0'
   });
@@ -303,18 +306,29 @@ export default function DatasetRegistration() {
   // Create draft dataset record
   const createDraftDataset = useCallback(async (): Promise<string | null> => {
     try {
+      // Prepare payload with proper field mapping based on storage provider
+      const payload: any = {
+        ownerId: address,
+        title: formData.title || 'Untitled Dataset',
+        description: formData.description,
+        category: formData.category,
+        storageProvider: formData.storageProvider,
+        zkProtected: formData.zkPrivacy && formData.storageProvider === '0g',
+        tags: formData.tags.split(',').map(tag => tag.trim()).filter(Boolean),
+        isActive: false // Keep inactive until blockchain confirmation
+      };
+
+      // Add appropriate URI field based on storage provider
+      if (formData.storageProvider === '0g') {
+        payload.ogStorageUri = formData.uri;
+      } else {
+        payload.ipfsHash = formData.uri;
+      }
+
       const response = await fetch('/api/datasets', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ownerId: address,
-          title: formData.title || 'Untitled Dataset',
-          description: formData.description,
-          category: formData.category,
-          ipfsHash: formData.uri,
-          tags: formData.tags.split(',').map(tag => tag.trim()).filter(Boolean),
-          isActive: false // Keep inactive until blockchain confirmation
-        })
+        body: JSON.stringify(payload)
       });
       
       if (!response.ok) throw new Error('Failed to create dataset record');
@@ -329,17 +343,18 @@ export default function DatasetRegistration() {
 
   // Form validation helper
   const isFormValid = useCallback(() => {
-    const isValid = formData.uri.trim() !== '' && 
-           formData.uri.startsWith('ipfs://') &&
-           formData.title.trim() !== '';
+    const hasValidUri = formData.uri.trim() !== '' && 
+           (formData.uri.startsWith('ipfs://') || formData.uri.startsWith('0g://'));
+    const isValid = hasValidUri && formData.title.trim() !== '';
     
     // Debug logging for testing
     if (import.meta.env.DEV) {
       console.log('Form validation:', {
         uri: formData.uri,
-        uriValid: formData.uri.trim() !== '' && formData.uri.startsWith('ipfs://'),
+        uriValid: hasValidUri,
         title: formData.title,
         titleValid: formData.title.trim() !== '',
+        storageProvider: formData.storageProvider,
         isValid,
         address
       });
@@ -348,7 +363,7 @@ export default function DatasetRegistration() {
     return isValid;
   }, [formData, address]);
 
-  // Upload file to IPFS
+  // Upload file to storage providers
   const [isUploading, setIsUploading] = useState(false);
   
   const uploadFileToIPFS = useCallback(async (file: File): Promise<string | null> => {
@@ -399,6 +414,79 @@ export default function DatasetRegistration() {
     }
   }, [toast]);
 
+  const uploadFileToOGStorage = useCallback(async (file: File, zkProtected: boolean): Promise<string | null> => {
+    if (!address) {
+      toast({
+        variant: "destructive",
+        title: "Wallet Not Connected",
+        description: "Please connect your wallet to upload to 0G Storage",
+      });
+      return null;
+    }
+
+    setIsUploading(true);
+    try {
+      // Convert file to base64
+      const base64 = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+
+      // Create wallet signature for authentication
+      const timestamp = Date.now();
+      const message = `Upload to 0G Storage\nTimestamp: ${timestamp}\nAddress: ${address}`;
+      
+      // Sign the message with the wallet
+      const signature = await signMessageAsync({ message });
+      
+      const walletSignature = {
+        message,
+        signature,
+        timestamp,
+        address: address!
+      };
+
+      const response = await fetch('/api/og-storage/upload', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          file: base64,
+          filename: file.name,
+          contentType: file.type,
+          zkProtected,
+          walletSignature
+        }),
+      });
+
+      const result = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(result.error || 'Upload failed');
+      }
+
+      toast({
+        title: "File Uploaded Successfully!",
+        description: `File uploaded to 0G Storage${zkProtected ? ' with ZK protection' : ''}`,
+      });
+
+      return result.ogStorageUri;
+    } catch (error) {
+      console.error('0G Storage upload error:', error);
+      toast({
+        variant: "destructive",
+        title: "Upload Failed",
+        description: error instanceof Error ? error.message : 'Failed to upload to 0G Storage',
+      });
+      return null;
+    } finally {
+      setIsUploading(false);
+    }
+  }, [address, toast]);
+
   // Handle file selection and upload
   const handleFileUpload = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -416,12 +504,18 @@ export default function DatasetRegistration() {
 
     setFormData(prev => ({ ...prev, file }));
 
-    // Auto-upload to IPFS
-    const ipfsUri = await uploadFileToIPFS(file);
-    if (ipfsUri) {
-      setFormData(prev => ({ ...prev, uri: ipfsUri }));
+    // Auto-upload based on selected storage provider
+    let uri: string | null = null;
+    if (formData.storageProvider === '0g') {
+      uri = await uploadFileToOGStorage(file, formData.zkPrivacy);
+    } else {
+      uri = await uploadFileToIPFS(file);
     }
-  }, [uploadFileToIPFS, toast]);
+    
+    if (uri) {
+      setFormData(prev => ({ ...prev, uri }));
+    }
+  }, [uploadFileToIPFS, uploadFileToOGStorage, formData.storageProvider, formData.zkPrivacy, toast]);
 
   // Reset form to initial state
   const resetForm = useCallback(() => {
@@ -431,7 +525,8 @@ export default function DatasetRegistration() {
       title: '',
       description: '',
       tags: '',
-      zkPrivacy: false,
+      zkPrivacy: true, // Keep consistent with initial default
+      storageProvider: '0g',
       file: null,
       price: '0'
     });
@@ -475,11 +570,11 @@ export default function DatasetRegistration() {
       return;
     }
 
-    if (!formData.uri.startsWith('ipfs://')) {
+    if (!formData.uri.startsWith('ipfs://') && !formData.uri.startsWith('0g://')) {
       toast({
         variant: "destructive",
         title: "Invalid URI",
-        description: "URI must start with ipfs://",
+        description: "URI must start with ipfs:// or 0g://",
       });
       return;
     }
@@ -675,6 +770,81 @@ export default function DatasetRegistration() {
               </div>
             </div>
 
+            {/* Storage Provider Selection */}
+            <div className="space-y-4">
+              <div>
+                <h3 className="text-lg font-semibold mb-4 flex items-center">
+                  <Shield className="w-5 h-5 mr-2 text-primary" />
+                  Storage & Privacy Settings
+                </h3>
+              </div>
+              
+              <div className="grid md:grid-cols-2 gap-6">
+                {/* Storage Provider Selection */}
+                <div>
+                  <Label htmlFor="storage-provider">Storage Provider</Label>
+                  <Select 
+                    value={formData.storageProvider} 
+                    onValueChange={(value: '0g' | 'ipfs') => handleInputChange('storageProvider')(value)}
+                  >
+                    <SelectTrigger data-testid="select-storage-provider">
+                      <SelectValue placeholder="Select storage provider" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="0g">0G Storage (Recommended)</SelectItem>
+                      <SelectItem value="ipfs">IPFS</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {formData.storageProvider === '0g' ? 
+                      'Decentralized storage with ZK privacy options' : 
+                      'Traditional IPFS distributed storage'
+                    }
+                  </p>
+                </div>
+
+                {/* ZK Privacy Toggle - Only for 0G Storage */}
+                <div>
+                  <Label htmlFor="zkPrivacy" className="text-sm font-semibold">Zero-Knowledge Privacy</Label>
+                  <div className="flex items-center justify-between p-3 border rounded-lg mt-1">
+                    <div className="flex items-center space-x-3">
+                      <div className={`flex items-center justify-center w-5 h-5 rounded-full transition-colors ${
+                        formData.zkPrivacy && formData.storageProvider === '0g'
+                          ? 'bg-accent text-accent-foreground' 
+                          : 'bg-muted text-muted-foreground'
+                      }`}>
+                        {formData.zkPrivacy && formData.storageProvider === '0g' ? (
+                          <EyeOff className="w-3 h-3" />
+                        ) : (
+                          <Eye className="w-3 h-3" />
+                        )}
+                      </div>
+                      <span className="text-sm">
+                        {formData.storageProvider === '0g' ? 
+                          (formData.zkPrivacy ? 'Enhanced privacy enabled' : 'Standard privacy') :
+                          'Only available with 0G Storage'
+                        }
+                      </span>
+                    </div>
+                    <Switch
+                      id="zkPrivacy"
+                      checked={formData.zkPrivacy && formData.storageProvider === '0g'}
+                      onCheckedChange={(checked) => handleInputChange('zkPrivacy')(checked)}
+                      disabled={formData.storageProvider !== '0g'}
+                      data-testid="switch-zk-privacy"
+                      className="data-[state=checked]:bg-accent"
+                    />
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {formData.storageProvider === '0g' ?
+                      'Protects metadata using zero-knowledge proofs' :
+                      'Switch to 0G Storage to enable privacy protection'
+                    }
+                  </p>
+                </div>
+              </div>
+            </div>
+
             {/* File Upload Section */}
             <div>
               <Label htmlFor="file-upload">Upload Dataset File</Label>
@@ -694,18 +864,24 @@ export default function DatasetRegistration() {
                   <Upload className={`w-8 h-8 ${isUploading ? 'text-primary animate-pulse' : 'text-muted-foreground'}`} />
                   <div>
                     {isUploading ? (
-                      <span className="text-sm text-primary">Uploading to IPFS...</span>
+                      <span className="text-sm text-primary">
+                        Uploading to {formData.storageProvider === '0g' ? '0G Storage' : 'IPFS'}...
+                      </span>
                     ) : formData.file ? (
                       <div>
                         <span className="text-sm font-medium text-green-600">✓ {formData.file.name}</span>
                         <p className="text-xs text-muted-foreground">
-                          {(formData.file.size / 1024 / 1024).toFixed(2)} MB
+                          {(formData.file.size / 1024 / 1024).toFixed(2)} MB - 
+                          {formData.storageProvider === '0g' ? ' 0G Storage' : ' IPFS'}
+                          {formData.zkPrivacy && formData.storageProvider === '0g' ? ' (ZK Protected)' : ''}
                         </p>
                       </div>
                     ) : (
                       <div>
                         <span className="text-sm font-medium">Click to upload or drag and drop</span>
-                        <p className="text-xs text-muted-foreground">CSV, JSON, TXT, Parquet, Excel, ZIP files up to 100MB</p>
+                        <p className="text-xs text-muted-foreground">
+                          CSV, JSON, TXT, Parquet, Excel, ZIP files up to 100MB to {formData.storageProvider === '0g' ? '0G Storage' : 'IPFS'}
+                        </p>
                       </div>
                     )}
                   </div>
@@ -713,31 +889,39 @@ export default function DatasetRegistration() {
               </div>
             </div>
 
-            {/* IPFS URI & Description - Same Row */}
+            {/* Storage URI & Description - Same Row */}
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <Label htmlFor="uri">IPFS URI *</Label>
+                <Label htmlFor="uri">
+                  {formData.storageProvider === '0g' ? '0G Storage URI *' : 'IPFS URI *'}
+                </Label>
                 <div className="relative">
                   <Input
                     id="uri"
                     value={formData.uri}
                     onChange={handleInputChange('uri')}
                     className="pl-10"
-                    placeholder={formData.file ? "Auto-filled from upload..." : "ipfs://QmExampleHashHere123456789..."}
+                    placeholder={formData.file ? "Auto-filled from upload..." : 
+                      formData.storageProvider === '0g' ? 
+                        "0g://example-hash-here..." : 
+                        "ipfs://QmExampleHashHere123456789..."}
                     required
                     data-testid="input-uri"
                     readOnly={isUploading}
                   />
                   <Link className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-                  {formData.uri && formData.uri.startsWith('ipfs://') && (
+                  {formData.uri && (formData.uri.startsWith('ipfs://') || formData.uri.startsWith('0g://')) && (
                     <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
                       <CheckCircle className="w-4 h-4 text-green-500" />
                     </div>
                   )}
                 </div>
-                {formData.uri && formData.uri.startsWith('ipfs://') && (
+                {formData.uri && (formData.uri.startsWith('ipfs://') || formData.uri.startsWith('0g://')) && (
                   <p className="text-xs text-muted-foreground mt-1">
-                    Hash: {formData.uri.replace('ipfs://', '').substring(0, 20)}...
+                    Hash: {formData.uri.replace(/^(ipfs|0g):\/\//, '').substring(0, 20)}...
+                    {formData.storageProvider === '0g' && formData.zkPrivacy && (
+                      <span className="ml-2 text-accent">🔒 ZK Protected</span>
+                    )}
                   </p>
                 )}
               </div>
