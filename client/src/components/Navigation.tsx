@@ -40,8 +40,7 @@ export default function Navigation() {
       location !== '/dashboard' && 
       location !== '/' &&
       !location.startsWith('/create') &&
-      !location.startsWith('/marketplace') &&
-      !location.startsWith('/how-it-works')
+      !location.startsWith('/marketplace')
     ) {
       // Small delay to ensure wallet connection is fully established
       const redirectTimer = setTimeout(() => {
@@ -59,8 +58,7 @@ export default function Navigation() {
   const mainNavItems = [
     { path: '/', label: content.navigation.home, testId: 'nav-home' },
     { path: '/marketplace', label: content.navigation.marketplace, testId: 'nav-marketplace' },
-    { path: '/create', label: content.navigation.create, testId: 'nav-create' },
-    { path: '/how-it-works', label: content.navigation.howItWorks, testId: 'nav-how-it-works' }
+    { path: '/create', label: content.navigation.create, testId: 'nav-create' }
   ];
 
   // Dashboard item (dynamic first item)
