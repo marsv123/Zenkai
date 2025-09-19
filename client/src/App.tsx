@@ -14,7 +14,6 @@ import Create from "@/pages/create";
 import Upload from "@/pages/upload";
 import Monetize from "@/pages/monetize";
 import Dashboard from "@/pages/dashboard";
-import HowItWorks from "@/pages/how-it-works";
 import Compose from "@/pages/compose";
 import Train from "@/pages/train";
 import Tokenize from "@/pages/tokenize";
@@ -37,7 +36,6 @@ function Router() {
             <Route path="/train" component={Train} />
             <Route path="/tokenize" component={Tokenize} />
             <Route path="/dashboard" component={Dashboard} />
-            <Route path="/how-it-works" component={HowItWorks} />
             {/* Fallback to 404 */}
             <Route component={NotFound} />
           </Switch>

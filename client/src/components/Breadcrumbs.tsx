@@ -16,7 +16,6 @@ export default function Breadcrumbs() {
       '/marketplace': 'Marketplace',
       '/upload': 'Upload Dataset',
       '/dashboard': 'Dashboard',
-      '/how-it-works': 'How It Works',
       '/compose': 'Compose AI',
       '/train': 'Train Model',
       '/tokenize': 'Tokenize AI'
