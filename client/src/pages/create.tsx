@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { useAccount, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useToast } from '@/hooks/use-toast';
+import { useLocation } from 'wouter';
 import { createAuthenticatedRequest } from '@/lib/auth';
 import { apiRequest } from '@/lib/queryClient';
 import contractAddresses from '@/lib/contracts/addresses.json';
@@ -99,6 +100,7 @@ export default function CreatePage() {
   const { address, isConnected, chainId } = useAccount();
   const { writeContract, data: hash, isPending: isContractPending } = useWriteContract();
   const { toast } = useToast();
+  const [, setLocation] = useLocation();
 
   // Transaction confirmation for minting
   const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
@@ -199,6 +201,7 @@ export default function CreatePage() {
       setTrainingStatus('completed');
       setTrainingProgress(100);
       setIsTraining(false);
+      handleTrainComplete(); // Auto-advance to Mint step and populate INFT form
       toast({
         title: "Training completed",
         description: "Model training simulation completed successfully"
@@ -249,22 +252,47 @@ export default function CreatePage() {
     }
   };
 
+  // Dataset upload mutation (real API call)
+  const uploadMutation = useMutation({
+    mutationFn: async (data: UploadFormData) => {
+      if (!address) {
+        throw new Error('Wallet not connected');
+      }
+      
+      const authRequest = await createAuthenticatedRequest(address, 'dataset-upload', data);
+      const response = await fetch('/api/datasets', {
+        method: 'POST',
+        headers: authRequest.headers,
+        body: JSON.stringify(authRequest.body),
+        credentials: 'include'
+      });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || `HTTP ${response.status}`);
+      }
+      
+      return await response.json();
+    },
+    onSuccess: (result) => {
+      handleStepComplete(1, { uploadedDataset: result });
+      toast({
+        title: "Dataset uploaded",
+        description: "Your dataset has been registered successfully"
+      });
+      setCurrentStep(2);
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Upload failed",
+        description: error.message || "Failed to upload dataset",
+        variant: "destructive"
+      });
+    }
+  });
+
   const handleUploadSubmit = (data: UploadFormData) => {
-    // This would normally submit to the dataset registration API
-    // For now, we'll simulate completion
-    const mockDataset = {
-      ...data,
-      id: `dataset_${Date.now()}`,
-      ogStorageUri: data.storageProvider === '0g' ? `og://dataset_${Date.now()}` : undefined,
-      ipfsHash: data.storageProvider === 'ipfs' ? `ipfs://Qm${Date.now()}` : undefined,
-    };
-    
-    handleStepComplete(1, { uploadedDataset: mockDataset });
-    toast({
-      title: "Dataset uploaded",
-      description: "Your dataset has been registered successfully"
-    });
-    setCurrentStep(2);
+    uploadMutation.mutate(data);
   };
 
   const handleInference = () => {
@@ -336,6 +364,11 @@ export default function CreatePage() {
         inftForm.setValue('modelURI', workflowData.trainedModel.modelURI);
       }
     }
+    
+    toast({
+      title: "Ready for tokenization",
+      description: "Your model is trained and ready to be minted as an INFT"
+    });
   };
 
   const handleINFTSubmit = async (data: INFTFormData) => {
@@ -427,11 +460,11 @@ export default function CreatePage() {
             <Separator />
             
             <div className="flex gap-3 justify-center">
-              <Button onClick={() => window.location.href = '/marketplace'} className="glass-cyber">
+              <Button onClick={() => setLocation('/marketplace')} className="glass-cyber">
                 <Target className="w-4 h-4 mr-2" />
                 View in Marketplace
               </Button>
-              <Button onClick={() => window.location.href = '/dashboard'} variant="outline" className="glass-cyber">
+              <Button onClick={() => setLocation('/dashboard')} variant="outline" className="glass-cyber">
                 <Activity className="w-4 h-4 mr-2" />
                 Go to Dashboard
               </Button>
@@ -592,7 +625,7 @@ export default function CreatePage() {
                                   min="0.01" 
                                   step="0.01" 
                                   placeholder="10"
-                                  {...field} 
+                                  value={field.value || ''}
                                   onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
                                   data-testid="input-dataset-price"
                                 />
@@ -680,11 +713,21 @@ export default function CreatePage() {
                       <div className="flex justify-end pt-4">
                         <Button
                           type="submit"
+                          disabled={uploadMutation.isPending}
                           className="glass-cyber"
                           data-testid="button-register-dataset"
                         >
-                          <Upload className="w-4 h-4 mr-2" />
-                          {content.uploadPage.button}
+                          {uploadMutation.isPending ? (
+                            <>
+                              <Activity className="w-4 h-4 mr-2 animate-spin" />
+                              Uploading...
+                            </>
+                          ) : (
+                            <>
+                              <Upload className="w-4 h-4 mr-2" />
+                              {content.uploadPage.button}
+                            </>
+                          )}
                         </Button>
                       </div>
                     </form>
