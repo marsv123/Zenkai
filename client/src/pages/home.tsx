@@ -113,7 +113,7 @@ export default function Home() {
     activeUsers: 0
   });
 
-  const fullText = 'powering the intelligence economy.';
+  const fullText = 'Powering the intelligence economy.';
   
   // 5-step journey cards
   const journeySteps = [
@@ -271,17 +271,13 @@ export default function Home() {
           
           {/* Enhanced Typography with Cyberpunk Styling */}
           <div className="space-y-6 mb-6">
-            <h3 className="text-cyber-lg mb-6 relative">
-              {/* Invisible placeholder to reserve space */}
-              <span className="gradient-text-cyber opacity-0 pointer-events-none">
-                {fullText}
-              </span>
-              {/* Visible animated text positioned absolutely */}
-              <span className="gradient-text-cyber animate-text-glow-reveal absolute inset-0">
+            <h3 className="text-cyber-lg mb-6 relative min-h-[3rem] md:min-h-[3.5rem] lg:min-h-[4rem]">
+              {/* Visible animated text */}
+              <span className="gradient-text-cyber animate-text-glow-reveal">
                 {fullText.slice(0, visibleChars)}
               </span>
               {blinkingCursor && (
-                <span className={`inline-block w-0.5 h-6 md:h-7 lg:h-8 bg-primary ml-1 transition-opacity duration-100 absolute ${showCursor ? 'opacity-100' : 'opacity-0'}`} style={{left: `${visibleChars * 0.6}ch`}}>
+                <span className={`inline-block w-0.5 h-6 md:h-7 lg:h-8 bg-primary ml-1 transition-opacity duration-100 ${showCursor ? 'opacity-100' : 'opacity-0'}`}>
                   {/* Matrix-style blinking cursor */}
                 </span>
               )}
@@ -298,8 +294,7 @@ export default function Home() {
             <div className="glass-cyber hover-cyber p-12 rounded-3xl transition-all duration-500 group">
               
               <p className="text-xl text-accent/90 leading-relaxed text-center max-w-3xl mx-auto mb-10">
-                Powered by 0G's AI-native blockchain, <ZenkaiBrand colorContext="inherit" /> fuses data and AI into a decentralized, scalable marketplace of intelligence.
-                Participants can rent datasets or build, train, and tokenize AI models within one seamless dApp. Every contribution carries built-in ownership, reputation, and monetization. As data compounds and models evolve, value creation accelerates, fueling continuous growth across the ecosystem.
+                Powered by 0G, <ZenkaiBrand colorContext="inherit" /> fuses data and AI into a decentralized, scalable marketplace of intelligence. Ready to join the intelligence economy?
               </p>
             </div>
           </div>
@@ -387,7 +382,7 @@ export default function Home() {
         <div className="container mx-auto max-w-6xl relative z-10">
           <div className="text-center mb-16">
             <h3 className="text-cyber-lg gradient-text-cyber mb-6">
-              Platform Intelligence
+              Intelligence Marketplace
             </h3>
             <p className="text-zen text-accent/80 max-w-2xl mx-auto">
               Real-time insights from the decentralized intelligence marketplace

@@ -57,8 +57,8 @@ export default function Navigation() {
   // Main navigation items in new minimal order (Dashboard is handled separately as first item)
   const mainNavItems = [
     { path: '/', label: content.navigation.home, testId: 'nav-home' },
-    { path: '/marketplace', label: content.navigation.marketplace, testId: 'nav-marketplace' },
-    { path: '/create', label: content.navigation.create, testId: 'nav-create' }
+    { path: '/create', label: content.navigation.create, testId: 'nav-create' },
+    { path: '/marketplace', label: content.navigation.marketplace, testId: 'nav-marketplace' }
   ];
 
   // Dashboard item (dynamic first item)
