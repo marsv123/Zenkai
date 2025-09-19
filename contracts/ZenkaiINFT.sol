@@ -106,7 +106,7 @@ contract ZenkaiINFT is ERC721URIStorage, ERC2981, AccessControl, Pausable {
     }
 
     function supportsInterface(bytes4 interfaceId)
-        public view override(ERC721, ERC2981, AccessControl)
+        public view override(ERC721URIStorage, ERC2981, AccessControl)
         returns (bool)
     {
         return super.supportsInterface(interfaceId);

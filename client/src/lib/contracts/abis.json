@@ -1500,88 +1500,884 @@
   ],
   "ZenkaiINFT": [
     {
+      "type": "constructor",
+      "stateMutability": "undefined",
+      "payable": false,
       "inputs": [
-        {"internalType": "string", "name": "name_", "type": "string"},
-        {"internalType": "string", "name": "symbol_", "type": "string"},
-        {"internalType": "address", "name": "admin", "type": "address"},
-        {"internalType": "address", "name": "royaltyReceiver", "type": "address"},
-        {"internalType": "uint96", "name": "royaltyBps", "type": "uint96"}
-      ],
-      "stateMutability": "nonpayable",
-      "type": "constructor"
+        {
+          "type": "string",
+          "name": "name_"
+        },
+        {
+          "type": "string",
+          "name": "symbol_"
+        },
+        {
+          "type": "address",
+          "name": "admin"
+        },
+        {
+          "type": "address",
+          "name": "royaltyReceiver"
+        },
+        {
+          "type": "uint96",
+          "name": "royaltyBps"
+        }
+      ]
     },
     {
-      "inputs": [
-        {"internalType": "address", "name": "to", "type": "address"},
-        {"internalType": "string", "name": "tokenURI_", "type": "string"},
-        {"internalType": "string", "name": "datasetURI_", "type": "string"},
-        {"internalType": "string", "name": "modelURI_", "type": "string"},
-        {"internalType": "string", "name": "encryptedMetaURI_", "type": "string"},
-        {"internalType": "bool", "name": "zkProtected_", "type": "bool"}
-      ],
-      "name": "mint",
-      "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {"internalType": "uint256", "name": "tokenId", "type": "uint256"},
-        {"internalType": "string", "name": "datasetURI_", "type": "string"},
-        {"internalType": "string", "name": "modelURI_", "type": "string"},
-        {"internalType": "string", "name": "encryptedMetaURI_", "type": "string"},
-        {"internalType": "bool", "name": "zkProtected_", "type": "bool"}
-      ],
-      "name": "updateAssetURIs",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {"internalType": "uint256", "name": "tokenId", "type": "uint256"},
-        {"internalType": "uint32", "name": "reputation_", "type": "uint32"}
-      ],
-      "name": "setReputation",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
-      "name": "assets",
-      "outputs": [
-        {"internalType": "string", "name": "datasetURI", "type": "string"},
-        {"internalType": "string", "name": "modelURI", "type": "string"},
-        {"internalType": "string", "name": "encryptedMetaURI", "type": "string"},
-        {"internalType": "uint32", "name": "reputation", "type": "uint32"},
-        {"internalType": "bool", "name": "zkProtected", "type": "bool"}
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
+      "type": "event",
       "anonymous": false,
+      "name": "Approval",
       "inputs": [
-        {"indexed": true, "internalType": "uint256", "name": "tokenId", "type": "uint256"},
-        {"indexed": true, "internalType": "address", "name": "to", "type": "address"},
-        {"indexed": false, "internalType": "string", "name": "datasetURI", "type": "string"},
-        {"indexed": false, "internalType": "string", "name": "modelURI", "type": "string"}
-      ],
-      "name": "Minted",
-      "type": "event"
+        {
+          "type": "address",
+          "name": "owner",
+          "indexed": true
+        },
+        {
+          "type": "address",
+          "name": "approved",
+          "indexed": true
+        },
+        {
+          "type": "uint256",
+          "name": "tokenId",
+          "indexed": true
+        }
+      ]
     },
     {
+      "type": "event",
       "anonymous": false,
+      "name": "ApprovalForAll",
       "inputs": [
-        {"indexed": true, "internalType": "uint256", "name": "tokenId", "type": "uint256"},
-        {"indexed": false, "internalType": "string", "name": "datasetURI", "type": "string"},
-        {"indexed": false, "internalType": "string", "name": "modelURI", "type": "string"},
-        {"indexed": false, "internalType": "string", "name": "encryptedMetaURI", "type": "string"},
-        {"indexed": false, "internalType": "bool", "name": "zkProtected", "type": "bool"}
-      ],
+        {
+          "type": "address",
+          "name": "owner",
+          "indexed": true
+        },
+        {
+          "type": "address",
+          "name": "operator",
+          "indexed": true
+        },
+        {
+          "type": "bool",
+          "name": "approved",
+          "indexed": false
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "anonymous": false,
       "name": "AssetUpdated",
-      "type": "event"
+      "inputs": [
+        {
+          "type": "uint256",
+          "name": "tokenId",
+          "indexed": true
+        },
+        {
+          "type": "string",
+          "name": "datasetURI",
+          "indexed": false
+        },
+        {
+          "type": "string",
+          "name": "modelURI",
+          "indexed": false
+        },
+        {
+          "type": "string",
+          "name": "encryptedMetaURI",
+          "indexed": false
+        },
+        {
+          "type": "bool",
+          "name": "zkProtected",
+          "indexed": false
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "anonymous": false,
+      "name": "BatchMetadataUpdate",
+      "inputs": [
+        {
+          "type": "uint256",
+          "name": "_fromTokenId",
+          "indexed": false
+        },
+        {
+          "type": "uint256",
+          "name": "_toTokenId",
+          "indexed": false
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "anonymous": false,
+      "name": "MetadataUpdate",
+      "inputs": [
+        {
+          "type": "uint256",
+          "name": "_tokenId",
+          "indexed": false
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "anonymous": false,
+      "name": "Minted",
+      "inputs": [
+        {
+          "type": "uint256",
+          "name": "tokenId",
+          "indexed": true
+        },
+        {
+          "type": "address",
+          "name": "to",
+          "indexed": true
+        },
+        {
+          "type": "string",
+          "name": "datasetURI",
+          "indexed": false
+        },
+        {
+          "type": "string",
+          "name": "modelURI",
+          "indexed": false
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "anonymous": false,
+      "name": "Paused",
+      "inputs": [
+        {
+          "type": "address",
+          "name": "account",
+          "indexed": false
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "anonymous": false,
+      "name": "ReputationUpdated",
+      "inputs": [
+        {
+          "type": "uint256",
+          "name": "tokenId",
+          "indexed": true
+        },
+        {
+          "type": "uint32",
+          "name": "reputation",
+          "indexed": false
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "anonymous": false,
+      "name": "RoleAdminChanged",
+      "inputs": [
+        {
+          "type": "bytes32",
+          "name": "role",
+          "indexed": true
+        },
+        {
+          "type": "bytes32",
+          "name": "previousAdminRole",
+          "indexed": true
+        },
+        {
+          "type": "bytes32",
+          "name": "newAdminRole",
+          "indexed": true
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "anonymous": false,
+      "name": "RoleGranted",
+      "inputs": [
+        {
+          "type": "bytes32",
+          "name": "role",
+          "indexed": true
+        },
+        {
+          "type": "address",
+          "name": "account",
+          "indexed": true
+        },
+        {
+          "type": "address",
+          "name": "sender",
+          "indexed": true
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "anonymous": false,
+      "name": "RoleRevoked",
+      "inputs": [
+        {
+          "type": "bytes32",
+          "name": "role",
+          "indexed": true
+        },
+        {
+          "type": "address",
+          "name": "account",
+          "indexed": true
+        },
+        {
+          "type": "address",
+          "name": "sender",
+          "indexed": true
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "anonymous": false,
+      "name": "Transfer",
+      "inputs": [
+        {
+          "type": "address",
+          "name": "from",
+          "indexed": true
+        },
+        {
+          "type": "address",
+          "name": "to",
+          "indexed": true
+        },
+        {
+          "type": "uint256",
+          "name": "tokenId",
+          "indexed": true
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "anonymous": false,
+      "name": "Unpaused",
+      "inputs": [
+        {
+          "type": "address",
+          "name": "account",
+          "indexed": false
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "DEFAULT_ADMIN_ROLE",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [],
+      "outputs": [
+        {
+          "type": "bytes32",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "EDITOR_ROLE",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [],
+      "outputs": [
+        {
+          "type": "bytes32",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "MINTER_ROLE",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [],
+      "outputs": [
+        {
+          "type": "bytes32",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "approve",
+      "constant": false,
+      "payable": false,
+      "inputs": [
+        {
+          "type": "address",
+          "name": "to"
+        },
+        {
+          "type": "uint256",
+          "name": "tokenId"
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "assets",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [
+        {
+          "type": "uint256",
+          "name": ""
+        }
+      ],
+      "outputs": [
+        {
+          "type": "string",
+          "name": "datasetURI"
+        },
+        {
+          "type": "string",
+          "name": "modelURI"
+        },
+        {
+          "type": "string",
+          "name": "encryptedMetaURI"
+        },
+        {
+          "type": "uint32",
+          "name": "reputation"
+        },
+        {
+          "type": "bool",
+          "name": "zkProtected"
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "balanceOf",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [
+        {
+          "type": "address",
+          "name": "owner"
+        }
+      ],
+      "outputs": [
+        {
+          "type": "uint256",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "getApproved",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [
+        {
+          "type": "uint256",
+          "name": "tokenId"
+        }
+      ],
+      "outputs": [
+        {
+          "type": "address",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "getRoleAdmin",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [
+        {
+          "type": "bytes32",
+          "name": "role"
+        }
+      ],
+      "outputs": [
+        {
+          "type": "bytes32",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "grantRole",
+      "constant": false,
+      "payable": false,
+      "inputs": [
+        {
+          "type": "bytes32",
+          "name": "role"
+        },
+        {
+          "type": "address",
+          "name": "account"
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "hasRole",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [
+        {
+          "type": "bytes32",
+          "name": "role"
+        },
+        {
+          "type": "address",
+          "name": "account"
+        }
+      ],
+      "outputs": [
+        {
+          "type": "bool",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "isApprovedForAll",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [
+        {
+          "type": "address",
+          "name": "owner"
+        },
+        {
+          "type": "address",
+          "name": "operator"
+        }
+      ],
+      "outputs": [
+        {
+          "type": "bool",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "mint",
+      "constant": false,
+      "payable": false,
+      "inputs": [
+        {
+          "type": "address",
+          "name": "to"
+        },
+        {
+          "type": "string",
+          "name": "tokenURI_"
+        },
+        {
+          "type": "string",
+          "name": "datasetURI_"
+        },
+        {
+          "type": "string",
+          "name": "modelURI_"
+        },
+        {
+          "type": "string",
+          "name": "encryptedMetaURI_"
+        },
+        {
+          "type": "bool",
+          "name": "zkProtected_"
+        }
+      ],
+      "outputs": [
+        {
+          "type": "uint256",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "name",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [],
+      "outputs": [
+        {
+          "type": "string",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "ownerOf",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [
+        {
+          "type": "uint256",
+          "name": "tokenId"
+        }
+      ],
+      "outputs": [
+        {
+          "type": "address",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "pause",
+      "constant": false,
+      "payable": false,
+      "inputs": [],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "paused",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [],
+      "outputs": [
+        {
+          "type": "bool",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "renounceRole",
+      "constant": false,
+      "payable": false,
+      "inputs": [
+        {
+          "type": "bytes32",
+          "name": "role"
+        },
+        {
+          "type": "address",
+          "name": "account"
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "revokeRole",
+      "constant": false,
+      "payable": false,
+      "inputs": [
+        {
+          "type": "bytes32",
+          "name": "role"
+        },
+        {
+          "type": "address",
+          "name": "account"
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "royaltyInfo",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [
+        {
+          "type": "uint256",
+          "name": "tokenId"
+        },
+        {
+          "type": "uint256",
+          "name": "salePrice"
+        }
+      ],
+      "outputs": [
+        {
+          "type": "address",
+          "name": ""
+        },
+        {
+          "type": "uint256",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "safeTransferFrom",
+      "constant": false,
+      "payable": false,
+      "inputs": [
+        {
+          "type": "address",
+          "name": "from"
+        },
+        {
+          "type": "address",
+          "name": "to"
+        },
+        {
+          "type": "uint256",
+          "name": "tokenId"
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "safeTransferFrom",
+      "constant": false,
+      "payable": false,
+      "inputs": [
+        {
+          "type": "address",
+          "name": "from"
+        },
+        {
+          "type": "address",
+          "name": "to"
+        },
+        {
+          "type": "uint256",
+          "name": "tokenId"
+        },
+        {
+          "type": "bytes",
+          "name": "data"
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "setApprovalForAll",
+      "constant": false,
+      "payable": false,
+      "inputs": [
+        {
+          "type": "address",
+          "name": "operator"
+        },
+        {
+          "type": "bool",
+          "name": "approved"
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "setDefaultRoyalty",
+      "constant": false,
+      "payable": false,
+      "inputs": [
+        {
+          "type": "address",
+          "name": "receiver"
+        },
+        {
+          "type": "uint96",
+          "name": "feeNumerator"
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "setReputation",
+      "constant": false,
+      "payable": false,
+      "inputs": [
+        {
+          "type": "uint256",
+          "name": "tokenId"
+        },
+        {
+          "type": "uint32",
+          "name": "reputation_"
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "setTokenURI",
+      "constant": false,
+      "payable": false,
+      "inputs": [
+        {
+          "type": "uint256",
+          "name": "tokenId"
+        },
+        {
+          "type": "string",
+          "name": "newURI"
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "supportsInterface",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [
+        {
+          "type": "bytes4",
+          "name": "interfaceId"
+        }
+      ],
+      "outputs": [
+        {
+          "type": "bool",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "symbol",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [],
+      "outputs": [
+        {
+          "type": "string",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "tokenURI",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [
+        {
+          "type": "uint256",
+          "name": "tokenId"
+        }
+      ],
+      "outputs": [
+        {
+          "type": "string",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "transferFrom",
+      "constant": false,
+      "payable": false,
+      "inputs": [
+        {
+          "type": "address",
+          "name": "from"
+        },
+        {
+          "type": "address",
+          "name": "to"
+        },
+        {
+          "type": "uint256",
+          "name": "tokenId"
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "unpause",
+      "constant": false,
+      "payable": false,
+      "inputs": [],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "updateAssetURIs",
+      "constant": false,
+      "payable": false,
+      "inputs": [
+        {
+          "type": "uint256",
+          "name": "tokenId"
+        },
+        {
+          "type": "string",
+          "name": "datasetURI_"
+        },
+        {
+          "type": "string",
+          "name": "modelURI_"
+        },
+        {
+          "type": "string",
+          "name": "encryptedMetaURI_"
+        },
+        {
+          "type": "bool",
+          "name": "zkProtected_"
+        }
+      ],
+      "outputs": []
     }
   ]
 }

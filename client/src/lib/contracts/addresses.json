@@ -2,14 +2,14 @@
   "ZAI": "0x23C9593BBaC9207c9E360cbF7A64E0808374B43E",
   "ContributorNFT": "0x252Be087B4DBda059226B4A0855574E945Fb8B20",
   "DatasetRegistry": "0x521E29d7F8dfC78c017B1E93c8DB5f3ff808425d",
-  "ZenkaiINFT": "0x0000000000000000000000000000000000000000",
+  "ZenkaiINFT": "0x97d84c9fc99E58F3261CA9bd91455b4138740039",
   "chainId": 16601,
   "network": "0G Galileo Testnet",
-  "deployedAt": "2025-09-17T14:30:00.000Z",
+  "deployedAt": "2025-09-19T17:04:06.427Z",
   "explorerUrls": {
     "ZAI": "https://chainscan-galileo.0g.ai/address/0x23C9593BBaC9207c9E360cbF7A64E0808374B43E",
     "ContributorNFT": "https://chainscan-galileo.0g.ai/address/0x252Be087B4DBda059226B4A0855574E945Fb8B20",
     "DatasetRegistry": "https://chainscan-galileo.0g.ai/address/0x521E29d7F8dfC78c017B1E93c8DB5f3ff808425d",
-    "ZenkaiINFT": "https://chainscan-galileo.0g.ai/address/0x0000000000000000000000000000000000000000"
+    "ZenkaiINFT": "https://chainscan-galileo.0g.ai/address/0x97d84c9fc99E58F3261CA9bd91455b4138740039"
   }
 }
