@@ -1126,6 +1126,92 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // INFT Asset routes
+  // Create INFT asset (for minted INFTs)
+  app.post("/api/infts", verifyWalletSignature, async (req: AuthenticatedRequest, res) => {
+    try {
+      const inftData = req.body;
+      
+      // Ensure INFT owner matches authenticated user
+      if (inftData.ownerId && inftData.ownerId !== req.user!.id) {
+        return res.status(403).json({ error: "Access denied", details: "Cannot create INFT for different user" });
+      }
+      
+      // Set ownerId to authenticated user if not provided
+      if (!inftData.ownerId) {
+        inftData.ownerId = req.user!.id;
+      }
+      
+      const inft = await storage.createInftAsset(inftData);
+      res.json(inft);
+    } catch (error) {
+      console.error('INFT creation error:', error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  // Get INFTs by owner (wallet address)
+  app.get("/api/infts/owner/wallet/:address", validateWalletAddress, async (req, res) => {
+    try {
+      const user = await storage.getUserByWallet(req.params.address);
+      if (!user) {
+        return res.json([]); // Return empty array if user not found
+      }
+      const infts = await storage.getInftAssetsByOwner(user.id);
+      res.json(infts);
+    } catch (error) {
+      console.error('INFT fetch by wallet error:', error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  // Get all active INFTs (for marketplace)
+  app.get("/api/infts", async (req, res) => {
+    try {
+      // For now, get all active INFTs - in production, you might want pagination
+      const infts = await storage.getInftAssetsByOwner(''); // Empty owner gets all active
+      res.json(infts);
+    } catch (error) {
+      console.error('INFT fetch error:', error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  // Get INFT by ID
+  app.get("/api/infts/:id", async (req, res) => {
+    try {
+      const inft = await storage.getInftAsset(req.params.id);
+      if (!inft) {
+        return res.status(404).json({ error: "INFT not found" });
+      }
+      res.json(inft);
+    } catch (error) {
+      console.error('INFT fetch by ID error:', error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  // Update INFT (for owner or admin)
+  app.put("/api/infts/:id", verifyWalletSignature, async (req: AuthenticatedRequest, res) => {
+    try {
+      const inft = await storage.getInftAsset(req.params.id);
+      if (!inft) {
+        return res.status(404).json({ error: "INFT not found" });
+      }
+      
+      // Ensure user owns the INFT
+      if (inft.ownerId !== req.user!.id) {
+        return res.status(403).json({ error: "Access denied", details: "You don't own this INFT" });
+      }
+      
+      const updatedInft = await storage.updateInftAsset(req.params.id, req.body);
+      res.json(updatedInft);
+    } catch (error) {
+      console.error('INFT update error:', error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;
