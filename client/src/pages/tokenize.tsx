@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Link } from 'wouter';
-import { ArrowLeft, Shield, DollarSign, Coins, TrendingUp, Target, Share2, Percent } from 'lucide-react';
+import { ArrowLeft, Shield, Image, FileText, Percent, TrendingUp, Target, Hash, Lock, DollarSign, Coins, Share2 } from 'lucide-react';
+import { useAccount, useWriteContract, useSwitchChain } from 'wagmi';
+import { parseEther } from 'viem';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -14,56 +16,113 @@ import { Separator } from '@/components/ui/separator';
 import { Slider } from '@/components/ui/slider';
 import content from '@/lib/config/content.json';
 
-// Enhanced Tokenize form schema with revenue sharing
-const tokenizeSchema = z.object({
-  modelName: z.string().min(3, 'Model name must be at least 3 characters'),
-  endpointUrl: z.string().url('Please enter a valid URL'),
-  pricePerQuery: z.string().min(1, 'Price is required').regex(/^\d+(\.\d{1,4})?$/, 'Enter a valid price'),
+// INFT Minting form schema
+const inftSchema = z.object({
+  name: z.string().min(3, 'INFT name must be at least 3 characters'),
   description: z.string().min(10, 'Description must be at least 10 characters'),
-  totalTokens: z.string().min(1, 'Total tokens is required').regex(/^\d+$/, 'Enter a valid number'),
-  revenueShare: z.number().min(0).max(100),
-  stakingRewards: z.string().min(1, 'Staking rewards is required').regex(/^\d+(\.\d{1,2})?$/, 'Enter a valid percentage'),
+  datasetURI: z.string().min(1, 'Dataset URI is required').regex(/^(ipfs|0g):\/\//, 'Must be valid IPFS or 0G Storage URI'),
+  modelURI: z.string().optional().refine((val) => !val || /^(ipfs|0g):\/\//.test(val), 'Must be valid IPFS or 0G Storage URI or empty'),
+  encryptedMetaURI: z.string().optional(),
+  royaltyPercentage: z.number().min(0).max(10),
+  attributes: z.string().optional(),
 });
 
-type TokenizeFormData = z.infer<typeof tokenizeSchema>;
+type INFTFormData = z.infer<typeof inftSchema>;
 
 export default function TokenizePage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [tokenized, setTokenized] = useState(false);
-  const [revenueShare, setRevenueShare] = useState<number[]>([15]);
-  const [selectedModel, setSelectedModel] = useState<string>('');
+  const [minted, setMinted] = useState(false);
+  const [royaltyPercentage, setRoyaltyPercentage] = useState<number[]>([5]);
+  const [selectedAsset, setSelectedAsset] = useState<string>('');
+  const [mintedTokenId, setMintedTokenId] = useState<string>('');
+  
+  // Web3 hooks
+  const { address, chainId } = useAccount();
+  const { writeContract } = useWriteContract();
+  const { switchChain } = useSwitchChain();
 
-  // Mock trained models
-  const trainedModels = [
-    { id: 'model-1', name: 'Text Classifier v1', accuracy: '92.3%', status: 'trained' },
-    { id: 'model-2', name: 'Sentiment Analyzer v2', accuracy: '89.7%', status: 'trained' },
-    { id: 'model-3', name: 'Image Recognition Model', accuracy: '94.1%', status: 'trained' },
+  // Mock uploaded assets (would come from user's uploads)
+  const uploadedAssets = [
+    { 
+      id: 'asset-1', 
+      name: 'Financial Sentiment Dataset', 
+      type: 'dataset',
+      uri: '0g://Qm123...abc', 
+      storageProvider: '0g',
+      zkProtected: true,
+      size: '2.1 GB'
+    },
+    { 
+      id: 'asset-2', 
+      name: 'Image Classification Model', 
+      type: 'model',
+      uri: 'ipfs://Qm456...def', 
+      storageProvider: 'ipfs',
+      zkProtected: false,
+      size: '156 MB'
+    },
+    { 
+      id: 'asset-3', 
+      name: 'NLP Training Dataset', 
+      type: 'dataset',
+      uri: '0g://Qm789...ghi', 
+      storageProvider: '0g',
+      zkProtected: true,
+      size: '850 MB'
+    },
   ];
 
-  const form = useForm<TokenizeFormData>({
-    resolver: zodResolver(tokenizeSchema),
+  const form = useForm<INFTFormData>({
+    resolver: zodResolver(inftSchema),
     defaultValues: {
-      modelName: '',
-      endpointUrl: 'https://api.yourmodel.com/v1/predict',
-      pricePerQuery: '0.0025',
-      description: 'Advanced AI model trained on high-quality data with enterprise-grade accuracy and performance. Suitable for production workloads with comprehensive monitoring and analytics.',
-      totalTokens: '1000000',
-      revenueShare: 15,
-      stakingRewards: '2.5',
+      name: '',
+      description: 'Unique AI asset with verifiable provenance and performance metrics. Perfect for collectors and AI enthusiasts seeking authentic intelligence assets.',
+      datasetURI: '',
+      modelURI: '',
+      encryptedMetaURI: '',
+      royaltyPercentage: 5,
+      attributes: '',
     },
   });
 
-  const handleSubmit = async (data: TokenizeFormData) => {
+  // Auto-detect ZK protection from selected asset
+  const isZKProtected = useCallback(() => {
+    if (!selectedAsset) return false;
+    const asset = uploadedAssets.find(a => a.id === selectedAsset);
+    return asset?.zkProtected || false;
+  }, [selectedAsset]);
+
+  // Handle INFT minting
+  const handleSubmit = async (data: INFTFormData) => {
+    if (!address) {
+      alert('Please connect your wallet first');
+      return;
+    }
+
     setIsSubmitting(true);
     
-    // Simulate tokenization process
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    setIsSubmitting(false);
-    setTokenized(true);
+    try {
+      // Ensure we're on 0G Galileo testnet
+      if (chainId !== 16601) {
+        await switchChain({ chainId: 16601 });
+      }
+
+      // For demo, simulate successful minting
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // TODO: Integrate with actual ZenkaiINFT contract
+      const mockTokenId = `INFT-${Date.now()}`;
+      setMintedTokenId(mockTokenId);
+      setMinted(true);
+    } catch (error) {
+      console.error('INFT minting failed:', error);
+      alert('Failed to mint INFT. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  if (tokenized) {
+  if (minted) {
     return (
       <div className="min-h-screen bg-background">
         {/* Header */}
@@ -75,7 +134,7 @@ export default function TokenizePage() {
                 <span>Back to Home</span>
               </Link>
             </div>
-            <h1 className="text-2xl font-bold gradient-text-cyber">Tokenization Complete</h1>
+            <h1 className="text-2xl font-bold gradient-text-cyber">INFT Minted Successfully</h1>
           </div>
         </div>
 
@@ -87,36 +146,40 @@ export default function TokenizePage() {
             </div>
             
             <h2 className="text-4xl font-bold gradient-text-cyber mb-6">
-              Your AI is now tokenized!
+              Your Intelligence NFT is Live!
             </h2>
             
             <p className="text-xl text-foreground/80 mb-8 max-w-lg mx-auto">
-              {form.getValues('modelName')} has been successfully registered as an investable asset on the blockchain.
+              {form.getValues('name')} has been successfully minted as a unique Intelligence NFT on the 0G blockchain.
             </p>
 
             <div className="grid md:grid-cols-3 gap-6 mb-8">
               <div className="glass-cyber p-6 rounded-xl">
-                <Coins className="w-8 h-8 text-primary mb-4 mx-auto" />
-                <div className="text-2xl font-bold gradient-text-cyber mb-2">
-                  {form.getValues('totalTokens')}
+                <Hash className="w-8 h-8 text-primary mb-4 mx-auto" />
+                <div className="text-lg font-bold gradient-text-cyber mb-2">
+                  {mintedTokenId}
                 </div>
-                <div className="text-sm text-foreground/70">Total Tokens</div>
+                <div className="text-sm text-foreground/70">Token ID</div>
               </div>
               
               <div className="glass-cyber p-6 rounded-xl">
-                <DollarSign className="w-8 h-8 text-primary mb-4 mx-auto" />
+                <Percent className="w-8 h-8 text-secondary mb-4 mx-auto" />
                 <div className="text-2xl font-bold gradient-text-cyber mb-2">
-                  {form.getValues('pricePerQuery')} ZAI
+                  {royaltyPercentage[0]}%
                 </div>
-                <div className="text-sm text-foreground/70">Per Query</div>
+                <div className="text-sm text-foreground/70">Creator Royalty</div>
               </div>
               
               <div className="glass-cyber p-6 rounded-xl">
-                <TrendingUp className="w-8 h-8 text-primary mb-4 mx-auto" />
+                {isZKProtected() ? (
+                  <Lock className="w-8 h-8 text-accent mb-4 mx-auto" />
+                ) : (
+                  <Shield className="w-8 h-8 text-primary mb-4 mx-auto" />
+                )}
                 <div className="text-2xl font-bold gradient-text-cyber mb-2">
-                  Active
+                  {isZKProtected() ? 'ZK Protected' : 'Public'}
                 </div>
-                <div className="text-sm text-foreground/70">Status</div>
+                <div className="text-sm text-foreground/70">Privacy</div>
               </div>
             </div>
 
@@ -141,10 +204,10 @@ export default function TokenizePage() {
           {/* Header */}
           <div className="text-center mb-12" data-testid="tokenize-header">
             <h1 className="text-4xl md:text-5xl font-display font-bold mb-4 gradient-text-cyber">
-              {content.tokenizePage.headline}
+              Mint Intelligence NFTs
             </h1>
             <p className="text-xl md:text-2xl text-accent/90 leading-relaxed max-w-3xl mx-auto">
-              {content.tokenizePage.subHeadline}
+              Transform your AI datasets and models into tradeable Intelligence NFTs with verifiable provenance and creator royalties.
             </p>
           </div>
 
@@ -153,10 +216,10 @@ export default function TokenizePage() {
             <Card className="max-w-6xl mx-auto glass-cyber hover-cyber" data-testid="card-tokenization-form">
               <CardHeader>
                 <CardTitle className="text-2xl font-display gradient-text-cyber">
-                  AI Model Tokenization
+                  Intelligence NFT Minting
                 </CardTitle>
                 <CardDescription className="text-lg text-muted-foreground">
-                  Tradeable AI tokens backed by performance and usage
+                  Create unique NFTs for your AI datasets and models with built-in royalties
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-8">
@@ -168,57 +231,66 @@ export default function TokenizePage() {
                     <div className="space-y-4">
                       <div>
                         <h3 className="text-lg font-semibold">
-                          Select AI Model
+                          Select Asset to Mint
                         </h3>
-                        <p className="text-sm text-muted-foreground mb-4">Choose a trained model to tokenize</p>
+                        <p className="text-sm text-muted-foreground mb-4">Choose a dataset or model from your uploads</p>
                       </div>
                       
                       <div className="grid md:grid-cols-3 gap-4">
-                        {trainedModels.map((model) => (
+                        {uploadedAssets.map((asset) => (
                           <div
-                            key={model.id}
+                            key={asset.id}
                             className={`p-4 rounded-xl border cursor-pointer transition-all duration-300 hover-cyber ${
-                              selectedModel === model.id
+                              selectedAsset === asset.id
                                 ? 'border-primary/50 glass-panel bg-primary/5 shadow-md'
                                 : 'border-primary/20 glass-panel hover:border-primary/30'
                             }`}
                             onClick={() => {
-                              setSelectedModel(model.id);
-                              // Auto-populate model name when selected
-                              if (!form.getValues('modelName')) {
-                                form.setValue('modelName', `${model.name} Token`);
+                              setSelectedAsset(asset.id);
+                              // Auto-populate asset data when selected
+                              if (!form.getValues('name')) {
+                                form.setValue('name', `${asset.name} INFT`);
                               }
+                              form.setValue('datasetURI', asset.uri);
                             }}
-                            data-testid={`model-${model.id}`}
+                            data-testid={`asset-${asset.id}`}
                           >
                             <div className="flex items-center justify-between mb-3">
-                              <h4 className="font-medium text-sm">{model.name}</h4>
-                              <Badge className="bg-primary/10 text-primary border-primary/20 text-xs">
-                                {model.status}
-                              </Badge>
+                              <h4 className="font-medium text-sm">{asset.name}</h4>
+                              <div className="flex gap-1">
+                                <Badge className="bg-secondary/10 text-secondary border-secondary/20 text-xs">
+                                  {asset.type}
+                                </Badge>
+                                {asset.zkProtected && (
+                                  <Badge className="bg-accent/10 text-accent border-accent/20 text-xs">
+                                    <Lock className="w-3 h-3 mr-1" />
+                                    ZK
+                                  </Badge>
+                                )}
+                              </div>
                             </div>
                             <div className="text-xs text-foreground/70 mb-2">
-                              Accuracy: {model.accuracy}
+                              Storage: {asset.storageProvider.toUpperCase()} • Size: {asset.size}
                             </div>
                             
                             {/* Model Details Preview */}
                             <div className="text-xs space-y-1 pt-2 border-t border-border/20">
                               <div className="flex justify-between">
-                                <span className="text-muted-foreground">Queries today:</span>
-                                <span className="text-primary font-medium">
-                                  {model.id === 'model-1' ? '1.2K' : model.id === 'model-2' ? '850' : '2.1K'}
+                                <span className="text-muted-foreground">Storage URI:</span>
+                                <span className="text-primary font-medium text-xs">
+                                  {asset.uri.slice(0, 12)}...
                                 </span>
                               </div>
                               <div className="flex justify-between">
-                                <span className="text-muted-foreground">Revenue potential:</span>
+                                <span className="text-muted-foreground">NFT potential:</span>
                                 <span className="text-secondary font-medium">High</span>
                               </div>
                             </div>
                             
-                            {selectedModel === model.id && (
+                            {selectedAsset === asset.id && (
                               <div className="mt-3 text-center">
                                 <Badge className="bg-primary text-primary-foreground text-xs">
-                                  ✓ Selected for Tokenization
+                                  ✓ Selected for Minting
                                 </Badge>
                               </div>
                             )}
@@ -227,27 +299,27 @@ export default function TokenizePage() {
                       </div>
                       
                       {/* Selected Model Summary */}
-                      {selectedModel && (
+                      {selectedAsset && (
                         <div className="mt-6 p-4 glass-panel rounded-xl border border-primary/10">
                           <h4 className="text-sm font-semibold mb-3 flex items-center">
                             <Target className="w-4 h-4 mr-2 text-primary" />
-                            Selected Model Overview
+                            Selected Asset Overview
                           </h4>
                           {(() => {
-                            const model = trainedModels.find(m => m.id === selectedModel);
+                            const asset = uploadedAssets.find(a => a.id === selectedAsset);
                             return (
                               <div className="grid md:grid-cols-3 gap-4 text-sm">
                                 <div className="space-y-1">
-                                  <div className="text-muted-foreground">Model Name:</div>
-                                  <div className="font-medium text-primary">{model?.name}</div>
+                                  <div className="text-muted-foreground">Asset Name:</div>
+                                  <div className="font-medium text-primary">{asset?.name}</div>
                                 </div>
                                 <div className="space-y-1">
-                                  <div className="text-muted-foreground">Performance:</div>
-                                  <div className="font-medium text-secondary">{model?.accuracy} accuracy</div>
+                                  <div className="text-muted-foreground">Storage:</div>
+                                  <div className="font-medium text-secondary">{asset?.storageProvider.toUpperCase()} • {asset?.size}</div>
                                 </div>
                                 <div className="space-y-1">
-                                  <div className="text-muted-foreground">Est. Token Value:</div>
-                                  <div className="font-medium text-accent">0.25 - 0.75 ZAI</div>
+                                  <div className="text-muted-foreground">Est. INFT Value:</div>
+                                  <div className="font-medium text-accent">0.5 - 2.0 ETH</div>
                                 </div>
                               </div>
                             );
@@ -262,7 +334,7 @@ export default function TokenizePage() {
                     <div className="space-y-4">
                       <div>
                         <h3 className="text-lg font-semibold">
-                          Define Model Details
+                          Define INFT Details
                         </h3>
                         
                       </div>
@@ -270,20 +342,20 @@ export default function TokenizePage() {
                       <div className="space-y-6">
                         <FormField
                           control={form.control}
-                          name="modelName"
+                          name="name"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Token Name</FormLabel>
+                              <FormLabel>INFT Name</FormLabel>
                               <FormControl>
                                 <Input 
-                                  placeholder="e.g. Advanced Sentiment Analyzer Token"
+                                  placeholder="e.g. Advanced Sentiment Dataset INFT"
                                   className="glass-panel border-primary/20"
-                                  data-testid="input-model-name"
+                                  data-testid="input-inft-name"
                                   {...field}
                                 />
                               </FormControl>
                               <FormDescription>
-                                Public name for your tokenized AI model
+                                Public name for your Intelligence NFT
                               </FormDescription>
                               <FormMessage />
                             </FormItem>
@@ -298,14 +370,14 @@ export default function TokenizePage() {
                               <FormLabel>Description</FormLabel>
                               <FormControl>
                                 <Textarea 
-                                  placeholder="Describe your AI model's capabilities, use cases, and potential for revenue generation..."
+                                  placeholder="Describe your AI asset's capabilities, uniqueness, and value proposition..."
                                   className="glass-panel border-primary/20 min-h-24"
                                   data-testid="input-description"
                                   {...field}
                                 />
                               </FormControl>
                               <FormDescription>
-                                Detailed description for potential investors
+                                Detailed description for potential collectors
                               </FormDescription>
                               <FormMessage />
                             </FormItem>
@@ -314,20 +386,42 @@ export default function TokenizePage() {
 
                         <FormField
                           control={form.control}
-                          name="endpointUrl"
+                          name="datasetURI"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>API Endpoint</FormLabel>
+                              <FormLabel>Dataset URI</FormLabel>
                               <FormControl>
                                 <Input 
-                                  placeholder="https://api.yourmodel.com/v1/predict"
+                                  placeholder="0g://... or ipfs://..."
                                   className="glass-panel border-primary/20"
-                                  data-testid="input-endpoint-url"
+                                  data-testid="input-dataset-uri"
                                   {...field}
                                 />
                               </FormControl>
                               <FormDescription>
-                                Public API endpoint for model access
+                                Primary dataset URI from your uploads
+                              </FormDescription>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        
+                        <FormField
+                          control={form.control}
+                          name="modelURI"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Model URI (Optional)</FormLabel>
+                              <FormControl>
+                                <Input 
+                                  placeholder="0g://... or ipfs://..."
+                                  className="glass-panel border-secondary/20"
+                                  data-testid="input-model-uri"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormDescription>
+                                Optional trained model URI if available
                               </FormDescription>
                               <FormMessage />
                             </FormItem>
@@ -342,128 +436,93 @@ export default function TokenizePage() {
                     <div className="space-y-4">
                       <div>
                         <h3 className="text-lg font-semibold">
-                          Tokenomics
+                          INFT Royalty Settings
                         </h3>
-                        <p className="text-sm text-muted-foreground mb-4">Define pricing and revenue sharing parameters</p>
+                        <p className="text-sm text-muted-foreground mb-4">Configure creator royalties for secondary sales</p>
                       </div>
                       
                       <div className="space-y-6">
-                        {/* Pricing Fields */}
-                        <div className="grid md:grid-cols-2 gap-6">
-                          <FormField
-                            control={form.control}
-                            name="pricePerQuery"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="flex items-center">
-                                  <DollarSign className="w-4 h-4 mr-1 text-primary" />
-                                  {content.tokenizePage.fields.queryPrice}
-                                </FormLabel>
-                                <FormControl>
-                                  <Input 
-                                    placeholder="0.0025"
-                                    className="glass-panel border-primary/20"
-                                    data-testid="input-price-per-query"
-                                    {...field}
-                                  />
-                                </FormControl>
-                                <FormDescription className="text-sm">
-                                  {content.tokenizePage.fields.queryPriceDesc}
-                                </FormDescription>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
+                        {/* Optional Attributes Field */}
+                        <FormField
+                          control={form.control}
+                          name="attributes"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="flex items-center">
+                                <Hash className="w-4 h-4 mr-1 text-secondary" />
+                                Attributes (Optional)
+                              </FormLabel>
+                              <FormControl>
+                                <Input 
+                                  placeholder="type=dataset,category=finance,quality=premium"
+                                  className="glass-panel border-secondary/20"
+                                  data-testid="input-attributes"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormDescription className="text-sm">
+                                Comma-separated attributes for enhanced discoverability
+                              </FormDescription>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
 
-                          <FormField
-                            control={form.control}
-                            name="totalTokens"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="flex items-center">
-                                  <Coins className="w-4 h-4 mr-1 text-secondary" />
-                                  {content.tokenizePage.fields.tokenSupply}
-                                </FormLabel>
-                                <FormControl>
-                                  <Input 
-                                    placeholder="1000000"
-                                    className="glass-panel border-secondary/20"
-                                    data-testid="input-total-tokens"
-                                    {...field}
-                                  />
-                                </FormControl>
-                                <FormDescription className="text-sm">
-                                  {content.tokenizePage.fields.tokenSupplyDesc}
-                                </FormDescription>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        </div>
-
-                            {/* Enhanced Revenue Sharing Slider with Live Preview */}
+                            {/* Royalty Percentage Slider */}
                         <div className="space-y-4">
                           <FormLabel className="flex items-center mb-4">
-                            <Share2 className="w-4 h-4 mr-1 text-accent" />
-                            {content.tokenizePage.fields.revenueShare}: {revenueShare[0]}%
+                            <Percent className="w-4 h-4 mr-1 text-accent" />
+                            Creator Royalty: {royaltyPercentage[0]}%
                           </FormLabel>
                           
                           <div className="glass-panel p-6 rounded-xl border border-accent/20">
                             <div className="mb-4">
                               <Slider
-                                value={revenueShare}
+                                value={royaltyPercentage}
                                 onValueChange={(value) => {
-                                  setRevenueShare(value);
-                                  form.setValue('revenueShare', value[0]);
+                                  setRoyaltyPercentage(value);
+                                  form.setValue('royaltyPercentage', value[0]);
                                 }}
-                                max={50}
-                                min={5}
-                                step={5}
+                                max={10}
+                                min={0}
+                                step={1}
                                 className="w-full"
-                                data-testid="slider-revenue-share"
+                                data-testid="slider-royalty-percentage"
                               />
                               <div className="flex justify-between text-xs text-muted-foreground mt-2">
-                                <span>5% (Min)</span>
-                                <span className="text-accent">25% (Recommended)</span>
-                                <span>50% (Max)</span>
+                                <span>0% (No Royalty)</span>
+                                <span className="text-accent">5% (Recommended)</span>
+                                <span>10% (Max)</span>
                               </div>
                             </div>
 
-                            {/* Revenue Preview */}
+                            {/* Royalty Preview */}
                             <div className="mt-6 p-4 glass-panel rounded-lg border border-primary/10">
                               <h4 className="text-sm font-semibold mb-3 flex items-center">
                                 <TrendingUp className="w-4 h-4 mr-2 text-primary" />
-                                Revenue Distribution Preview
+                                Royalty Preview
                               </h4>
                               <div className="grid grid-cols-2 gap-4 text-sm">
                                 <div className="space-y-2">
                                   <div className="flex justify-between">
-                                    <span className="text-foreground/70">Your Share:</span>
-                                    <span className="font-medium text-primary">{100 - revenueShare[0]}%</span>
+                                    <span className="text-foreground/70">Your Royalty:</span>
+                                    <span className="font-medium text-primary">{royaltyPercentage[0]}%</span>
                                   </div>
                                   <div className="flex justify-between">
-                                    <span className="text-foreground/70">Token Holders:</span>
-                                    <span className="font-medium text-accent">{revenueShare[0]}%</span>
+                                    <span className="text-foreground/70">Per Sale:</span>
+                                    <span className="font-medium text-accent">Automatic</span>
                                   </div>
                                 </div>
                                 <div className="space-y-2">
                                   <div className="flex justify-between">
-                                    <span className="text-foreground/70">Est. Monthly (1K queries):</span>
+                                    <span className="text-foreground/70">Example (1 ETH sale):</span>
                                     <span className="font-medium text-secondary">
-                                      {form.watch('pricePerQuery') ? 
-                                        `${(parseFloat(form.watch('pricePerQuery') || '0') * 1000 * (100 - revenueShare[0]) / 100).toFixed(2)} ZAI` : 
-                                        '2.1 ZAI'
-                                      }
+                                      {(royaltyPercentage[0] / 100).toFixed(2)} ETH
                                     </span>
                                   </div>
                                   <div className="flex justify-between">
-                                    <span className="text-foreground/70">Holder Rewards:</span>
-                                    <span className="font-medium text-accent">
-                                      {form.watch('pricePerQuery') ? 
-                                        `${(parseFloat(form.watch('pricePerQuery') || '0') * 1000 * revenueShare[0] / 100).toFixed(2)} ZAI` : 
-                                        '0.4 ZAI'
-                                      }
-                                    </span>
+                                    <span className="text-foreground/70">Standard:</span>
+                                    <span className="font-medium text-accent">EIP-2981</span>
                                   </div>
                                 </div>
                               </div>
@@ -471,35 +530,10 @@ export default function TokenizePage() {
                           </div>
                           
                           <FormDescription className="text-sm">
-                            {content.tokenizePage.fields.revenueShareDesc}
+                            Set creator royalty percentage for secondary sales (0-10%)
                           </FormDescription>
                         </div>
 
-                        {/* Staking Rewards */}
-                        <FormField
-                          control={form.control}
-                          name="stakingRewards"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel className="flex items-center">
-                                <Percent className="w-4 h-4 mr-1 text-primary" />
-                                {content.tokenizePage.fields.stakingRewards} (Optional)
-                              </FormLabel>
-                              <FormControl>
-                                <Input 
-                                  placeholder="2.5"
-                                  className="glass-panel border-primary/20"
-                                  data-testid="input-staking-rewards"
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormDescription className="text-sm">
-                                {content.tokenizePage.fields.stakingRewardsDesc}
-                              </FormDescription>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
                       </div>
                     </div>
 
@@ -508,11 +542,11 @@ export default function TokenizePage() {
                       <Button 
                         type="submit" 
                         className="w-full gradient-primary hover-cyber font-display font-semibold text-lg py-6"
-                        disabled={isSubmitting || !selectedModel}
-                        data-testid="button-tokenize"
+                        disabled={isSubmitting || !selectedAsset}
+                        data-testid="button-mint-inft"
                       >
-                        <Coins className="w-5 h-5 mr-2" />
-                        {isSubmitting ? 'Tokenizing...' : content.tokenizePage.button}
+                        <Shield className="w-5 h-5 mr-2" />
+                        {isSubmitting ? 'Minting INFT...' : 'Mint Intelligence NFT'}
                       </Button>
                     </div>
 
