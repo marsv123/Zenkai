@@ -301,16 +301,6 @@ export default function Home() {
                 Powered by 0G's AI-native blockchain, <ZenkaiBrand colorContext="inherit" /> fuses data and AI into a decentralized, scalable marketplace of intelligence.
                 Participants can rent datasets or build, train, and tokenize AI models within one seamless dApp. Every contribution carries built-in ownership, reputation, and monetization. As data compounds and models evolve, value creation accelerates, fueling continuous growth across the ecosystem.
               </p>
-              
-              <div className="text-center">
-                <Link 
-                  href="/marketplace"
-                  className="gradient-primary hover-cyber px-10 py-4 rounded-xl font-medium text-primary-foreground transition-all duration-500 text-lg inline-flex items-center justify-center group"
-                  data-testid="button-get-started-marketplace"
-                >
-                  <span>Explore Marketplace</span>
-                </Link>
-              </div>
             </div>
           </div>
           
@@ -458,6 +448,17 @@ export default function Home() {
                 </p>
               </article>
             ))}
+          </div>
+          
+          {/* CTA Button */}
+          <div className="text-center mt-12">
+            <Link 
+              href="/marketplace"
+              className="gradient-primary hover-cyber px-10 py-4 rounded-xl font-medium text-primary-foreground transition-all duration-500 text-lg inline-flex items-center justify-center group"
+              data-testid="button-get-started-marketplace"
+            >
+              <span>Explore Marketplace</span>
+            </Link>
           </div>
         </div>
         {/* Ambient background effects */}
