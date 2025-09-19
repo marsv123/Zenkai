@@ -87,8 +87,8 @@ export default function Navigation() {
       <nav className={`fixed top-0 left-0 right-0 z-50 glass-cyber transition-all duration-500 ease-out ${
         scrolled ? 'py-2' : 'py-4'
       }`} role="navigation" aria-label="Main navigation">
-        <div className="container mx-auto px-4 lg:px-6">
-          <div className="flex items-center justify-between h-11">
+        <div className="container mx-auto px-4 lg:px-6 flex justify-center">
+          <div className="flex items-center justify-between h-11 w-full max-w-6xl">
             
             {/* Left spacer for balanced layout */}
             <div className="flex-1" />

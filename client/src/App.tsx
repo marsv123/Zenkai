@@ -26,20 +26,22 @@ function Router() {
     <div className="min-h-screen bg-background">
       <Navigation />
       <main id="main-content" className="container mx-auto px-4 lg:px-6 pt-8">
-        <Switch>
-          <Route path="/" component={Home} />
-          <Route path="/marketplace" component={Marketplace} />
-          <Route path="/create" component={Create} />
-          <Route path="/upload" component={Upload} />
-          <Route path="/monetize" component={Monetize} />
-          <Route path="/compose" component={Compose} />
-          <Route path="/train" component={Train} />
-          <Route path="/tokenize" component={Tokenize} />
-          <Route path="/dashboard" component={Dashboard} />
-          <Route path="/how-it-works" component={HowItWorks} />
-          {/* Fallback to 404 */}
-          <Route component={NotFound} />
-        </Switch>
+        <div className="w-full">
+          <Switch>
+            <Route path="/" component={Home} />
+            <Route path="/marketplace" component={Marketplace} />
+            <Route path="/create" component={Create} />
+            <Route path="/upload" component={Upload} />
+            <Route path="/monetize" component={Monetize} />
+            <Route path="/compose" component={Compose} />
+            <Route path="/train" component={Train} />
+            <Route path="/tokenize" component={Tokenize} />
+            <Route path="/dashboard" component={Dashboard} />
+            <Route path="/how-it-works" component={HowItWorks} />
+            {/* Fallback to 404 */}
+            <Route component={NotFound} />
+          </Switch>
+        </div>
       </main>
       <Footer />
     </div>
