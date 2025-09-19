@@ -11,6 +11,21 @@ import {
   extractWalletAddress,
   type AuthenticatedRequest
 } from "./auth";
+import contractAddresses from "../client/src/lib/contracts/addresses.json";
+
+// Contract address validation middleware
+function requireValidContract(contractName: string) {
+  return (req: any, res: any, next: any) => {
+    const address = (contractAddresses as any)[contractName];
+    if (!address || address === "0x0000000000000000000000000000000000000000") {
+      return res.status(503).json({ 
+        error: "Service unavailable", 
+        details: `${contractName} contract is not deployed. Please deploy the contract first.` 
+      });
+    }
+    next();
+  };
+}
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // User routes - READ endpoints (no auth required for basic reads)
