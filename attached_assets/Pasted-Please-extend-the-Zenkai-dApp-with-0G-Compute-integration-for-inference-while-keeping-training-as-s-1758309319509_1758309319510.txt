@@ -1,0 +1,123 @@
+Please extend the Zenkai dApp with 0G Compute integration for inference, while keeping training as simulation until 0G officially enables it.
+
+✅ Backend (Express.js)
+
+Install Dependencies
+
+npm install @0glabs/0g-serving-broker @types/crypto-js@4.2.2 crypto-js@4.2.0 ethers
+
+
+Environment Variables
+Add to .env (don’t hardcode):
+
+PRIVATE_KEY=0x...   # funded 0G Galileo/Newton testnet wallet
+RPC_URL=https://evmrpc-testnet.0g.ai
+
+
+New Endpoint: /api/og-compute/inference
+
+Initialize broker with ethers.Wallet + RPC.
+
+Discover available services (broker.inference.listService()).
+
+Accept POST body with:
+
+{
+  "provider": "0x...",   // provider address
+  "prompt": "your query",
+  "model": "llama-3.3-70b-instruct"
+}
+
+
+Acknowledge provider if needed (broker.inference.acknowledgeProviderSigner).
+
+Submit inference job (broker.inference.getServiceMetadata + fetch to ${endpoint}/chat/completions).
+
+Return:
+
+content (inference output)
+
+provider (address)
+
+model (used)
+
+verification (TEE/zk flag)
+
+New Endpoint: /api/og-compute/train (Simulated)
+
+For now, return:
+
+{
+  "status": "simulated",
+  "message": "0G Compute training integration coming soon",
+  "mockModelURI": "ipfs://simulated-training-artifact"
+}
+
+
+Save URI to DB so it can flow into INFT minting.
+
+✅ Frontend (React/Vite)
+🔹 Train AI Page
+
+Split into two tabs:
+
+Inference (Live)
+
+User selects dataset + model → call /api/og-compute/inference.
+
+Show real inference output.
+
+Display provider address, zk/TEE badge, cost (from service metadata).
+
+Training (Simulated)
+
+Keep current training flow, but results point to /api/og-compute/train.
+
+Show message: “0G Compute training is coming soon. This is a simulated preview.”
+
+🔹 Pipeline Integration
+
+Outputs from both inference & training should generate a URI (real from inference, mock from simulation).
+
+This URI should be selectable in the Tokenize (INFT) page as modelURI.
+
+🔹 Marketplace & Dashboard
+
+Marketplace INFT cards should now display:
+
+Dataset URI (ipfs:// or og://)
+
+Model URI (from inference or simulated training)
+
+ZK badge if flagged
+
+✅ Messaging / UX Copy
+
+Update texts to reflect reality:
+
+Train AI Page subtitle:
+
+“Run decentralized inference today with 0G Compute. Training support is coming soon and will integrate seamlessly.”
+
+Inference Results Panel:
+
+“Outputs are computed on 0G Compute testnet nodes, verified via zk/TEE.”
+
+Simulated Training Panel:
+
+“This is a simulation until 0G Compute enables decentralized training.”
+
+✅ Deliverables
+
+New backend routes (/api/og-compute/inference and /api/og-compute/train).
+
+Updated Train AI page with Inference (real) + Training (simulated) tabs.
+
+Pipeline + Tokenize pages updated to handle modelURI from inference/training.
+
+Marketplace/Dashboard updated to display inference-derived INFTs.
+
+UX copy updated for transparency.
+
+⚡ Goal:
+Enable real decentralized inference today via 0G Compute SDK, while transparently simulating training until the feature is live. Users experience guided flows, real outputs, and clear messaging.
