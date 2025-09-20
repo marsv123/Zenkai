@@ -538,10 +538,10 @@ export default function Home() {
             ].map((layer, index) => (
               <article
                 key={layer.title}
-                className="glass-cyber hover-cyber p-6 rounded-2xl group transition-all duration-500"
+                className="text-center glass-cyber hover-cyber p-6 rounded-2xl group transition-all duration-500"
                 data-testid={`architecture-${layer.title.toLowerCase().replace(' ', '-')}`}
               >
-                <div className="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <div className="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
                   <layer.icon className="w-6 h-6 text-primary-foreground" />
                 </div>
                 <h4 className="text-lg font-semibold gradient-text-cyber mb-3">
@@ -552,8 +552,8 @@ export default function Home() {
                 </p>
                 <ul className="space-y-2">
                   {layer.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="text-xs text-foreground/70 flex items-start">
-                      <div className="w-1 h-1 bg-primary rounded-full mt-2 mr-2 flex-shrink-0" />
+                    <li key={featureIndex} className="text-xs text-foreground/70 flex items-center justify-center">
+                      <div className="w-1 h-1 bg-primary rounded-full mr-2 flex-shrink-0" />
                       {feature}
                     </li>
                   ))}
