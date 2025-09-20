@@ -1,7 +1,7 @@
 Zenkai: Powering the Intelligence Economy
 
 
-#Links
+# Links
 
 GitHub Repository: https://github.com/marsv123/Zenkai/
 
