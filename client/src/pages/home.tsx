@@ -332,12 +332,13 @@ export default function Home() {
                 className="text-center glass-cyber hover-cyber p-8 rounded-2xl transition-all duration-500 group cursor-pointer relative"
                 data-testid={`journey-step-${step.step}`}
               >
-                <div className={`w-16 h-16 ${step.bgColor} rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform relative`}>
+                {/* Step Number Badge */}
+                <div className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-primary text-primary-foreground text-sm font-bold flex items-center justify-center">
+                  {step.step}
+                </div>
+                
+                <div className={`w-16 h-16 ${step.bgColor} rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform`}>
                   <step.icon className={`w-8 h-8 ${step.color}`} />
-                  {/* Step Number Badge - centered over icon */}
-                  <div className="absolute inset-0 w-8 h-8 rounded-full bg-primary text-primary-foreground text-sm font-bold flex items-center justify-center mx-auto my-auto">
-                    {step.step}
-                  </div>
                 </div>
                 
                 <h4 className="text-xl font-semibold gradient-text-cyber mb-4">
