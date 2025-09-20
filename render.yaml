@@ -22,4 +22,4 @@ services:
       - key: VITE_RPC_URL
         value: https://evmrpc-testnet.0g.ai
     healthCheckPath: /
-    autoDeploy: false
+    autoDeploy: true
