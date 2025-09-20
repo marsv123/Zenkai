@@ -333,7 +333,7 @@ export default function Home() {
                 data-testid={`journey-step-${step.step}`}
               >
                 {/* Step Number Badge */}
-                <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-primary/20 backdrop-blur-sm border border-primary/30 text-sm font-bold flex items-center justify-center z-10" style={{color: '#7caf14'}}>
+                <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full backdrop-blur-sm border border-primary/30 text-sm font-bold flex items-center justify-center z-10" style={{backgroundColor: 'rgba(255, 100, 39, 0.3)', color: '#7caf14'}}>
                   {step.step}
                 </div>
                 
