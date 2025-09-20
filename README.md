@@ -1,5 +1,6 @@
-Zenkai: Powering the Intelligence Economy
+# Zenkai: Powering the Intelligence Economy
 
+---
 
 # Links
 
@@ -9,9 +10,9 @@ Live Website: https://zenkai-dapp.onrender.com/
 
 Akindo Community Page: https://app.akindo.io/communities/o64z2qLARfMzaxdA/products/jaZkAnQQ3ulvA7X83
 
+---
 
-
-#What is Zenkai?
+# What is Zenkai?
 
 Zenkai is a decentralized, end-to-end marketplace for data and intelligence.
 
@@ -26,9 +27,9 @@ Datasets can power multiple models. Models can be linked into pipelines. Every a
 
 With each dataset uploaded, model trained, or INFT minted, Zenkai compounds value. The ecosystem grows stronger, faster, and more rewarding — a virtuous cycle of decentralized innovation.
 
+---
 
-
-#The Problem It Solves
+# The Problem It Solves
 
 AI today is bottlenecked by closed data silos and centralized Big Tech platforms.
 
@@ -50,9 +51,9 @@ No Vendor Lock-In → Datasets and models are reusable, composable, and powered 
 
 Instead of sinking millions into closed ecosystems, users can simply upload, train, and tokenize — creating new value streams at a fraction of the cost.
 
+---
 
-
-#Technical Architecture
+# Technical Architecture
 
 Smart Contracts (0G Galileo Testnet, Chain ID: 16601)
 
@@ -96,8 +97,9 @@ Tailwind + shadcn/ui (cyberpunk glass morphism)
 
 Data Availability → Transparent, reusable datasets and models
 
+---
 
-#Features
+# Features
 
 Upload datasets with privacy and ownership guarantees
 
@@ -111,8 +113,9 @@ Explore datasets and INFTs in the marketplace
 
 Track revenue, reputation, and ownership in the dashboard
 
+---
 
-#Manual Testing Guide
+# Manual Testing Guide
 
 Connect wallet (0G Galileo Testnet, Chain ID: 16601)
 
@@ -128,8 +131,9 @@ Verify asset appears in Marketplace and Dashboard
 
 Explorer: https://chainscan-galileo.0g.ai
 
+---
 
-#License
+# License
 
 MIT License
 
